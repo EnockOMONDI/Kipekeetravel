@@ -1,0 +1,171 @@
+{% extends 'users/basenoheader.html' %}
+{% load static  %}
+
+
+
+{% block content %}
+
+<section class="page-banner overlay pt-170 pb-60 bg_cover" style="background-image: url('{{ post.image.cdn_url }}');">
+    <!-- Other content -->
+        <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="page-banner-content text-center text-white">
+                <h2 class="page-title"style="background-color: #020333; padding: 15px; border-radius:10px;  display: inline-block;">{{post.title|truncatechars:110}}</h2>
+                <!-- <a href="whatsapp://send?text=Check out this blog: {{ request.build_absolute_uri }}" target="_blank">Share on WhatsApp</a> -->
+
+       <h6>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="alert {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+<section class="blog-details-section pt-50 pb-70">
+    <div class="" style="margin-left: 20px; margin-right: 20px;">
+        <div class="row">
+            <div class="col-xl-12">
+                <!--=== Blog Details Wrapper ===-->
+                <div class="blog-details-wrapper pr-lg-50">
+                    <div class="blog-post mb-60 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        
+                        <div class="post-meta text-center pt-25 pb-15 mb-25">
+                            <span><i class="far fa-user"></i><a href="#">{{post.category.title}}</a></span>
+                            <span><i class="far fa-calendar-alt"></i><a href="#">{{post.date|date:"d M, Y"}}</a></span>
+                            <span><i class="far fa-user"></i><a href="#">{{post.user}}</a></span>
+                            <span><i class="far fa-comment"></i><a href="#">Comments ( {{comment.count}} ) </a></span>
+                        </div>
+                        <div class="main-post">
+                            <div class="entry-content">
+                                <h3 class="title">{{post.title}}</h3>
+                                
+                                <!-- <h4>Build Camping Easily</h4> -->
+                                <p>{{post.content}}</p>
+                                <!-- <div class="post-author-box d-flex pb-60 mb-60 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                    <div class="author-thumb">
+                                        <img src="{% static 'assets/images/about/newsletter.png' %}"  alt="quote image">
+                                    </div>
+                                    <div class="author-content">
+                                        <h5>{{post.user}}</h5>
+                                        <span class="position">Author</span>
+                                        <ul class="social-link">
+                                           
+                                            <li><a href="https://www.instagram.com/dj_seanizell_kenya/"><i class="fab fa-instagram"></i></a></li>
+                                            <li><a href="https://ke.linkedin.com/in/enock-omondi-756070105"><i class="fab fa-linkedin-in"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+                             
+                            </div>
+                        </div>
+                     
+                    </div>
+                    <!--===  Post Author Box  ===-->
+                 
+                    <!--===  Post Navigation  ===-->
+                    <!-- <div class="post-navigation-item pb-30 mb-55 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="prev-post post-nav-item d-flex mb-30">
+                            <div class="thumb">
+                                <img src="assets/images/blog/prev-post.jpg" alt="Post Thumb">
+                            </div>
+                            <div class="content">
+                                <h6><a href="blog-details.html">Web Quality Assurance
+                                    Requirements To Web
+                                    Dev Risk Manage</a></h6>
+                                <span class="post-date"><a href="#"><i class="far fa-calendar-alt"></i>November 23,2022</a></span>
+                            </div>
+                        </div>
+                        <div class="next-post post-nav-item d-flex mb-30">
+                            <div class="thumb">
+                                <img src="assets/images/blog/next-post.jpg" alt="Post Thumb">
+                            </div>
+                            <div class="content">
+                                <h6><a href="blog-details.html">Deep Dive Into Wonder
+                                    World Of Displaements
+                                    Filtering</a></h6>
+                                <span class="post-date"><a href="#"><i class="far fa-calendar-alt"></i>November 23,2022</a></span>
+                            </div>
+                        </div>               
+                    </div> -->
+                    <!--===  Comments Area  ===-->
+                    <div class="comments-area mb-60 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <h5 class="comments-title mb-40">Popular Comments</h5>
+                       
+                     
+                         <ul class="comments-list">
+                            {% for c in comment %}
+                            <li>
+                                <div class="comment">
+                                    <div class="comment-avatar">
+                                        <img src="assets/images/blog/comment-1.jpg" alt="comment author">
+                                    </div>
+                                    <div class="comment-wrap">
+                                        <div class="comment-author-content">
+                                            <span class="author-name">{{c.full_name|title}}<span class="date">{{c.date|date:"d M, Y"}}</span></span>
+                                            <p>{{c.comment}}</p>
+                                            <a href="#" class="btn-link">Reply<i class="far fa-angle-double-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </li>
+                            {% empty %}
+                            <div>
+                                <h3>No Comments Yet</h3>
+                            </div>
+                            {% endfor %}
+                           
+                        </ul>
+                    </div>
+                    <!--===  Comments Form  ===-->
+                    <div class="comments-respond mb-30 wow fadeInUp" id="comment-respond">
+                        <h3 class="comments-heading">Leave a Comment</h3>
+                        <form class="comment-form" method="POST" action="{% url 'blog:blog-detail' post.pid %}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form_group">
+                                        <input type="email" class="form_control" placeholder="Email Address" name="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form_group">
+                                        <input type="text" class="form_control" placeholder="Enter Name" name="full_name" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form_group">
+                                        <textarea name="comment" class="form_control" rows="4" placeholder="Write Comments" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">Save my name, email, and website in this browser for the next time I comment.</label>
+                                    </div>
+                                    <div class="form_group">
+                                        <button type="submit" class="main-btn primary-btn">Send comment<i class="fas fa-angle-double-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</section>
+
+{% include 'users/footer.html' %}
+{% endblock %}

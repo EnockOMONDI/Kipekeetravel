@@ -1,0 +1,145 @@
+{% load static %}
+<html>
+
+<head>
+    <title>Tours&Travels</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+    <style>
+        .packages a{
+            color:black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% if messages %}
+    <div class="span12">
+    {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message|safe }}
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <section class="header">
+        <div class="container">
+            <a href="/users">
+            <img src="{% static 'images/logo1.png' %}">
+            </a>
+            {% if user.is_authenticated %}
+            <a href="/logout" class="login-btn">Logout</a>
+            {% else %}
+            <a href="/login" class="login-btn">Login</a>
+            {% endif %}     
+            
+        </div>
+        <h1 class="h"></h1>
+        
+
+
+
+        <form method="POST" action="{% url 'search' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search any place, city, state" name="search">
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text" btn>Search</button>
+                </div>
+            </div>
+        </form>
+
+
+
+    </section>
+    <section class="packages">
+        <h1>Most Recommended Packages</h1>
+        <div class="container">
+            <div class="row">
+                {% for pack,night,price,travel,img in packages %}
+                <div class="col-md-4">
+                    <a href="{% url 'users:users-detail-package' pack.id %}">
+                        <div class="package-box animate__animated animate__bounce animate__delay-5s pull-up">
+                            <div class="package-img">
+                                <img src="{{img}}" height="200px">
+                                <div class="price">
+                                    <p>₹ {{price}}</p>
+                                </div>
+
+                            </div>
+                            <div class="package-details">
+                                <h4>{{pack.package_name}}</h4>
+                                
+                                <div>
+                                    <span><i class="fa fa-map-marker"></i>{{pack.destination}}</span>
+                                    <span><i class="fa fa-sun-o"></i>{{pack.number_of_days}} Days</span>
+                                    <span><i class="fa fa-moon-o"></i>{{night}} Nights</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+    <section class="gallery">
+        <h1>Travelling Gallery</h1>
+        <div class="container">
+            <div class="row">
+                {% for dest,img in dests %}
+                <div class="col-md-3">
+                    <a href="{% url 'users-destination' dest.id %}">
+                        <div class="gallery-box">
+                            <img src="{{img}}" height="150px">
+                            <h4>{{dest.name}}</h4>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+    <section class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{% static 'images/logo.png' %}" class="footer-logo">
+                    <p>Explore different cities and relax yourself. TRAVELING – IT LEAVES YOU SPEECHLESS, THEN TURNS YOU
+                        INTO A STORYTELLER.</p>
+                </div>
+                
+                <div class="col-md-4">
+                    <h4>Quick Contact</h4>
+                    <p><i class="fa fa-phone"></i>9346271125</p>
+                    <p><i class="fa fa-envelope"></i>hello@example.com</p>
+                    <p><i class="fa fa-map-marker"></i>xyz Road, ABC</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Follow Us:</h4>
+                    <p><i class="fa fa-facebook"></i></p>
+                    <p><i class="fa fa-instagram"></i></p>
+                    <p><i class="fa fa-twitter"></i></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        
+        var options = {
+            strings: ['A journey of a thousand miles must begin with a single step.', 'To travel is to take a journey into yourself.','We travel for romance, we travel for architecture, and we travel to be lost.'],
+            typeSpeed: 60
+        };
+        var typed = new Typed('.h', options);
+    </script>
+</body>
+
+</html>

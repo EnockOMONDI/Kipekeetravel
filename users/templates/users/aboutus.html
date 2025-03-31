@@ -1,0 +1,223 @@
+{% extends 'users/basemain.html' %}
+{% load static  %}
+
+
+
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section pt-100" style="background-color: #170b2c;">
+    <div class="container">
+        <div class="row align-items-center text-white py-5">
+            <div class="col-lg-6 wow fadeInLeft">
+                <h1 class="display-4 fw-bold mb-4">Who We Are</h1>
+                <p class="lead mb-4">At Novustell Travel, we're more than just travel experts; we are your strategic partner committed to elevating your travel experiences. With over 20 years of invaluable experience, we aim to alleviate the burdens of travel logistics while delivering exceptional solutions.</p>
+                <a href="https://wa.me/254701363551" target="_blank" class="btn btn-custom">Get In Touch</a>
+            </div>
+            <div class="col-lg-6 wow fadeInRight">
+                <div class="hero-image">
+                    <img src="{% static 'assets/images/place/place-12.jpg' %}" alt="About Novustell" class="img-fluid rounded-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Partnerships Section -->
+<section class="partners-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Our Trusted Partners</h2>
+            <p class="lead">Proudly associated with industry leaders</p>
+        </div>
+        <div class="row justify-content-center align-items-center g-4">
+            <div class="col-md-3 text-center">
+                <img src="{% static 'assets/images/logo/iata2.jpg' %}" alt="IATA" class="partner-logo">
+            </div>
+            <div class="col-md-3 text-center">
+                <img src="{% static 'assets/images/logo/kata2.jpg' %}" alt="KATA" class="partner-logo">
+            </div>
+            <div class="col-md-3 text-center">
+                <img src="{% static 'assets/images/logo/kato2.jpg' %}" alt="KATO" class="partner-logo">
+            </div>
+            <div class="col-md-3 text-center">
+                <img src="{% static 'assets/images/logo/galileo.jpg' %}" alt="KATO" class="partner-logo">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Services Section -->
+<section class="services-section py-5" style="background-color: #e4eff9;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Our Comprehensive Services</h2>
+                <p class="lead">A full spectrum of Conferencing & Travel solutions from anywhere around the Globe</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Service Cards -->
+            <div class="col-md-4 wow fadeInUp">
+                <div class="service-card">
+                    <div class="icon-box">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h4>Corporate Travel</h4>
+                    <p>Seamless business trips with tailored solutions for executive teams and professionals</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="service-card">
+                    <div class="icon-box">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>M.I.C.E</h4>
+                    <p>Flawlessly planned events, conferences, and corporate gatherings for impactful experiences</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="service-card">
+                    <div class="icon-box">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h4>NGO Travel</h4>
+                    <p>Reliable travel services for humanitarian missions and volunteer groups</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="features-section py-5" style="background: linear-gradient(104deg, rgba(31,3,79,1) 0%, rgba(23,11,44,1) 40%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 wow fadeInLeft">
+                <div class="section-content text-white">
+                    <h2 class="mb-4">Why People Choose Novustell Travel</h2>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Global Reach: Vast network of trusted suppliers worldwide</li>
+                        <li><i class="fas fa-check"></i> Logistics Simplified: Custom travel solutions</li>
+                        <li><i class="fas fa-check"></i> One-Stop Shop: Full-service solutions for all travel needs</li>
+                        <li><i class="fas fa-check"></i> Strategic Partnership: Expert collaboration for elevated experiences</li>
+                        <li><i class="fas fa-check"></i> 20+ Years Experience: Proven excellence in travel industry</li>
+                        <li><i class="fas fa-check"></i> Africa Expertise: Local insights ensure client satisfaction</li>
+                        <li><i class="fas fa-check"></i> 24/7 Support: Dedicated travel manager for your business</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInRight">
+                <img src="{% static 'assets/images/place/place-122.jpg' %}" alt="Why Choose Us" class="img-fluid rounded-3">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnerships Section -->
+<section class="partners-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Our Trusted Partners</h2>
+            <p class="lead">Proudly associated with industry leaders</p>
+        </div>
+        <div class="row justify-content-center align-items-center g-4">
+            <div class="col-md-4 text-center">
+                <img src="{% static 'path/to/iata-logo.png' %}" alt="IATA" class="partner-logo">
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{% static 'path/to/kata-logo.png' %}" alt="KATA" class="partner-logo">
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{% static 'path/to/kato-logo.png' %}" alt="KATO" class="partner-logo">
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn-custom {
+        background: #ff9d00;
+        color: #170b2c;
+        padding: 12px 30px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 157, 0, 0.3);
+    }
+    
+    .service-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        height: 100%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .service-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: #170b2c;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .icon-box i {
+        color: #ff9d00;
+        font-size: 24px;
+    }
+    
+    .feature-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .feature-list li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .feature-list li i {
+        color: #ff9d00;
+        margin-right: 1rem;
+    }
+    
+    .partner-logo {
+        max-height: 80px;
+     
+        transition: all 0.3s ease;
+    }
+    
+    .partner-logo:hover {
+        filter: grayscale(100%);
+    }
+    
+    .section-title {
+        color: #170b2c;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+    }
+</style>
+
+
+            {% include 'users/footer.html' %}
+
+    {% endblock %}

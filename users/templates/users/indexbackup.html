@@ -1,0 +1,1553 @@
+{% extends 'users/basemain.html' %}
+{% load static  %}
+
+
+{% block content %}
+
+
+<style>
+    /* Adjust the background color and padding of the banner-main */
+    .banner-main {
+        background-color: #ffffff !important;
+        margin-top: 20px !important;
+    }
+    .banner-slider .trend-item1 {
+        border-radius: 10px !important; /* Adjust the desired height */
+        margin-right: 10px;
+    }
+</style>
+<style>
+    /* Adjust the background color and padding of the banner-main */
+    .banner-main {
+        background-color: #ffffff !important;
+        margin-top: 20px !important;
+    }
+    .banner-slider .trend-item1 {
+        border-radius: 10px !important; /* Adjust the desired height */
+        margin-right: 10px;
+    }
+    </style>
+    <style>
+
+        .goog-te-gadget {
+        font-family: Roboto, 'Open Sans', sans-serif!important;
+        text-transform: uppercase;
+        }
+        .goog-te-gadget-simple  {
+        background-color: rgb(255, 255, 255)!important;
+        padding: 2px!important;
+        color: #fff!important;
+        border-radius: 4px!important;
+        font-size: 0.7rem!important;
+        cursor: pointer;
+        
+        }
+        .goog-te-menu2 {
+        max-width: 100%;
+        }
+        .goog-te-menu-value {
+        color: #fff !important;&:before {
+        font-family: 'Material Icons';
+        content: "\E927";
+        color: #fff ;
+        font-size: 2rem;
+        
+        
+        } 
+        }
+        .goog-te-menu-value span:nth-child(5) {
+        display:none;
+        }
+        .goog-te-menu-value span:nth-child(3) {
+        border:none!important;
+        font-family: 'Material Icons';
+        &:after {
+        font-family: 'Material Icons';
+        content: "\E5C5";
+        font-size: 1.5rem;
+        
+        }  
+        }
+        
+        .goog-te-gadget-icon {
+        background-image: none!important;
+        display: none;
+        
+        }
+        
+        
+        .goog-te-banner-frame.skiptranslate {display: none!important;
+        } 
+        body {top: 0px!important;}
+        
+        /* ================================== *\
+        Mediaqueries
+        \* ================================== */
+        @media (max-width: 667px) {
+        #google_translate_element {
+            bottom: calc(100% - 50% - 53px);
+            left: 16px!important;
+            width: 100%!important;
+            goog-te-gadget {
+                width:100%!important;
+            }
+            .skiptranslate {
+                width:100%!important;			
+            }
+            .goog-te-gadget-simple {
+                width: calc(100% - 32px)!important;
+                text-align: center;
+            }	
+        }
+        }
+        
+        
+        
+        
+        </style>
+<section class="banner  pb-0 overflow-hidden" style="background-image: url('{% static 'assets2/images/testimonial.png' %}')">
+    <div class="container">
+    <div class="banner-in">
+    <div class="row align-items-center">
+        
+        <div class="col-lg-7 mb-4">
+            <div class="trending-topic-content">
+                <img src="{% static 'assets2/images/testimonial/safaris.png' %}" class="mb-1 d-inline-block" alt>
+                </div>
+        </div>
+        <div class="col-lg-5 mb-4">
+            <div class="banner-content text-lg-start text-center">
+            <h1>The best Tours and Safaris in the Savanah</h1>
+            <!-- <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore</p> -->
+            <div class="book-form">
+            <div class="row d-flex align-items-center justify-content-between">
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+                
+            <select class="niceSelect">
+            <option value="1">Destination</option>
+            <option value="2">Nakuru</option>
+            <option value="3">Naivasha</option>
+            <option value="4">Tsavo</option>
+            <option value="5">Maasai Mara</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <input type="date" name="date">
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <select class="niceSelect">
+            <option value="1">Travel Type</option>
+            <option value="2">City Tour</option>
+            <option value="3">Family Tour</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <select class="niceSelect">
+            
+            <option value="1">Tour Duration</option>
+            <option value="2">3 days</option>
+            <option value="3">4 Days</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-12">
+            <div class="form-group mb-0 text-center">
+            <a href="#" class="nir-btn w-100"><i class="fa fa-search mr-2"></i> Search
+            Now</a>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+  
+    </div>
+    <div class="category-main-inner border-t pt-1">
+    <div class="row side-slider">
+    <div class="col-lg-3 col-md-6 my-4">
+    <div class="category-item box-shadow p-3 py-4 text-center bg-white rounded overflow-hidden">
+    <div class="trending-topic-content">
+    <img src="{% static 'assets2/images/icons/004-camping-tent.png' %}" class="mb-1 d-inline-block" alt>
+    <h4 class="mb-0"><a href="tour-grid.html">Camping</a></h4>
+    </div>
+    </div>
+    </div>
+  
+    <div class="col-lg-3 col-md-6 my-4">
+    <div class="category-item box-shadow p-3 py-4 text-center bg-white rounded overflow-hidden">
+    <div class="trending-topic-content">
+    <img src="{% static 'assets2/images/icons/005-sunbed.png' %}" class="mb-1 d-inline-block" alt>
+    <h4 class="mb-0"><a href="tour-grid.html">Beach Tours</a></h4>
+    </div>
+    </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 my-4">
+    <div class="category-item box-shadow p-3 py-4 text-center bg-white rounded overflow-hidden">
+    <div class="trending-topic-content">
+    <img src="{% static 'assets2/images/icons/002-safari.png' %}" class="mb-1 d-inline-block" alt>
+    <h4 class="mb-0"><a href="tour-grid.html">Safari Tours</a></h4>
+    </div>
+    </div>
+    </div>
+ 
+    <div class="col-lg-3 col-md-6 my-4">
+    <div class="category-item box-shadow p-3 py-4 text-center bg-white rounded overflow-hidden">
+    <img src="{% static 'assets2/images/icons/007-hiking-1.png' %}" class="mb-1 d-inline-block" alt>
+    <div class="trending-topic-content">
+    <h4 class="mb-0"><a href="tour-grid.html">Cultural Tours</a></h4>
+    </div>
+    </div>
+    </div>
+    <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p-3 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content text-center">
+        <img src="{% static 'assets2/images/icons/003-hiking.png' %}" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Hiking</a></h4>
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+
+
+    <section class="trending bg-grey pt-17 pb-6">
+        <div class="section-shape top-0" style="background-image: url(images/shape8.png);"></div>
+        <div class="container">
+        <div class="row align-items-center justify-content-between mb-6 ">
+        <div class="col-lg-7">
+        <div class="section-title text-center text-lg-start">
+        <h4 class="mb-1 theme1">Top Pick</h4>
+        <h2 class="mb-1">Best <span class="theme">Tour Packages</span></h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        </div>
+        </div>
+        <div class="col-lg-5">
+        </div>
+        </div>
+        <div class="trend-box">
+        <div class="row item-slider">
+            {% for pack,night,price,travel in packages %}
+        <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+        <div class="trend-item rounded box-shadow bg-white">
+        <div class="trend-image position-relative">
+        <img src="{{ pack.Image.cdn_url }} " alt="image" class>
+        <div class="color-overlay"></div>
+        </div>
+        <div class="trend-content p-4 pt-5 position-relative">
+        <div class="trend-meta bg-theme white px-3 py-2 rounded">
+        <div class="entry-author">
+        <i class="icon-calendar"></i>
+        <span class="fw-bold"> {{pack.number_of_days}} Days | {{night}} Nights</span>
+        </div>
+        </div>
+        <h5 class="theme mb-1"><i class="flaticon-location-pin"></i> {{pack.destination}}</h5>
+        <h3 class="mb-1"><a href="{% url 'users:users-detail-package' pack.id %}">{{pack.package_name}}</a></h3>
+        <div class="rating-mainmain d-flex align-items-center pb-2">
+        <div class="rating">
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        </div>
+        <span class="ms-2"> {{pack.destination}}</span>
+        </div>
+        <p class=" border-b pb-2 mb-2">{{pack.description|truncatewords:10|default_if_none:"No description available." }}</p>
+        <div class="entry-meta">
+        <div class="entry-author d-flex align-items-center">
+        <p class="mb-0"><span class="theme fw-bold fs-5"> $ {{price}} </span> | Per person</p>
+        </div>
+        </div>
+        </div>
+        </div>
+         </div>
+        {% endfor %}
+        </div>
+        </div>
+        <div class="category-main-inner">
+        <div class="row align-items-center">
+        <div class="col-lg-2">
+        <h3 class="mb-0 white bg-theme p-3 py-5 text-center rounded my-4">Top Categories</h3>
+        </div>
+        <div class="col-lg-10">
+        <div class="row side-slider">
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p-2 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content">
+        <img src="images/icons/004-camping-tent.png" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Camping</a></h4>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p-2 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content text-center">
+        <img src="images/icons/003-hiking.png" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Hiking</a></h4>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p-2 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content">
+        <img src="images/icons/005-sunbed.png" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Beach Tours</a></h4>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p-2 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content">
+        <img src="images/icons/006-surf.png" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Surfing</a></h4>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p2 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content">
+        <img src="images/icons/002-safari.png" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Safari</a></h4>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p-2 py-4 text-center bg-white rounded overflow-hidden">
+        <div class="trending-topic-content">
+        <img src="images/icons/008-cycling.png" class="mb-1 d-inline-block" alt>
+        <h4 class="mb-0"><a href="tour-grid.html">Cycling</a></h4>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6 my-4">
+        <div class="category-item box-shadow p2 py-4 text-center bg-white rounded overflow-hidden">
+        <img src="images/icons/007-hiking-1.png" class="mb-1 d-inline-block" alt>
+        <div class="trending-topic-content">
+        <h4 class="mb-0"><a href="tour-grid.html">Trekings</a></h4>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+        
+
+
+
+
+
+    <h2>Packages</h2>
+    <div class="package-list">
+      {% for pack, nights, price, travel, img_url in packages %}
+        <div class="package-card">
+          <img src="{{ img_url }}" alt="Package Image">
+          <h3>{{ pack.package_name }}</h3>
+          <p>Duration: {{ nights }} nights</p>
+          <p>Price: ${{ price }}</p>
+          <p>Travel Mode: {{ travel }}</p>
+          <a href="">View Details</a>
+        </div>
+      {% endfor %}
+    </div>   
+
+    <!-- <div class="banner trending overflow-hidden">
+        <div class="banner-main">
+            <div class="row banner-slider">
+      {% for pack,night,price,travel in packages %}
+                      <div class="col-lg-4 p-0">
+                    <div class="trend-item1 box-shadow bg-white text-center">
+                        <div class="trend-image position-relative">
+                            <img src="{{ pack.Image.cdn_url }}" alt="image" class="">
+                            <div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+                                <h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> test dest</h5>
+                                <h2 class="mb-1 white"><a href="" class="white">{{ pack.package_name }}</a></h2>
+                                <div class="rating-main pb-10">
+                                    <div class="rating">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="ms-2 white"></span>
+                                    </div>
+                                </div>
+                                <div class="entry-meta text-center">
+                                    <div class="entry-author mb-1">
+                                        <p class="mb-0 white"><span class="theme1 fw-bold fs-5">{{ price }}</span> | Per person</p>
+                                    </div>
+                                    <div class="entry-author">
+                                        <i class="icon-calendar white"></i>
+                                        <span class="fw-bold white">{{ nights }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+     -->
+    
+    
+
+ <div class="banner trending overflow-hidden">
+<div class="banner-main">
+<div class="row banner-slider">
+
+<div class="col-lg-4 col-md-6 p-0">
+<div class="trend-item1 box-shadow bg-white text-center">
+<div class="trend-image position-relative">
+<img src="{% static 'assets2/images/new-deal/deal2.jpg' %}" alt="image" class>
+<div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+<h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i>Amboseli </h5>
+
+
+<h2 class="mb-1 white "><a href="" class="white">Amboseli National Park</a></h2>
+
+
+<div class="rating-main pb-10">
+<div class="rating">
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="ms-2 white">(21)</span>
+</div>
+</div>
+<div class="entry-meta text-center">
+<div class="entry-author mb-1">
+<p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $240.00</span> | Per person</p>
+</div>
+<div class="entry-author">
+<i class="icon-calendar white"></i>
+<span class="fw-bold white"> 5 Days Tours</span>
+</div>
+</div>
+</div>
+<div class="overlay"></div>
+</div>
+</div>
+</div>
+
+<!-- 
+
+
+<div class="col-lg-4 p-0">
+<div class="trend-item1 box-shadow bg-white text-center">
+<div class="trend-image position-relative">
+<img src="{% static 'assets2/images/new-deal/Diani.webp' %}" alt="image" class>
+<div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+<h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> Diani </h5>
+<h2 class="mb-1 white "><a href="" class="white">Tours in Diani Beach </a></h2>
+<div class="rating-main pb-10">
+<div class="rating">
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="ms-2 white">(18)</span>
+</div>
+</div>
+<div class="entry-meta text-center">
+<div class="entry-author mb-1">
+<p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $190.00</span> | Per person</p>
+</div>
+<div class="entry-authorr">
+<i class="icon-calendar white"></i>
+<span class="fw-bold white"> 9 Days Tours</span>
+</div>
+</div>
+</div>
+<div class="overlay"></div>
+</div>
+</div>
+</div>
+
+<div class="col-lg-4 p-0">
+<div class="trend-item1 box-shadow bg-white text-center">
+<div class="trend-image position-relative">
+<img src="{% static 'assets2/images/new-deal/deal5.webp' %}" alt="image" class>
+<div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+<h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> Tsavo </h5>
+<h2 class="mb-1 white"><a href="" class="white">Tsavo National Park</a></h2>
+<div class="rating-main pb-10">
+<div class="rating">
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="ms-2 white">(22)</span>
+</div>
+</div>
+<div class="entry-meta text-center">
+<div class="entry-author mb-1">
+<p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $150.00</span> | Per person</p>
+</div>
+<div class="entry-author">
+<i class="icon-calendar white"></i>
+<span class="fw-bold white"> 3 Days Tours</span>
+</div>
+</div>
+</div>
+<div class="overlay"></div>
+</div>
+</div>
+</div>
+
+<div class="col-lg-4 p-0">
+    <div class="trend-item1 box-shadow bg-white text-center">
+    <div class="trend-image position-relative">
+    <img src="{% static 'assets2/images/new-deal/naivasha.webp' %}" alt="image" class>
+    <div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+    <h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i>Naivasha</h5>
+    <h2 class="mb-1 white"><a href="" class="white">Lake Naivasha</a></h2>
+    <div class="rating-main pb-10">
+    <div class="rating">
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="fa fa-star checked"></span>
+    <span class="ms-2 white">(22)</span>
+    </div>
+    </div>
+    <div class="entry-meta text-center">
+    <div class="entry-author mb-1">
+    <p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $150.00</span> | Per person</p>
+    </div>
+    <div class="entry-author">
+    <i class="icon-calendar white"></i>
+    <span class="fw-bold white"> 3 Days Tours</span>
+    </div>
+    </div>
+    </div>
+    <div class="overlay"></div>
+    </div>
+    </div>
+    </div>
+
+    <div class="col-lg-4 p-0">
+        <div class="trend-item1 box-shadow bg-white text-center">
+        <div class="trend-image position-relative">
+        <img src="{% static 'assets2/images/new-deal/mombasa.webp' %}" alt="image" class>
+        <div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+        <h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> Mombasa</h5>
+        <h2 class="mb-1 white"><a href="" class="white">Explore Mombasa</a></h2>
+        <div class="rating-main pb-10">
+        <div class="rating">
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="ms-2 white">(34)</span>
+        </div>
+        </div>
+        <div class="entry-meta text-center">
+        <div class="entry-author mb-1">
+        <p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $310.00</span> | Per person</p>
+        </div>
+        <div class="entry-author">
+        <i class="icon-calendar white"></i>
+        <span class="fw-bold white"> 10 Days Tours</span>
+        </div>
+        </div>
+        </div>
+        <div class="overlay"></div>
+        </div>
+        </div>
+        </div>
+    <div class="col-lg-4 p-0">
+        <div class="trend-item1 box-shadow bg-white text-center">
+        <div class="trend-image position-relative">
+        <img src="{% static 'assets2/images/new-deal/deal1.webp' %}" alt="image" class>
+        <div class="trend-content1 px-4  top-50 bottom-inherit translatey-50">
+        <h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> Maasai Mara </h5>
+        <h2 class="mb-1 white"><a href="" class="white">Maasai  <br>Mara National Reserve</a></h2>
+        <div class="rating-main pb-1">
+        <div class="rating">
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="ms-2 white">(16)</span>
+        </div>
+        </div>
+        <div class="entry-meta text-center">
+        <div class="entry-author mb-1">
+        <p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $180.00</span> | Per person</p>
+        </div>
+        <div class="entry-author">
+        <i class="icon-calendar white"></i>
+        <span class="fw-bold white"> 6 Days Tours</span>
+        </div>
+        </div>
+        </div>
+        <div class="overlay"></div>
+        </div>
+        </div>
+        </div>
+  
+        <div class="col-lg-4 p-0">
+            <div class="trend-item1 box-shadow bg-white text-center">
+            <div class="trend-image position-relative">
+            <img src="{% static 'assets2/images/new-deal/nakuru.webp' %}" alt="image" class>
+            <div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+            <h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> Nakuru</h5>
+            <h2 class="mb-1 white"><a href="" class="white">Lake <br> Nakuru</a></h2>
+            <div class="rating-main pb-10">
+            <div class="rating">
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="ms-2 white">(22)</span>
+            </div>
+            </div>
+            <div class="entry-meta text-center">
+            <div class="entry-author mb-1">
+            <p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $150.00</span> | Per person</p>
+            </div>
+            <div class="entry-author">
+            <i class="icon-calendar white"></i>
+            <span class="fw-bold white"> 3 Days Tours</span>
+            </div>
+            </div>
+            </div>
+            <div class="overlay"></div>
+            </div>
+            </div>
+            </div>
+        <div class="col-lg-4 p-0">
+            <div class="trend-item1 box-shadow bg-white text-center">
+            <div class="trend-image position-relative">
+            <img src="{% static 'assets2/images/new-deal/deal5.webp' %}" alt="image" class>
+            <div class="trend-content1 px-4 top-50 bottom-inherit translatey-50">
+            <h5 class="theme1 mb-0"><i class="flaticon-location-pin"></i> Samburu </h5>
+            <h2 class="mb-1 white"><a href="" class="white">Samburu National Reserve</a></h2>
+            <div class="rating-main pb-1">
+            <div class="rating">
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="ms-2 white">(22)</span>
+            </div>
+            </div>
+            <div class="entry-meta text-center">
+            <div class="entry-author mb-1">
+            <p class="mb-0 white"><span class="theme1 fw-bold fs-5"> $150.00</span> | Per person</p>
+            </div>
+            <div class="entry-author">
+            <i class="icon-calendar white"></i>
+            <span class="fw-bold white"> 3 Days Tours</span>
+            </div>
+            </div>
+            </div>
+            <div class="overlay"></div>
+            </div>
+            </div>
+            </div> -->
+</div>
+</div>
+</div> 
+
+<style>
+    /* Adjust the background color and padding of the banner-main */
+    .about-us {
+        background-color: #ffffff !important;
+    }
+</style>
+
+<section class="about-us" style="background-image: url('{% static 'assets2/images/bg/bg-trans.png' %}'); margin-top: -10%;">
+    <div class="container">
+    <div class="about-image-box">
+    <div class="row d-flex align-items-center justify-content-between">
+   
+    <div class="col-lg-7 ps-lg-4">
+    <div class="about-content  text-lg-left">
+    <h4 class="theme d-inline-block mb-0">About Us</h4>
+    <h2 class="border-b mb-2 pb-1">Discover Kenya's Magic</h2>
+    <p class="border-b mb-2 pb-2">Jungle Dreams adventure is a family owned company  dedicated to providing exceptional travel experiences in Kenya. With our passion for exploration, cultural immersion, and personalized service, we create unforgettable journeys showcasing the diverse wonders of this beautiful country. From wildlife safaris to beach getaways and cultural encounters, our knowledgeable team crafts tailor-made itineraries that exceed expectations. Embrace the spirit of adventure and let us guide you through Kenya's enchanting beauty.
+       </p>
+    <div class="about-listing">
+    <ul class="d-flex justify-content-between">
+    <li style="color:#061a00 ;"><i class="icon-location-pin theme"></i> Tour Guide</li>
+    <li style="color:#061a00 ;"><i class="icon-briefcase theme"></i> Friendly Price</li>
+    <li style="color:#061a00 ;"><i class="icon-folder theme"></i> Reliable Tour Package</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <div class="col-lg-5 mb-4 pe-lg-4">
+        <div class="about-image1 overflow-hidden rounded">
+        <img src="{% static 'assets2/images/destination/destination6.png' %}"  alt>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="white-overlay"></div>
+    </section>
+
+ 
+ 
+<section class="about-us pb-6" style="background-image: url('{% static 'assets2/images/shape4.png' %}'); background-position:center;">
+<div class="container">
+<div class="section-title mb-6 w-70 mx-auto text-center">
+<!-- <h4 class="mb-1 theme1">Why us</h4> -->
+<h1 class="mb-1">Discover and book<span class="theme"> your dream adventure effortlessly in four steps</span></h1>
+</div>
+
+<div class="why-us">
+<div class="why-us-box">
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+        <div class="why-us-item p-5 pt-6 pb-6 border rounded bg-white">
+        <div class="why-us-content">
+        <div class="why-us-icon mb-1">
+        <!-- <i class="icon-directions theme"></i> -->
+        </div>
+        <h4><a href="about.html">Share Your Travel Preference</a></h4>
+        <p class="mb-2">Tell us your preferences and special requests.</p>
+        <!-- <p class="mb-0 theme">100+ Reviews</p> -->
+        </div>
+        </div>
+        </div>
+        
+<div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+    <div class="why-us-item p-5 pt-6 pb-6 border rounded bg-white">
+    <div class="why-us-content">
+    <div class="why-us-icon mb-1">
+    <!-- <i class="icon-location-pin theme"></i> -->
+    </div>
+    <h4><a href="about.html">Share Your Travel Locations</a></h4>
+    <p class="mb-2">Explore Kenya's curated tours, destinations and experiences.</p>
+    <!-- <p class="mb-0 theme">100+ Reviews</p> -->
+    </div>
+    </div>
+    </div>
+<div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+<div class="why-us-item p-5 pt-6 pb-6 border rounded bg-white">
+<div class="why-us-content">
+<div class="why-us-icon mb-1">
+<!-- <i class="icon-flag theme"></i> -->
+</div>
+<h4><a href="about.html">Browse our curated tour packages </a></h4>
+<p class="mb-2">
+     Hustle-free Booking! secure your spot on the tour</p>
+    <!-- <p class="mb-0 theme">100+ Reviews</p> -->
+</div>
+</div>
+</div>
+
+
+<div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+<div class="why-us-item p-5 pt-6 pb-6 border rounded bg-white">
+<div class="why-us-content">
+<div class="why-us-icon mb-1">
+<!-- <i class="icon-compass theme"></i> -->
+ 
+</div>
+<h4><a href="about.html">100% Trusted Tour Agency</a></h4>
+<p class="mb-2">Pack your bags, bring your excitement, and leave the rest to us. </p>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="white-overlay"></div>
+</section>
+
+
+<section class="trending pb-0 pt-0" style="background-image: url('{% static 'assets2/images/shape-1.png' %}') background-position:center;">
+<div class="container">
+<div class="section-title mb-6 w-50 mx-auto text-center">
+<h4 class="mb-1 theme1">Top Destinations</h4>
+<h2 class="mb-1">Explore <span class="theme">Top Destinations</span></h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+</div>
+<div class="row align-items-center">
+<div class="col-lg-5 mb-4">
+<div class="trend-item1">
+<div class="trend-image position-relative rounded">
+<img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="image">
+<div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+<div class="trend-content-title">
+<h5 class="mb-0"><a href="" class="theme1">Maasai Mara</a></h5>
+<h3 class="mb-0 white">Maasai Mara National Reserve</h3>
+</div>
+<span class="white bg-theme p-1 px-2 rounded">15 Tours</span>
+</div>
+<div class="color-overlay"></div>
+</div>
+</div>
+</div>
+<div class="col-lg-7">
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+<div class="trend-item1">
+<div class="trend-image position-relative rounded">
+<img src="{% static 'assets2/images/destination/destination17.webp' %}" alt="image">
+<div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+<div class="trend-content-title">
+<h5 class="mb-0"><a href="" class="theme1">Tsavo</a></h5>
+<h3 class="mb-0 white">Tsavo National Reserve</h3>
+</div>
+<span class="white bg-theme p-1 px-2 rounded">18 Tours</span>
+</div>
+<div class="color-overlay"></div>
+</div>
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+<div class="trend-item1">
+<div class="trend-image position-relative rounded">
+<img src="{% static 'assets2/images/destination/destination14.webp' %}" alt="image">
+<div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+<div class="trend-content-title">
+<h5 class="mb-0"><a href="" class="theme1">Coastal Region</a></h5>
+<h3 class="mb-0 white">Old Town</h3>
+</div>
+<span class="white bg-theme p-1 px-2 rounded">10 Tours</span>
+</div>
+<div class="color-overlay"></div>
+</div>
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+<div class="trend-item1">
+<div class="trend-image position-relative rounded">
+<img src="{% static 'assets2/images/destination/destination15.webp' %}" alt="image">
+<div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100">
+<div class="trend-content-title">
+<h5 class="mb-0"><a href="" class="theme1">Bush Safaris</a></h5>
+<h3 class="mb-0 white">Naivasha</h3>
+</div>
+<span class="white bg-theme p-1 px-2 rounded">15 Tours</span>
+</div>
+<div class="color-overlay"></div>
+</div>
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 mb-4">
+<div class="trend-item1">
+<div class="trend-image position-relative rounded">
+<img src="{% static 'assets2/images/destination/destination16.webp' %}" alt="image">
+<div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+<div class="trend-content-title">
+<h5 class="mb-0"><a href="" class="theme1">Lake Naivasha</a></h5>
+<h3 class="mb-0 white">Lake Naivasha</h3>
+</div>
+<span class="white bg-theme p-1 px-2 rounded">12 Tours</span>
+</div>
+<div class="color-overlay"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="banner pt-10 pb-0 overflow-hidden" style="background-image: url('{% static 'assets2/images/testimonial.png' %}')">
+    <div class="container">
+    <div class="banner-in">
+    <div class="row align-items-center">
+        <div class="col-lg-5 mb-4">
+            <div class="banner-content text-lg-start text-center">
+            <h4 class="theme mb-0">Safaris, Tours and Adventures </h4>
+            <h1>Your gateway to Kenya's captivating landscapes</h1>
+            <!-- <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore</p> -->
+            <!-- <div class="book-form">
+            <div class="row d-flex align-items-center justify-content-between">
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <select class="niceSelect">
+            <option value="1">Destination</option>
+            <option value="2">Nakuru</option>
+            <option value="3">Naivasha</option>
+            <option value="4">Tsavo</option>
+            <option value="5">Maasai Mara</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <input type="date" name="date">
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <select class="niceSelect">
+            <option value="1">Travel Type</option>
+            <option value="2">City Tour</option>
+            <option value="3">Family Tour</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-6 mb-2">
+            <div class="form-group">
+            <div class="input-box">
+            <select class="niceSelect">
+            <option value="1">Tour Duration</option>
+            <option value="2">3 days</option>
+            <option value="3">4 Days</option>
+            </select>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-12">
+            <div class="form-group mb-0 text-center">
+            <a href="#" class="nir-btn w-100"><i class="fa fa-search mr-2"></i> Search
+            Now</a>
+            </div>
+            </div>
+            </div>
+            </div> -->
+            </div>
+            </div>
+        <div class="col-lg-7 mb-4">
+            <div class="recent-articles-inner">
+                <div class="row">
+                <div class="col-lg-6">
+                <div class="trend-item box-shadow bg-white mb-4 rounded">
+               
+                <div class="trend-content-main p-4">
+                <div class="trend-content">
+              <h3><a href="detail-1.html" style="color: #fd7e14;" >Journey Into Kenya's Beauty, Culture, and Wonders.</a></h3>
+    
+                <h3 class="theme mb-1"> Our Mission</h3>
+                <p class="mb-3">
+                    Connecting travelers to Kenya's beauty, culture, and wonders through exceptional service and personalized journeys, leaving a lasting impact.            </p>
+              
+                </div>
+                </div>
+                <div class="trend-image">
+                    <img src="{% static 'assets2/images/trending/trending10.png' %}" class="rounded" alt="image">
+                    </div>
+                </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="trend-item box-shadow bg-white mb-4 rounded">
+                        <div class="trend-image">
+                        <img src="{% static 'assets2/images/trending/trending10.png' %}" alt="image">
+                        </div>
+                        <div class="trend-content-main p-4">
+                        <div class="trend-content">
+                      <h3><a href="detail-1.html" style="color: #fd7e14;" >Authentic Experiences and Sustainable Exploration</a></h3>
+            
+                        <h3 class="theme mb-1"> Our Vision</h3>
+                        <p class="mb-3">
+                            We aim to be the foremost tour and travel company in Kenya, distinguished for our unwavering pursuit of excellence, sustainability, and genuine experiences.
+                        </div>
+                        </div>
+                        </div>
+                </div>
+           
+                </div>
+                </div>
+        </div>
+ 
+  
+    </div>
+   
+    </div>
+    </div>
+    </section>
+
+
+        <section class="our-team banner pt-0 pb-0 overflow-hidden" style="background-image: url('{% static 'assets2/images/testimonial.png' %}')">
+
+        <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 mb-4">
+                <div class="row team-main">
+                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-list bg-white rounded">
+                <div class="team-image">
+                <img src="{% static 'assets2/images/team/img4.jpg' %}" alt="team">
+                </div>
+                <div class="team-content text-center p-3 bg-theme">
+                <h4 class="mb-0 white">Mara Serena Safari Lodge</h4>
+                </div>
+                </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-list bg-white rounded">
+                <div class="team-image">
+                <img src="{% static 'assets2/images/team/img4.jpg' %}" alt="team">
+                </div>
+                <div class="team-content text-center p-3 bg-theme">
+                <h4 class="mb-0 white">Sentrim Amboseli Lodge</h4>
+                </div>
+                </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="team-list bg-white rounded">
+                <div class="team-image">
+                <img src="{% static 'assets2/images/team/img4.jpg' %}" alt="team">
+                </div>
+                <div class="team-content text-center p-3 bg-theme">
+                <h4 class="mb-0 white">Sentrim Tsavo East Camp</h4>
+                </div>
+                </div>
+                </div>
+              
+                </div>
+                </div>
+        <div class="col-lg-5 mb-4">
+        <div class="section-title text-lg-start text-center">
+        <h4 class="mb-1 theme1">Top  Accomodations </h4>
+        <h1>The best Lodges<span class="theme">Camp sites and Resorts in Kenya</span></h1>
+        <a href="#" class="nir-btn">All Accomodations</a>
+        </div>
+        </div>
+      
+        </div>
+        </div>
+        </section>
+        <section class="about-us p-0 pt-3">
+            <div class="container">
+            <div class="about-image-box">
+            <div class="row d-flex align-items-center justify-content-between">
+            <div class="col-lg-5 mb-4 pe-lg-4">
+            
+            <div class="form-main mt-minus">
+            <div class="form-content rounded overflow-hidden" >
+            <h3 class="form-title text-center p-3 white bg-theme1 mb-0 rounded-top " >Explore more Locations</h3>
+            <div class="book-form px-4 py-5">
+            <div class="form-group mb-2">
+            <div class="input-box">
+            
+            <select class="niceSelect">
+            <option value="1">Destination</option>
+            <option value="2">Nakuru</option>
+            <option value="3">Naivasha</option>
+            <option value="4">Tsavo</option>
+            <option value="5">Maasai Mara</option>
+            </select>
+            </div>
+            </div>
+            <div class="form-group mb-2">
+            <div class="input-box">
+            <input type="date" name="date">
+            </div>
+            </div>
+            <div class="form-group mb-2">
+            <div class="input-box">
+                <select class="niceSelect">
+                    <option value="1">Travel Type</option>
+                    <option value="2">City Tour</option>
+                    <option value="3">Family Tour</option>
+                    </select>
+               
+            </div>
+            </div>
+            <div class="form-group mb-2">
+            <div class="input-box">
+                <select class="niceSelect">
+                   
+                    <option value="1">Tour Duration</option>
+                    <option value="2">3 days</option>
+                    <option value="3">4 Days</option>
+                    </select>
+            </div>
+            </div>
+            <div class="form-group text-center">
+            <a href="#" class="nir-btn w-100"><i class="fa fa-search mr-2"></i> Search Now</a>
+            </div>
+            </div>
+            </div>
+            </div>
+            
+            </div>
+            <div class="col-lg-7 mb-4 ps-lg-4">
+            <div class="about-content text-center text-lg-start mb-4 mt-10">
+            <h4 class="theme d-inline-block mb-0">Your Home in Paradise</h4>
+            <h2>Exceptional Holiday Homes and Retirement Options in Kenya</h2>
+            <p class="border-b mb-2 pb-2">In addition to creating unforgettable travel experiences in Kenya, 
+                we also specialize in providing holiday homes and retirement options in this breathtaking country. Whether you are seeking a peaceful coastal getaway, a serene countryside retreat, or a vibrant urban oasis, we have a collection of carefully selected properties to suit your preferences, ensuring that you find the perfect home away from home. .</p>
+            <div class="about-listing">
+        
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="white-overlay"></div>
+            </section>
+<section class="discount-action pt-4" style="background-image: url('{% static 'assets2/images/section-bg1.png' %}') background-position:center;">
+<div class="section-shape section-shape1 top-inherit bottom-0" style="background-image:  url('{% static 'assets2/images/shape8.png' %}')"></div>
+<div class="container">
+<div class="call-banner rounded pt-10 pb-14">
+<div class="call-banner-inner w-85 mx-auto text-center px-5">
+<div class="trend-content-main">
+<div class="trend-content mb-5 pb-2 px-5">
+<h1><a href=""> Explore Kenya's Breathtaking Wildlife and Cultural Heritage<span class="theme1"></span></a></h1>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="white-overlay"></div>
+</section>
+
+
+<section class="testimonial pt-4">
+<div class="container">
+<div class="section-title mb-6 text-center w-75 mx-auto">
+<h4 class="mb-1 theme1"> Praise and Recognition</h4>
+<h2 class="mb-1">What Our clients Say<span class="theme"></span></h2>
+</div>
+<div class="testimonial-in">
+<div class="row review-slider1">
+<div class="col-sm-4 item">
+<div class="testimonial-item1 rounded bg-white p-4 py-5 box-shadow border text-center mx-2">
+<div class="details mb-4">
+<p class="m-0"><i class="fa fa-quote-left me-2 fs-1"></i>
+    From the moment I arrived in Nairobi, everything was taken care of. The team at Safari Adventures Kenya went above and beyond to ensure that every aspect of my trip was seamless. Our guide, Peter, was extremely knowledgeable about the wildlife and the national parks we visited. I was amazed by the diverse landscapes and the opportunity to see the Big Five up close. The accommodations? fantastic!!!
+</p>
+</div>
+<div class="author-info mt-2">
+<div class="author-title ms-3">
+<h5 class="m-0 theme">Anna Müller </h5>
+</div>
+</div>
+</div>
+</div>
+<div class="col-sm-4 item">
+<div class="testimonial-item1 rounded bg-white p-4 py-5 box-shadow border text-center mx-2">
+<div class="details mb-4">
+<p class="m-0"><i class="fa fa-quote-left me-2 fs-1"></i>
+    The lodges we stayed in were luxurious and provided a comfortable retreat after long days of exploring. I will forever cherish the memories of witnessing the Great Migration in the Maasai Mara and the breathtaking views of Mount Kilimanjaro. Thank you, Jungle Dreams , for an unforgettable adventure!"
+</p>
+</div>
+<div class="author-info mt-2">
+<div class="author-title ms-3">
+<h5 class="m-0 theme">Max Fischer</h5>
+</div>
+</div>
+</div>
+</div>
+<div class="col-sm-4 item">
+<div class="testimonial-item1 rounded bg-white p-4 py-5 box-shadow border text-center mx-2">
+<div class="details mb-4">
+<p class="m-0"><i class="fa fa-quote-left me-2 fs-1"></i>
+    The Expeditions were beyond my expectations! I felt welcomed and well taken care of. The team planned our itinerary, ensuring we had a diverse and memorable safari experience.
+    The camps we stayed in were exquisite, offering a perfect blend of comfort and immersion in nature. Witnessing a herd of elephants bathing at a watering hole was a sight that will stay with me forever. Thank you </p>
+</div>
+<div class="author-info mt-2">
+<div class="author-title ms-3">
+<h5 class="m-0 theme">Lukas Weber </h5>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<!-- <section class="trending recent-articles pb-6 pt-0">
+<div class="container">
+<div class="section-title mb-6 w-75 mx-auto text-center">
+<h4 class="mb-1 theme1">Our Blogs Offers</h4>
+<h2 class="mb-1">Recent <span class="theme">Articles & Posts</span></h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+</div>
+<div class="recent-articles-inner">
+<div class="row">
+<div class="col-lg-4">
+<div class="trend-item box-shadow bg-white mb-4 rounded">
+<div class="trend-image">
+<img src="{% static 'assets2/images/trending/trending10.jpg' %}" alt="image">
+</div>
+<div class="trend-content-main p-4">
+<div class="trend-content">
+<h5 class="theme mb-1">Technology</h5>
+<h4><a href="detail-1.html">How a developer duo at Deutsche Bank keep remote alive.</a></h4>
+<p class="mb-3">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+</p>
+<div class="entry-meta d-flex align-items-center justify-content-between">
+<div class="entry-author">
+<img src="{% static 'assets2/images/reviewer/2.jpg' %}" alt class="rounded-circle me-1">
+<span>Sollmond Nell</span>
+</div>
+<div class="entry-button d-flex align-items-center">
+<a href="#" class="nir-btn">Read More</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4 col-md-6">
+<div class="trend-item box-shadow bg-white mb-4 rounded">
+<div class="trend-image">
+<img src="{% static 'assets2/images/trending/trending12.jpg' %}" alt="image">
+</div>
+<div class="trend-content-main p-4">
+<div class="trend-content">
+<h5 class="theme mb-1">Inspiration</h5>
+<h4><a href="detail-1.html">Inspire Runner with Autism Graces of Women's Running</a></h4>
+<p class="mb-3">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+</p>
+<div class="entry-meta d-flex align-items-center justify-content-between">
+<div class="entry-author">
+<img src="{% static 'assets2/images/reviewer/1.jpg' %}" alt class="rounded-circle me-1">
+<span>David Scott</span>
+</div>
+<div class="entry-button d-flex align-items-center">
+<a href="#" class="nir-btn">Read More</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-4 col-md-6">
+<div class="trend-item box-shadow bg-white mb-4 rounded">
+<div class="trend-image">
+<img src="{% static 'assets2/images/trending/trending13.jpg' %}" alt="image">
+</div>
+<div class="trend-content-main p-4">
+<div class="trend-content">
+<h5 class="theme mb-1">Public</h5>
+<h4><a href="detail-1.html">Services To Grow Your Business Sell Affiliate Products</a></h4>
+<p class="mb-3">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+</p>
+<div class="entry-meta d-flex align-items-center justify-content-between">
+<div class="entry-author">
+<img src="{% static 'assets2/images/reviewer/3.jpg' %}" alt class="rounded-circle me-1">
+<span>John Bolden</span>
+</div>
+<div class="entry-button d-flex align-items-center">
+<a href="#" class="nir-btn">Read More</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section> -->
+
+
+
+
+<footer class="pt-20 pb-4" style="background-image:  url('{% static 'assets2/images/background_patter.png' %}')">
+<div class="section-shape top-0" style="background-image:  url('{% static 'assets2/images/shape8.png' %}')"></div>
+
+<div class="insta-main pb-10">
+<div class="container">
+<div class="insta-inner">
+<div class="follow-button">
+<h5 class="m-0 rounded"><i class="fab fa-instagram"></i> Follow on Instagram</h5>
+</div>
+<div class="row attract-slider">
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="insta-image rounded">
+<a href="gallery.html"><img src="{% static 'assets2/images/destination/destination1.jpg' %}" alt="insta"></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="footer-upper pb-4">
+<div class="container">
+<div class="row">
+<div class="col-lg-5 col-md-6 col-sm-12 mb-4 pe-4">
+<div class="footer-about">
+<img src="{% static 'assets2/images/logow.png' %}" alt>
+<p class="mt-3 mb-3 white">
+    Welcome to our travel agency, Jungle Dreams adventure a familyowned  company, dedicated to providing exceptional travel experiences in the captivating landscapes of Kenya. With our deep passion for exploration, cultural immersion, and personalized service, we aim to create unforgettable journeys that showcase the diverse wonders of this beautiful country.
+
+</p>
+<ul>
+<li class="white"><strong>Call:</strong>  +49 163 8767374</li> <br>
+<li class="white"><strong>Locations:</strong> Nairobi, Kenya </li>
+<li class="white"><strong>Email:</strong> Info@jungledreamadventures.com </li>
+
+</ul>
+</div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+<div class="footer-links">
+<h3 class="white">Quick link</h3>
+<ul>
+<li><a href="">About Us</a></li>
+<li><a href="">Terms &amp; Conditions</a></li>
+<li><a href="">Customer Service</a></li>
+<li><a href="">Return Policy</a></li>
+</ul>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+<div class="footer-links">
+<h3 class="white">Newsletter</h3>
+<div class="newsletter-form ">
+<p class="mb-3">
+    Unlock a world of travel inspiration! Sign up for our newsletter and receive captivating stories, destination highlights, and special offers and Insider travel tips, that will fuel your wanderlust.
+</p>
+<form action="#" method="get" accept-charset="utf-8" class="border-0 d-flex align-items-center">
+<input type="text" placeholder="Email Address">
+<button class="nir-btn ms-2">Subscribe</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-payment">
+<div class="container">
+<div class="row footer-pay align-items-center justify-content-between text-lg-start text-center">
+<div class="col-lg-8 footer-payment-nav mb-4">
+<ul class>
+<li class="me-2">We Support:</li>
+<li class="me-2"><i class="fab fa-cc-mastercard fs-4"></i></li>
+<li class="me-2"><i class="fab fa-cc-paypal fs-4"></i></li>
+<li class="me-2"><i class="fab fa-cc-stripe fs-4"></i></li>
+<li class="me-2"><i class="fab fa-cc-visa fs-4"></i></li>
+<li class="me-2"><i class="fab fa-cc-discover fs-4"></i></li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+<div class="footer-copyright">
+<div class="container">
+<div class="copyright-inner rounded p-3 d-md-flex align-items-center justify-content-between">
+<div class="copyright-text">
+<p class="m-0 white">2023 Jungle Dreams Adventures. All rights reserved.</p>
+</div>
+<div class="social-links">
+<ul>
+<li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+<li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+<li><a href="#"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+<li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="particles-js"></div>
+</footer>
+
+
+<div id="back-to-top">
+<a href="#"></a>
+</div>
+
+
+<div id="search1">
+<button type="button" class="close">×</button>
+<form>
+<input type="search" value placeholder="type keyword(s) here" />
+<button type="submit" class="btn btn-primary">Search</button>
+</form>
+</div>
+
+<div class="modal fade log-reg" id="exampleModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-body">
+<div class="post-tabs">
+
+<ul class="nav nav-tabs nav-pills nav-fill" id="postsTab" role="tablist">
+<li class="nav-item" role="presentation">
+<button aria-controls="login" aria-selected="false" class="nav-link active" data-bs-target="#login" data-bs-toggle="tab" id="login-tab" role="tab" type="button">Login</button>
+</li>
+<li class="nav-item" role="presentation">
+<button aria-controls="register" aria-selected="true" class="nav-link" data-bs-target="#register" data-bs-toggle="tab" id="register-tab" role="tab" type="button">Register</button>
+</li>
+</ul>
+
+<div class="tab-content blog-full" id="postsTabContent">
+
+<div aria-labelledby="login-tab" class="tab-pane fade active show" id="login" role="tabpanel">
+<div class="row">
+<div class="col-lg-6">
+<div class="blog-image rounded">
+<a href="#" style="background-image:  url('{% static 'assets2/images/trending/trending5.jpg' %}')"></a>
+</div>
+</div>
+<div class="col-lg-6">
+<h4 class="text-center border-b pb-2">Login</h4>
+<div class="log-reg-button d-flex align-items-center justify-content-between">
+<button type="submit" class="btn btn-fb">
+<i class="fab fa-facebook"></i> Login with Facebook
+</button>
+<button type="submit" class="btn btn-google">
+<i class="fab fa-google"></i> Login with Google
+</button>
+</div>
+<hr class="log-reg-hr position-relative my-4 overflow-visible">
+<form method="post" action="#" name="contactform" id="contactform">
+<div class="form-group mb-2">
+<input type="text" name="user_name" class="form-control" id="fname" placeholder="User Name or Email Address">
+</div>
+<div class="form-group mb-2">
+<input type="password" name="password_name" class="form-control" id="lpass" placeholder="Password">
+</div>
+<div class="form-group mb-2">
+<input type="checkbox" class="custom-control-input" id="exampleCheck">
+<label class="custom-control-label mb-0" for="exampleCheck1">Remember me</label>
+<a class="float-end" href="#">Lost your password?</a>
+</div>
+<div class="comment-btn mb-2 pb-2 text-center border-b">
+<input type="submit" class="nir-btn w-100" id="submit" value="Login">
+</div>
+<p class="text-center">Don't have an account? <a href="#" class="theme">Register</a></p>
+</form>
+</div>
+</div>
+</div>
+
+<div aria-labelledby="register-tab" class="tab-pane fade" id="register" role="tabpanel">
+<div class="row">
+<div class="col-lg-6">
+<div class="blog-image rounded">
+<a href="#" style="background-image:  url('{% static 'assets2/images/trending/trending5.jpg' %}')"></a>
+</div>
+</div>
+<div class="col-lg-6">
+<h4 class="text-center border-b pb-2">Register</h4>
+<div class="log-reg-button d-flex align-items-center justify-content-between">
+<button type="submit" class="btn btn-fb">
+<i class="fab fa-facebook"></i> Login with Facebook
+</button>
+<button type="submit" class="btn btn-google">
+<i class="fab fa-google"></i> Login with Google
+</button>
+</div>
+<hr class="log-reg-hr position-relative my-4 overflow-visible">
+<form method="post" action="#" name="contactform1" id="contactform1">
+<div class="form-group mb-2">
+<input type="text" name="user_name" class="form-control" id="fname1" placeholder="User Name">
+</div>
+<div class="form-group mb-2">
+<input type="text" name="user_name" class="form-control" id="femail" placeholder="Email Address">
+</div>
+<div class="form-group mb-2">
+<input type="password" name="password_name" class="form-control" id="lpass1" placeholder="Password">
+</div>
+<div class="form-group mb-2">
+<input type="password" name="password_name" class="form-control" id="lrepass" placeholder="Re-enter Password">
+</div>
+<div class="form-group mb-2 d-flex">
+<input type="checkbox" class="custom-control-input" id="exampleCheck1">
+<label class="custom-control-label mb-0 ms-1 lh-1" for="exampleCheck1">I have read and accept the Terms and Privacy Policy?</label>
+</div>
+<div class="comment-btn mb-2 pb-2 text-center border-b">
+<input type="submit" class="nir-btn w-100" id="submit1" value="Register">
+</div>
+<p class="text-center">Already have an account? <a href="#" class="theme">Login</a></p>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+

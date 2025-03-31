@@ -1,0 +1,95 @@
+{% extends 'users/basemain.html' %}
+{% load static  %}
+
+
+{% block content %}
+
+
+<section class="page-banner overlay pt-170 pb-60 bg_cover" style="background-image: url({% static 'assets/images/bg/page-bg.jpg' %});">    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="page-banner-content text-center text-white">
+                    <h1 class="page-title"style="background-color: #020333; padding: 15px; border-radius:10px;  display: inline-block;">Novustell Holidays</h1>
+               
+           <h6>
+            Just as we customize our other travel services, our Holidays are tailored to suit your preferences and schedule. Whether you're seeking a cultural excursion, an adventurous safari, or a tranquil escape, our offerings cater to a range of interests.
+           </h6>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="blog-list-section black-bg pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+           
+           
+                {% for package in packages %}
+                <div class="col-xl-4 col-md-6 col-sm-12">
+                    <div class="single-event-item mb-30 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="img-holder">
+                            <img src="{{ package.Image.cdn_url }}" alt="Event Image">
+                        </div>
+                        <div class="content">
+                            <div class="meta">
+                                <span><i class="far fa-calendar-alt"></i><a href="{% url 'users:users-detail-package' package.id %}"> <strong> {{ package.number_of_days }} Days </strong> </a></span>
+                                <h3 class="title"><a href="{% url 'users:users-detail-package' package.id %}"> <strong>{{ package.package_name }} </strong>  </a></h3>
+                                <p class="location"><i class="far fa-map-marker-alt"></i> {{ package.destination.city }}, {{ package.destination.state }}</p>
+                                <p class="location"><i class="far fa-briefcase"></i> From KES {{ package.adult_price }}</p>
+                               
+                            </div>
+                            <br>
+                            {% if user.is_authenticated %}
+                            
+                                    <span><a href="{% url 'users:users-detail-package' package.id %}">Details<i class="far fa-long-arrow-right"></i></a></span>
+                                  {% else %}
+                                    <span><a href="{% url 'login' %}?next={% url 'users:users-detail-package' package.id %}"> Details<i class="far fa-long-arrow-right"></i></a></span>
+                                  {% endif %}
+                        </div>
+                    </div>
+        
+            </div>
+            {% endfor %}
+         
+            
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <!--=== Gowilds Pagination ===-->
+                <ul class="gowilds-pagination wow fadeInUp text-center" style="visibility: visible; animation-name: fadeInUp;">
+                    <li><a href="#"><i class="far fa-arrow-left"></i></a></li>
+                    <li><a href="#" class="active">01</a></li>
+                  
+                    <li><a href="#"><i class="far fa-arrow-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% include 'users/footer.html' %}
+
+       
+{% endblock %}
+
+<div class="row justify-content-center">
+    <div class="col-xl-4 col-md-6 col-sm-12">
+        <div class="single-event-item mb-30 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+            <div class="img-holder">
+                <img src="assets/images/event/event-1.jpg" alt="Event Image">
+            </div>
+            <div class="content">
+                <div class="meta">
+                    <span><i class="far fa-calendar-alt"></i><a href="#">September 25, 2022</a></span>
+                    <h3 class="title"><a href="#">How To Enjoy Adventure
+                        Trip With Gowilds</a></h3>
+                    <p class="location"><i class="far fa-map-marker-alt"></i> Gaafu Dhaalu Atoll, Maldives</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>

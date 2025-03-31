@@ -1,0 +1,75 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Dede - Tour & Travel Booking </title>
+    <meta name="description" content="Tourex - Tour & Travel Booking html5 Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets3/img/favicon.png' %}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'assets3/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/flatpicker.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/odometer.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/default.css' %}">
+    <link rel="stylesheet" href="{% static 'assets3/css/main.css' %}">
+</head>
+
+<body>
+
+    <div id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scroll-top -->
+    <button class="scroll__top scroll-to-target" data-target="html">
+        <i class="fa-sharp fa-regular fa-arrow-up"></i>
+    </button>
+    <!-- Scroll-top-end-->
+
+ 
+    {% include 'users/dede/navbar.html' %}
+
+    
+    <!-- header-area-end -->
+
+    <!-- main-area -->
+    <main>
+
+        {% block content %}
+
+
+
+        {% endblock %}
+
+   </main>
+
+<!-- JS here -->
+<script src="{% static 'assets3/js/vendor/jquery.js' %}"></script>
+<script src="{% static 'assets3/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets3/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets3/js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'assets3/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="assets/js/jquery.odometer.min.js"></script>
+<script src="assets/js/jquery.appear.js"></script>
+<script src="{% static 'assets3/js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets3/js/flatpickr.js' %}"></script>
+<script src="{% static 'assets3/js/nice-select.js' %}"></script>
+<script src="{% static 'assets3/js/ajax-form.js' %}"></script>
+<script src="{% static 'assets3/js/wow.min.js' %}"></script>
+<script src="{% static 'assets3/js/main.js' %}"></script>
+</body>
+
+
+<!-- Mirrored from themedox.com/demo/tourex/index-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Mar 2025 20:48:02 GMT -->
+</html>

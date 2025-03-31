@@ -1,0 +1,144 @@
+{% extends 'users/basenoheader.html' %}
+{% load static  %}
+
+
+{% block content %}
+
+ 
+ 
+<div class="row">
+    <div class="col-xl-4">
+       </div>
+    <div class="col-xl-8">
+        <!--=== Sidebar Widget Area ===-->
+        <div class="sidebar-widget-area pt-60 pl-lg-30">
+            <!--=== Booking Widget ===-->
+            <div class="sidebar-widget booking-form-widget wow fadeInUp mb-40" style="visibility: visible; animation-name: fadeInUp;">
+                <h4 class="widget-title">Booking Form  Package ID: {{ package.name }}</h4>
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+
+
+                    <form class="sidebar-booking-form" method="post" action="{% url 'users:users-bookings' package_id=package.id %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    <!-- <div class="booking-date-time mb-20">
+                        <div class="booking-item">
+                            <label>Date</label>
+                            <div class="bk-item booking-time">
+                                <i class="far fa-calendar-alt"></i>
+                                <input type="text" placeholder="Select Date" class="datepicker hasDatepicker" id="dp1734396503970">
+                            </div>
+                        </div>
+                        <div class="booking-item">
+                            <label>Time</label>
+                            <div class="bk-item booking-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <select class="wide" style="display: none;">
+                                    <option value="01">12.00 Am</option>
+                                    <option value="01">01.00 Am</option>
+                                    <option value="01">02.00 Am</option>
+                                    <option value="01">03.00 Am</option>
+                                    <option value="01">04.00 Am</option>
+                                    <option value="01">05.00 Am</option>
+                                    <option value="01">06.00 Am</option>
+                                    <option value="01">07.00 Am</option>
+                                    <option value="01">08.00 Am</option>
+                                    <option value="01">09.00 Am</option>
+                                    <option value="01">10.00 Am</option>
+                                    <option value="01">11.00 Am</option>
+                                    <option value="01">12.00 Pm</option>
+                                </select><div class="nice-select wide" tabindex="0"><span class="current">12.00 Am</span><ul class="list"><li data-value="01" class="option selected">12.00 Am</li><li data-value="01" class="option">01.00 Am</li><li data-value="01" class="option">02.00 Am</li><li data-value="01" class="option">03.00 Am</li><li data-value="01" class="option">04.00 Am</li><li data-value="01" class="option">05.00 Am</li><li data-value="01" class="option">06.00 Am</li><li data-value="01" class="option">07.00 Am</li><li data-value="01" class="option">08.00 Am</li><li data-value="01" class="option">09.00 Am</li><li data-value="01" class="option">10.00 Am</li><li data-value="01" class="option">11.00 Am</li><li data-value="01" class="option">12.00 Pm</li></ul></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="booking-guest-box mb-20">
+                        <h6 class="mb-20">Tickets</h6>
+                        <div class="booking-item">
+                            <label>Adult (18+ years) $43</label>
+                            <div class="bk-item booking-user">
+                                <i class="far fa-user"></i>
+                                <select class="wide" style="display: none;">
+                                    <option value="01">1</option>
+                                    <option value="02">2</option>
+                                    <option value="03">3</option>
+                                    <option value="04">4</option>
+                                    <option value="05">5</option>
+                                </select><div class="nice-select wide" tabindex="0"><span class="current">1</span><ul class="list"><li data-value="01" class="option selected">1</li><li data-value="02" class="option">2</li><li data-value="03" class="option">3</li><li data-value="04" class="option">4</li><li data-value="05" class="option">5</li></ul></div>
+                            </div>
+                        </div>
+                        <div class="booking-item">
+                            <label>Youth (13-17 years) $29</label>
+                            <div class="bk-item booking-user">
+                                <i class="far fa-user"></i>
+                                <select class="wide" style="display: none;">
+                                    <option value="01">1</option>
+                                    <option value="02">2</option>
+                                    <option value="03">3</option>
+                                    <option value="04">4</option>
+                                    <option value="05">5</option>
+                                </select><div class="nice-select wide" tabindex="0"><span class="current">1</span><ul class="list"><li data-value="01" class="option selected">1</li><li data-value="02" class="option">2</li><li data-value="03" class="option">3</li><li data-value="04" class="option">4</li><li data-value="05" class="option">5</li></ul></div>
+                            </div>
+                        </div>
+                        <div class="booking-item">
+                            <label>Child (0-12 years) $0</label>
+                            <div class="bk-item booking-user">
+                                <i class="far fa-user"></i>
+                                <select class="wide" style="display: none;">
+                                    <option value="01">1</option>
+                                    <option value="02">2</option>
+                                    <option value="03">3</option>
+                                    <option value="04">4</option>
+                                    <option value="05">5</option>
+                                </select><div class="nice-select wide" tabindex="0"><span class="current">1</span><ul class="list"><li data-value="01" class="option selected">1</li><li data-value="02" class="option">2</li><li data-value="03" class="option">3</li><li data-value="04" class="option">4</li><li data-value="05" class="option">5</li></ul></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="booking-extra mb-15 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <h6 class="mb-10">Aditional Services</h6>
+                        <div class="extra">
+                            <i class="fas fa-check-circle"></i>Service Per Boooking <span><span class="currency">$</span>50</span>
+                        </div>
+                        <div class="extra">
+                            <i class="fas fa-check-circle"></i>Service Per Person <span><span class="currency">$</span>20</span>
+                        </div>
+                    </div>
+                    <div class="booking-total mb-20">
+                        <div class="total">
+                            <label>Total</label>
+                            <span class="price"><span class="currency">$</span>70</span>
+                        </div>
+                    </div> -->
+                    <div class="submit-button">
+                        <button type="submit" class="btn btn-primary">Book Now</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+{% include 'users/footer.html' %}
+
+       
+{% endblock %}

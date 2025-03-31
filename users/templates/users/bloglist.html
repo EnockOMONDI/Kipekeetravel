@@ -1,0 +1,107 @@
+{% extends 'users/basemain.html' %}
+{% load static  %}
+
+
+{% block content %}
+
+
+<section class="blog-list-section pt-70 pb-70" style="background-color: ;">
+    <div class="" style="margin-left: 20px; margin-right: 20px;">
+        
+        <div class="row">
+            {% for p in blog %}
+            <div class="col-xl-8">
+               
+                
+                <!--=== Blog List Wrapper ===-->
+                <div class="blog-list-wrapper">
+                    <!--=== Single Blog Post ===-->
+                    <div class="single-blog-post-four mb-30 wow fadeInDown" style="visibility: visible; animation-name: fadeInDown;">
+                        <div class="post-thumbnail">
+                            <img src="{{ p.image.cdn_url }}" alt="Post Image">
+                        </div>
+                        <div class="entry-content">
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar-alt"></i><a href="#">{{p.date|date:"d M, Y"}}</a></span>
+                            </div>
+                            <h3 class="title"><a href="{% url 'blog:blog-detail' p.pid %}">
+                                {{p.title|truncatechars:110}}</a></h3>
+                            <h6 class="author"><i class="far fa-user"></i><a href="#">{{p.user}}</a></h6>
+                            <a href="{% url 'blog:blog-detail' p.pid %}" class="main-btn filled-btn">Read More<i class="fas fa-paper-plane"></i></a>
+                        </div>
+                    </div>
+          
+                </div>
+             
+                <!--=== Pagination ===-->
+                <!-- <ul class="gowilds-pagination wow fadeInDown mt-60 mb-30" style="visibility: hidden; animation-name: none;">
+                    <li><a href="#"><i class="far fa-arrow-left"></i></a></li>
+                    <li><a href="#" class="active">01</a></li>
+                    <li><a href="#">02</a></li>
+                    <li><a href="#">03</a></li>
+                    <li><a href="#">04</a></li>
+                    <li><a href="#"><i class="far fa-arrow-right"></i></a></li>
+                </ul> -->
+            </div>
+
+            {% endfor %}
+          
+            
+
+            <div class="col-xl-4">
+            
+                <div class="sidebar-widget-area">
+                    <!--=== Search Widget ===-->
+                    <div class="sidebar-widget search-widget mb-30 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <h4 class="widget-title">Search</h4>
+                 
+                        <form action="" method="GET">
+                            <div class="form_group">
+                                <label><i class="far fa-search"></i></label>
+                                <input type="text" class="form_control" placeholder="search Articles" name="q" >
+                            </div>
+                        </form>
+                    </div>
+                    <!--=== Category Widget ===-->
+                    <div class="sidebar-widget category-widget mb-30 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <h4 class="widget-title">Category</h4>
+                        {% for c in categories %}
+                        <ul class="category-nav">
+                            <li><a href="{% url 'blog:category_detail' c.slug %}">{{c.title}}<i class="far fa-arrow-right"></i></a></li>
+
+                        </ul>
+                        {% endfor %}
+                    </div>
+                 
+                </div>
+            </div>
+</div>
+
+               <div class="row">
+                    <div class="col-lg-12">
+                        <div class="gowilds-pagination wow fadeInDown mt-60 mb-30" style="visibility: hidden; animation-name: none;">
+                            <ul class="page_navigation">
+                              {% if blog.has_previous %}
+                                <li><a href="{% url 'blog:blog-list' %}?page={{ blog.previous_page_number }}"><i class="far fa-arrow-left"></i></a></li>
+                              {% endif %}
+                              
+                              {% for page_number in blog.paginator.page_range %}
+                                <li><a href="{% url 'blog:blog-list' %}?page={{ page_number }}" {% if page_number == blog.number %}class="active"{% endif %}>{{ page_number }}</a></li>
+                              {% endfor %}
+                              
+                              {% if blog.has_next %}
+                                <li><a href="{% url 'blog:blog-list' %}?page={{ blog.next_page_number }}"><i class="far fa-arrow-right"></i></a></li>
+                              {% endif %}
+                            </ul>
+                          </div>
+                          
+                    </div>
+                  </div>
+           
+        
+        </div>
+    </div>
+</section>
+
+{% include 'users/footer.html' %}
+{% endblock %}

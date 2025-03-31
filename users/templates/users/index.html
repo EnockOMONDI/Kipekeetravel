@@ -1,0 +1,699 @@
+{% extends 'users/basemain.html' %}
+{% load static  %}
+
+
+{% block content %}
+
+
+
+   
+    <section class="services-section black-bg pt-100  " style="background-color: #e4eff9;">
+        <div class="container">
+          
+              
+                 
+                    
+            <style>
+               .check-list {
+                    list-style: none;
+                    padding: 0;
+                }
+                
+                .check-list li {
+                    margin-bottom: 1rem;
+                    display: flex;
+                    align-items: center;
+                    color: #ffffff !important; /* Force white color */
+                }
+
+                .check-list li i {
+                    color: #4CAF50;
+                    margin-right: 0.75rem;
+                    font-size: 1.25rem;
+                }
+                .single-place-item-two {
+                    transition: all 0.3s ease-in-out;
+                    overflow: hidden;
+                    border-radius: 24px;
+                }
+            
+                .single-place-item-two:hover {
+                    /* transform: translateY(-5px); */
+                    transform: translateY(-8px) scale(1.01);
+                    box-shadow: 0 10px 20px rgba(6, 0, 43, 0.2);
+                    border-radius: 24px;
+                }
+            
+                .single-place-item-two .place-img {
+                    position: relative;
+                    overflow: hidden;
+                    border-radius: 24x;
+                }
+            
+                .single-place-item-two .place-img img {
+                    /* transition: all 0.5s ease-in-out; */
+                    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 0.4);
+                    border-radius: 24px;
+                    object-fit: cover;
+                }
+            
+                /* .single-place-item-two:hover .place-img img {
+                    transform: scale(1.1);
+                } */
+                .single-place-item-two:hover .place-img img {
+                transform: scale(1.08);
+            }
+            
+                .single-place-item-two .place-content {
+                    transition: all 0.3s ease-in-out;
+                    border-radius: 20px;
+                }
+            
+                .single-place-item-two:hover .place-content {
+                    background: rgba(3, 0, 160 0.4);
+                    border-radius: 20px;
+                }
+            
+                .single-place-item-two a {
+                    text-decoration: none;
+                    display: block;
+                    border-radius: 20px;
+                }
+                .nav-tabs {
+                border: none;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .nav-tabs .nav-link {
+                border-radius: 50px;
+                padding: 0.75rem 1.5rem;
+                color: #170b2c;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+                background: rgba(255,255,255,0.9);
+            }
+
+            .nav-tabs .nav-link:hover {
+                background: rgba(23, 11, 44, 0.1);
+            }
+
+            .nav-tabs .nav-link.active {
+                background: #170b2c;
+                color: white;
+                border-color: #4CAF50;
+            }
+
+            .btn-custom {
+                background: linear-gradient(135deg, #170b2c 0%, #2a1b3d 100%);
+                color: white;
+                border-radius: 50px;
+                padding: 1rem 2rem;
+                transition: all 0.3s ease;
+                border: none;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+            .btn-custom:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            }
+            </style>
+            
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="single-place-item-two mb-30 wow fadeInUp">
+                        <a href="{% url 'users:corporatepage' %}">
+                            <div class="place-img">
+                                <img src="{% static 'assets/images/place/place-12.jpg' %}" alt="Place Image">
+                                <span class="tour-count">Business Travel</span>
+                                <div class="place-content">
+                                    <div class="info text-white">
+                                        <h3 class="title mb-10"><strong>Efficient Corporate  <br> Travel Solutions</strong> </h3>
+                                        <div data-animation="fadeInRight" data-delay=".6s"> 
+                                            <span class="sub-title"> <small> For Corporate Travellers <i class="fas fa-paper-plane"></i></small> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-12">
+                    <div class="single-place-item-two mb-30 wow fadeInUp">
+                        <a href="{% url 'users:all_packages' %}">
+                            <div class="place-img">
+                                <img src="{% static 'assets/images/place/place-122.jpg' %}" alt="Place Image">
+                                <span class="tour-count">20+ Destinations</span>
+                                <div class="place-content">
+                                    <div class="info text-white">
+                                        <h3 class="title mb-10"><strong>Holiday Getaways<br> Great destinations, easy planning.</strong> </h3>
+                                        <div data-animation="fadeInRight" data-delay=".6s"> 
+                                            <span class="sub-title"> <small> Explore Holidays & Tours <i class="fas fa-paper-plane"></i></small> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+         
+       
+      
+       
+    </section><!--====== End Services Section ======-->
+<section>
+    <div class="container">
+        <div class="  pt-5 wow fadeInUp">
+            <h1  class="display-4 fw-bold mb-4" style="color: #170b2c; ">
+                Your Journey , Our Expertise
+            </h1>
+            <p class="lead mb-5" style="color: #333; max-width: 1100px;">
+             <strong>Our goal is simple: to make your trips affordable and unforgettable.</strong> Novustell Travel makes every trip smooth and hassle-free.  From M.I.C.E, Corporate, NGO, Student travel to your dream holiday package, we ensure every journey is as rewarding as it is efficient.
+            </p>
+           
+        </div>
+    </div>
+</section>
+    <section class="features-section  py-5" style="margin-top: -20px;" >
+        <div class="container" style="background: linear-gradient(104deg, rgba(31,3,79,1) 0%, rgba(23,11,44,1) 40%); padding: 50px; border-radius: 12px;">
+            <div class="row align-items-center">
+                <!-- New Image Column (Left) -->
+                <div class="col-lg-5">
+                    <div class="about-image wow fadeInLeft">
+                        <div class="single-place-item-two mb-30">
+                            <div class="place-img">
+                                <img src="{% static 'assets/images/place/place-12.jpg' %}" alt="Why Choose Us" style="height: 500px; object-fit: cover;">
+                                <div class="place-content">
+                                    <div class="info text-white">
+                                        <h3 class="title mb-10"><strong>20+ Years of Excellence</strong></h3>
+                                        <div>
+                                            <span class="sub-title"><small>Your Trusted Travel Partner</small></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Combined Content Column (Right) -->
+                <div class="col-lg-7">
+                    <div class="section-content ps-lg-5">
+                        <!-- Title Section -->
+                        <div class="section-title text-white mb-4 wow fadeInRight">
+                            <h2>Think Convinience Think Novustell</h2>
+                            <br>
+                            <p class="lead mb-4">We bring over two decades of expertise in crafting perfect travel experiences.</p>
+                        </div>
+         
+                        <!-- Features List -->
+                        <div class="features-list wow fadeInRight">
+                            <ul class="check-list">
+                                <li class="text-white">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <strong>Expert Travel Consultants</strong>
+                                        <p class="mb-0">Professional guidance from seasoned travel experts</p>
+                                    </div>
+                                </li>
+                                <li class="text-white">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <strong>Best Price Guarantee</strong>
+                                        <p class="mb-0">Competitive rates and value for your money</p>
+                                    </div>
+                                </li>
+                                <li class="text-white">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <strong>24/7 Customer Support</strong>
+                                        <p class="mb-0">Round-the-clock assistance for your peace of mind</p>
+                                    </div>
+                                </li>
+                                <li class="text-white">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <strong>Tailored Travel Solutions</strong>
+                                        <p class="mb-0">Customized packages to match your preferences</p>
+                                    </div>
+                                </li>
+                                <li class="text-white">
+                                    <i class="fas fa-check"></i>
+                                    <div>
+                                        <strong>Seamless Booking Experience</strong>
+                                        <p class="mb-0">Easy and efficient reservation process</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="info text-white">
+                                <div data-animation="fadeInRight" data-delay=".6s"> 
+                                    <a href="{% url 'users:all_packages' %}" class="contact-link">
+                                        <span class="sub-title"> <small> Contact Us <i class="fas fa-paper-plane"></i></small> </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add this CSS to your existing styles -->
+            <style>
+                // ... existing styles ...
+                    .contact-link {
+                        color: white;
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                        display: inline-block;
+                    }
+                
+                    .contact-link:hover {
+                        color: #ff9d00;
+                        transform: translateX(5px);
+                    }
+                
+                    .contact-link:hover i {
+                        animation: fly 0.6s ease-in-out;
+                    }
+                
+                    @keyframes fly {
+                        0% { transform: translateX(0); }
+                        50% { transform: translateX(10px); }
+                        100% { transform: translateX(0); }
+                    }
+            
+                .check-list li {
+                    display: flex;
+                    align-items: flex-start;
+                    margin-bottom: 1.5rem;
+                    color: #ffffff !important;
+                }
+            
+                .check-list li i {
+                    color: #ff9d00;
+                    margin-right: 1rem;
+                    font-size: 1.05rem;
+                    margin-top: 0.25rem;
+                }
+            
+                .check-list li div {
+                    flex: 1;
+                }
+            
+                .check-list li strong {
+                    display: block;
+                    margin-bottom: 0.20rem;
+                    font-size: 1rem;
+                }
+            
+                .check-list li p {
+                    color: rgba(255, 255, 255, 0.8) !important;
+                    font-size: 0.8rem;
+                }
+            
+                .section-content {
+                    position: relative;
+                }
+            
+                @media (max-width: 991px) {
+                    .section-content {
+                        margin-top: 2rem;
+                    }
+                }
+            </style>
+        </div>
+    </section>
+    
+            <!--====== Start Why us Section ======-->
+
+            <section class="why-choose-section  pt-50 pb-50" style="background-color: #def0ff;">
+                <div class="container">
+                    <div class="row align-items-xl-center">
+
+                        <div class="col-xl-12">
+                            <div class="choose-content-box pr-lg-70">
+                                <!-- Section Title -->
+                                <div class="section-title mb-45 wow fadeInDown">
+                                    <h2>Novustell Travel
+                                        </h2>
+                                    <p class="lead">We have the right travel solution for your business.</p>
+                                </div>
+                      
+
+
+
+
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="fancy-icon-box-four mb-45 wow fadeInUp">
+                                       
+                                            <div class="text">
+                                                <h4 class="title"><strong>MICE (Meetings, Incentives, Conferences & Exhibitions)</strong></h4>
+                                                <p>Flawlessly planned events, conferences, and corporate gatherings for impactful experiences.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Expert Travel Consultants -->
+                                    <div class="col-md-4">
+                                        <a href="#" class="text-decoration-none">
+                                            <div class="fancy-icon-box-four mb-45 wow fadeInUp position-relative">
+                                                <div class="text">
+                                                    <h4 class="title"> <strong>Corporate Travel</strong> </h4>
+                                                    <p>Seamless business trips with tailored solutions for executives, teams, and professionals.</p>
+                                                </div>
+                                                <div class="view-more"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+            
+                                    <!-- Best Price Guarantee -->
+                               
+            
+                                    <!-- 24/7 Customer Support -->
+                                    <div class="col-md-4">
+                                        <div class="fancy-icon-box-four mb-45 wow fadeInUp">
+                                         
+                                            <div class="text">
+                                                <h4 class="title"><strong>Student Travel</strong></h4>
+                                                <p>Educational and adventure-packed trips designed for students and academic groups.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <!-- Tailored Travel Solutions -->
+                                    <div class="col-md-4">
+                                        <div class="fancy-icon-box-four mb-45 wow fadeInUp">
+                                         
+                                            <div class="text">
+                                                <h4 class="title"><strong>NGO Travel</strong></h4>
+                                                <p>Reliable travel services for humanitarian missions, volunteer groups, and field projects.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="fancy-icon-box-four mb-45 wow fadeInUp">
+                                          
+                                            <div class="text">
+                                                <h4 class="title"><strong>Group Travel</strong></h4>
+                                                <p>Hassle-free planning for friends, families, and organizations traveling together.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="fancy-icon-box-four mb-45 wow fadeInUp">
+                                          
+                                            <div class="text">
+                                                <h4 class="title"><strong>Holiday Packages</strong></h4>
+                                                <p>Curated getaways for relaxation, adventure, and unforgettable experiences worldwide.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <a href="{% url 'users:all_packages' %}" class="custom-button">
+                                        Explore All Services <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    
+                      
+                      
+                    </div>
+                </div>
+            
+                <!-- Add this CSS to your existing styles -->
+                <style>
+                    .custom-button {
+                                        display: inline-block;
+                                        padding: 15px 35px;
+                                        color: rgb(8, 1, 49);
+                                        border-radius: 50px;
+                                        text-decoration: none;
+                                        transition: all 0.3s ease;
+                                    }
+
+                                    .custom-button:hover {
+                                        background: #ff9d00;
+                                        transform: translateY(-3px);
+                                        box-shadow: 0 5px 15px rgba(255, 157, 0, 0.3);
+                                        color: #170b2c;
+                                        border-color: #ff9d00;
+                                    }
+
+                                    .custom-button i {
+                                        margin-left: 8px;
+                                        transition: transform 0.3s ease;
+                                    }
+
+                                    .custom-button:hover i {
+                                        transform: translateX(5px);
+                                        color: #170b2c;
+                                    }
+                    
+                    .contact-link {
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    .contact-link:hover {
+        color: #ff9d00;
+        transform: translateX(5px);
+    }
+
+    .contact-link:hover i {
+        animation: fly 0.6s ease-in-out;
+    }
+
+    @keyframes fly {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(10px); }
+        100% { transform: translateX(0); }
+    }
+                    .fancy-icon-box-four {
+                        display: flex;
+                        align-items: flex-start;
+                        padding: 25px;
+                        background: #def0ff;
+                        border-radius: 10px;
+                        transition: all 0.3s ease;
+                        border: 2px solid #ff9d00;
+                        position: relative;
+                        overflow: hidden;
+                        
+                    }
+                    .view-more {
+                        position: absolute;
+                        bottom: -40px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        color: white;
+                        padding: 3px 10px;
+                        border-radius: 20px;
+                        transition: all 0.3s ease;
+                        opacity: 0;
+                    }
+
+                    .fancy-icon-box-four:hover .view-more {
+                        bottom: 15px;
+                        opacity: 1;
+                    }
+
+            
+            
+                    .fancy-icon-box-four:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                    }
+            
+                    .fancy-icon-box-four .icon {
+                        font-size: 2rem;
+                        color: #170b2c;
+                        margin-right: 20px;
+                        min-width: 60px;
+                        text-align: center;
+                    }
+            
+                    .fancy-icon-box-four .text {
+                        flex: 1;
+                    }
+            
+                    .fancy-icon-box-four .title {
+                        font-size: 1.3rem;
+                        margin-bottom: 10px;
+                        color: #170b2c;
+                    }
+            
+                    .fancy-icon-box-four p {
+                        margin: 0;
+                        color: #666;
+                    }
+            
+                    .section-title .sub-title {
+                        color: #4CAF50;
+                        font-size: 1.4rem;
+                        font-weight: 600;
+                        margin-bottom: 10px;
+                        display: block;
+                    }
+            
+                    .gray-bg {
+                        background-color: #f8f9fa;
+                    }
+                </style>
+            </section>
+
+            <section class="promo-section py-5">
+                <div class="container">
+                    <div class="promo-card">
+                        <div class="row g-0">
+                            <div class="col-lg-8 promo-image">
+                                <a href="{% url 'users:all_packages' %}" class="promo-link">
+                                    <div class="blue-overlay"></div>
+                                    <div class="overlay-text">
+                                        <h2 class="script-text">Twende Diani</h2>
+                                        <h2 class="script-text">This Easter</h2>
+                                      <br>
+                                        <h4 class="text-white" > <small><strong>From 18th to 21st April</strong></small>  </h4>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-4 promo-content text-white">
+                                <a href="{% url 'users:all_packages' %}" class="content-link">
+                                    <h2 class="mb-2">Easter Deal</h2>
+                                    <h3 class="display-5 fw-bold mb-4"><strong>For the Whole Family</strong></h3>
+                                    <a href="{% url 'users:all_packages' %}" class="promo-btn">
+                                        Book Now <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                         
+                          
+                        </div>
+                    </div>
+                </div>
+            
+                <style>
+                    .promo-image {
+        background: url('{% static "assets/images/place/place-12.jpg" %}') center/cover;
+        position: relative;
+        min-height: 300px;
+    }
+
+    .blue-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(205, 126, 0, 0.156); /* Blue color with 0.5 opacity */
+        z-index: 1;
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+        z-index: 2; /* Make sure text appears above the overlay */
+    }
+                    .promo-card {
+                        background: #fff;
+                        border-radius: 24px;
+                        overflow: hidden;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                    }
+            
+                    .promo-content {
+                        background: linear-gradient(104deg, #0300a0 0%, #0300a0 100%);
+                        padding: 3rem 2rem;
+                        color: white;
+                        
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                    }
+            
+                    .promo-content h2 {
+                        font-size: 1.5rem;
+                        margin-bottom: 0.5rem;
+                    }
+            
+                    .promo-btn {
+                        display: inline-block;
+                        background: #0300a0;
+                        color: white;
+                        padding: 12px 30px;
+                        border-radius: 50px;
+                        text-decoration: none;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                        width: fit-content;
+                    }
+            
+                    .promo-btn:hover {
+                        background: #ff9d00;
+                        transform: translateY(-3px);
+                        color: #170b2c;
+                        box-shadow: 0 5px 15px rgba(107, 59, 255, 0.2);
+                    }
+            
+                    .promo-btn i {
+                        margin-left: 8px;
+                        transition: transform 0.3s ease;
+                    }
+            
+                    .promo-btn:hover i {
+                        transform: translateX(5px);
+                    }
+            
+                    .promo-image {
+                        background: url('{% static "assets/images/place/beach.jpg" %}') center/cover;
+                        position: relative;
+                        min-height: 300px;
+                    }
+            
+                    .overlay-text {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        text-align: center;
+                        width: 100%;
+                    }
+            
+                    .script-text {
+                        color: white;
+                        font-size: 3rem;
+                        font-family: 'Dancing Script', cursive;
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                        margin: 0;
+                        line-height: 1.2;
+                    }
+            
+                    @media (max-width: 991px) {
+                        .promo-image {
+                            min-height: 200px;
+                        }
+                        
+                        .script-text {
+                            font-size: 2rem;
+                        }
+                    }
+                </style>
+            </section>
+          
+            {% include 'users/footer.html' %}
+
+       
+{% endblock %}
