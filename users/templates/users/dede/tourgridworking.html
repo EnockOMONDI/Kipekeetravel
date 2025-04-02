@@ -1,0 +1,162 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Breadcrumb Area -->
+<div class="tg-breadcrumb-spacing-3 include-bg p-relative fix" data-background="{% static 'assets/img/breadcrumb/breadcrumb-2.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+</div>
+<div class="tg-breadcrumb-list-2-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-list-2">
+                    <ul>
+                        <li><a href="{% url 'dede:home' %}">Home</a></li>
+                        <li><i class="fa-sharp fa-solid fa-angle-right"></i></li>
+                        <li><span>Tour List</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tour Grid Area -->
+<div class="tg-tour-grid-area pt-120 pb-90">
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="row mb-40">
+            <div class="col-xl-12">
+                <form class="tg-filter-form" method="GET">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-6">
+                            <select name="destination" class="form-select">
+                                <option value="">All Destinations</option>
+                                {% for destination in destinations %}
+                                    <option value="{{ destination.slug }}" {% if request.GET.destination == destination.slug %}selected{% endif %}>
+                                        {{ destination.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="price-range">
+                                <input type="number" name="price_min" placeholder="Min Price" value="{{ request.GET.price_min }}">
+                                <input type="number" name="price_max" placeholder="Max Price" value="{{ request.GET.price_max }}">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <select name="duration" class="form-select">
+                                <option value="">Duration (Days)</option>
+                                <option value="1" {% if request.GET.duration == '1' %}selected{% endif %}>1 Day</option>
+                                <option value="2" {% if request.GET.duration == '2' %}selected{% endif %}>2 Days</option>
+                                <option value="3" {% if request.GET.duration == '3' %}selected{% endif %}>3 Days</option>
+                                <option value="4" {% if request.GET.duration == '4' %}selected{% endif %}>4 Days</option>
+                                <option value="5" {% if request.GET.duration == '5' %}selected{% endif %}>5+ Days</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <button type="submit" class="tg-btn">Filter Results</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tour Grid -->
+        <div class="row">
+            {% for tour in tours %}
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="tg-tour-grid-item mb-30">
+                    <div class="tg-tour-grid-thumb p-relative">
+                        <a href="{% url 'dede:tour_detail' tour.slug %}">
+                            {% if tour.main_image %}
+                                <img src="{{ tour.main_image.url }}" alt="{{ tour.name }}">
+                            {% else %}
+                                <img src="{% static 'assets/img/tour/default.jpg' %}" alt="{{ tour.name }}">
+                            {% endif %}
+                        </a>
+                        <div class="tg-tour-grid-content">
+                            <div class="tg-tour-grid-rating d-flex justify-content-between align-items-center">
+                                <span class="tg-tour-rating">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= tour.rating %}
+                                            <i class="fa-sharp fa-solid fa-star"></i>
+                                        {% else %}
+                                            <i class="fa-sharp fa-regular fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span>({{ tour.reviews_count }})</span>
+                                </span>
+                                <span class="tg-tour-price">${{ tour.price }}</span>
+                            </div>
+                            <h4 class="tg-tour-title">
+                                <a href="{% url 'dede:tour_detail' tour.slug %}">{{ tour.name }}</a>
+                            </h4>
+                            <div class="tg-tour-grid-meta">
+                                <ul>
+                                    <li><i class="fa-regular fa-clock"></i> {{ tour.duration }} Days</li>
+                                    <li><i class="fa-regular fa-user"></i> {{ tour.group_size }} People</li>
+                                    <li><i class="fa-regular fa-map-location-dot"></i> {{ tour.destination.location }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <h3>No tours found matching your criteria.</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="row">
+            <div class="col-12">
+                <div class="pagination-wrap text-center mt-30">
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                        <i class="fa-solid fa-angles-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                            {{ num }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                        <i class="fa-solid fa-angles-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

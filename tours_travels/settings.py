@@ -114,13 +114,14 @@ WSGI_APPLICATION = 'tours_travels.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'neondb',
-    'USER': 'neondb_owner',
-    'PASSWORD': 'npg_RqG8w0YnusOD',
-    'HOST': 'ep-sweet-river-a2rpysxu-pooler.eu-central-1.aws.neon.tech',
+    'NAME': 'dedetraveln',
+    'USER': 'dedetraveln_owner',
+    'PASSWORD': 'npg_Ma7RYsHgW9Dy',
+    'HOST': 'ep-late-boat-a5k7e5pp-pooler.us-east-2.aws.neon.tech',
     'PORT': '5432',
   }
 }
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
