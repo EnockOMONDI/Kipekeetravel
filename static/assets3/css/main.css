@@ -108,7 +108,7 @@
   --tg-grey-7: #f6f6f7;
   --tg-grey-8: #f6f4fa;
   -tg-dede-bg:#faf7f2;
-  --tg-theme-primary: #560ce3;
+  --tg-theme-primary: #620079;
   --tg-theme-secondary: #443014;
   --tg-border-1: #e1e1e1;
   --tg-border-2: #c5c5c5;
@@ -3026,7 +3026,7 @@ textarea {
   height: 40px;
   color: var(--tg-common-white);
   text-align: center;
-  background: #560CE3;
+  background: #620079;
   line-height: 36px;
   margin-left: 7px;
 }
@@ -3037,7 +3037,7 @@ textarea {
   height: 40px;
   color: var(--tg-common-white);
   text-align: center;
-  background: #560CE3;
+  background: #620079;
   line-height: 36px;
   margin-left: 26px;
 }

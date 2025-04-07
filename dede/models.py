@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
+from pyuploadcare.dj.models import ImageField
+from django.utils import timezone
+import random
 
 class Destination(models.Model):
     name = models.CharField(max_length=200)
@@ -9,10 +12,8 @@ class Destination(models.Model):
     description = models.TextField()
     
     # Main image and gallery
-    main_image = models.ImageField(upload_to='destinations/')
-    gallery_image1 = models.ImageField(upload_to='destinations/gallery/', blank=True)
-    gallery_image2 = models.ImageField(upload_to='destinations/gallery/', blank=True)
-    gallery_image3 = models.ImageField(upload_to='destinations/gallery/', blank=True)
+    main_image = ImageField(blank=False, null=True, manual_crop="4:4",)
+    
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -25,6 +26,10 @@ class Destination(models.Model):
 class Tour(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='tours')
     name = models.CharField(max_length=200)
+    Image = ImageField(blank=True, null=True, manual_crop="4:4")  # Main tour image
+    gallery_image1 = ImageField(blank=True, null=True, manual_crop="4:4")
+    gallery_image2 = ImageField(blank=True, null=True, manual_crop="4:4")
+    gallery_image3 = ImageField(blank=True, null=True, manual_crop="4:4")
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -35,8 +40,8 @@ class Tour(models.Model):
                                validators=[MinValueValidator(0), MaxValueValidator(5)])
     reviews_count = models.IntegerField(default=0)
     
-    # Tour-specific image
-    main_image = models.ImageField(upload_to='tours/', blank=True)
+    # Remove this line since we're using pyuploadcare's ImageField
+    # main_image = models.ImageField(upload_to='tours/', blank=True)
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -90,3 +95,91 @@ class Review(models.Model):
     
     def __str__(self):
         return f"{self.tour.name} - {self.user_name}"
+
+
+class Booking(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('cancelled', 'Cancelled'),
+        ('completed', 'Completed'),
+    )
+
+    PAYMENT_STATUS = (
+        ('pending', 'Pending'),
+        ('partial', 'Partial'),
+        ('paid', 'Paid'),
+        ('refunded', 'Refunded'),
+    )
+
+    # Basic booking information
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='bookings')
+    booking_date = models.DateTimeField(auto_now_add=True)
+    travel_date = models.DateField()
+    number_of_people = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1, message="Number of people must be at least 1"),
+            MaxValueValidator(1000, message="Number of people cannot exceed 1000")  # or any reasonable maximum
+        ]
+    )
+    
+    # Customer information
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    special_requirements = models.TextField(blank=True, null=True)
+
+    # Booking details
+    booking_status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    
+    # Payment information
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS,
+        default='pending'
+    )
+    deposit_paid = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        default=0
+    )
+    
+    # Additional information
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    booking_reference = models.CharField(max_length=20, unique=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        # Generate unique booking reference if not exists
+        if not self.booking_reference:
+            self.booking_reference = self.generate_booking_reference()
+        super().save(*args, **kwargs)
+
+    def generate_booking_reference(self):
+        # Generate a unique booking reference based on timestamp and random numbers
+        timestamp = timezone.now().strftime('%Y%m%d%H%M')
+        random_nums = ''.join([str(random.randint(0, 9)) for _ in range(4)])
+        return f'BK{timestamp}{random_nums}'
+
+    def calculate_total_price(self):
+        return self.tour.price * self.number_of_people
+
+    def __str__(self):
+        return f"Booking {self.booking_reference} - {self.tour.name} for {self.full_name}"
+
+    def get_remaining_payment(self):
+        return self.total_price - self.deposit_paid
+
+    def is_fully_paid(self):
+        return self.payment_status == 'paid'
+
+    def can_be_cancelled(self):
+        return self.booking_status not in ['completed', 'cancelled']

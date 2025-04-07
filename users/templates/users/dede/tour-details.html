@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block content %}
-<!-- tg-breadcrumb-area-start -->
-<div class="tg-breadcrumb-spacing-3 include-bg p-relative fix" data-background="{% static 'assets/img/breadcrumb/breadcrumb-2.jpg' %}">
+<!-- Breadcrumb Area -->
+<div class="tg-breadcrumb-spacing-3 include-bg p-relative fix" data-background="{% static 'assets3/img/breadcrumb/breadcrumb-2.jpg' %}">
     <div class="tg-hero-top-shadow"></div>
 </div>
 <div class="tg-breadcrumb-list-2-wrap">
@@ -16,62 +16,70 @@
                         <li><i class="fa-sharp fa-solid fa-angle-right"></i></li>
                         <li><a href="{% url 'dede:tour_list' %}">Tour Grid</a></li>
                         <li><i class="fa-sharp fa-solid fa-angle-right"></i></li>
-                        <li><span>{{ destination.name }}</span></li>
+                        <li><span>{{ tour.name }}</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- tg-breadcrumb-area-end -->
 
-<!-- tg-tour-details-area-start -->
+<!-- Tour Details Area -->
 <div class="tg-tour-details-area pt-35 pb-25">
     <div class="container">
         <div class="row align-items-end mb-35">
             <div class="col-xl-9 col-lg-8">
                 <div class="tg-tour-details-video-title-wrap">
-                    <h2 class="tg-tour-details-video-title mb-15">{{ destination.name }}</h2>
+                    <h2 class="tg-tour-details-video-title mb-15">{{ tour.name }}</h2>
                     <div class="tg-tour-details-video-location d-flex flex-wrap">
-                        <span class="mr-25"><i class="fa-regular fa-location-dot"></i> {{ destination.location }}</span>
+                        <span class="mr-25"><i class="fa-regular fa-location-dot"></i> {{ tour.destination.location }}</span>
                         <div class="tg-tour-details-video-ratings">
                             {% for i in "12345"|make_list %}
-                                {% if forloop.counter <= destination.rating %}
+                                {% if forloop.counter <= tour.rating %}
                                     <span><i class="fa-sharp fa-solid fa-star"></i></span>
                                 {% else %}
                                     <span><i class="fa-sharp fa-regular fa-star"></i></span>
                                 {% endif %}
                             {% endfor %}
-                            <span class="review">({{ destination.reviews_count }} Reviews)</span>
+                            <span class="review">({{ tour.reviews_count }} Reviews)</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Share and Wishlist buttons remain unchanged -->
         </div>
 
         <!-- Gallery Section -->
         <div class="row gx-15 mb-25">
             <div class="col-lg-7">
                 <div class="tg-tour-details-video-thumb mb-15">
-                    <img class="w-100" src="{{ destination.main_image.url }}" alt="{{ destination.name }}">
+                    {% if tour.Image %}
+                        <img class="w-100" src="{{ tour.Image.cdn_url }}" alt="{{ tour.name }}">
+                    {% else %}
+                        <img class="w-100" src="{% static 'assets3/img/default-tour.jpg' %}" alt="{{ tour.name }}">
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-5">
                 <div class="row gx-15">
                     <div class="col-12">
                         <div class="tg-tour-details-video-thumb p-relative mb-15">
-                            <img class="w-100" src="{{ destination.gallery_image1.url }}" alt="">
+                            {% if tour.gallery_image1 %}
+                                <img class="w-100" src="{{ tour.gallery_image1.cdn_url }}" alt="">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="tg-tour-details-video-thumb mb-15">
-                            <img class="w-100" src="{{ destination.gallery_image2.url }}" alt="">
+                            {% if tour.gallery_image2 %}
+                                <img class="w-100" src="{{ tour.gallery_image2.cdn_url }}" alt="">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="tg-tour-details-video-thumb mb-15">
-                            <img class="w-100" src="{{ destination.gallery_image3.url }}" alt="">
+                            {% if tour.gallery_image3 %}
+                                <img class="w-100" src="{{ tour.gallery_image3.cdn_url }}" alt="">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -81,44 +89,47 @@
         <!-- Tour Features -->
         <div class="tg-tour-details-feature-list-wrap">
             <div class="row align-items-center">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="tg-tour-details-video-feature-list">
                         <ul>
                             <li>
                                 <span class="icon">
-                                    <svg><!-- Duration icon SVG --></svg>
+                                    <i class="fa-regular fa-clock"></i>
                                 </span>
                                 <div>
                                     <span class="title">Duration</span>
-                                    <span class="duration">{{ destination.duration }} days</span>
+                                    <span class="duration">{{ tour.duration }} days</span>
                                 </div>
                             </li>
-                            <!-- Other features -->
                             <li>
                                 <span class="icon">
-                                    <svg><!-- Group Size icon SVG --></svg>
+                                    <i class="fa-regular fa-user"></i>
                                 </span>
                                 <div>
                                     <span class="title">Group Size</span>
-                                    <span class="duration">{{ destination.group_size }} People</span>
+                                    <span class="duration">{{ tour.group_size }} People</span>
                                 </div>
                             </li>
                             <li>
                                 <span class="icon">
-                                    <svg><!-- Languages icon SVG --></svg>
+                                    <i class="fa-regular fa-language"></i>
                                 </span>
                                 <div>
                                     <span class="title">Languages</span>
-                                    <span class="duration">{{ destination.languages }}</span>
+                                    <span class="duration">{{ tour.languages }}</span>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="tg-tour-details-video-feature-price mb-15">
-                        <p>From <span>${{ destination.price }}</span> / Person</p>
+                        <p>From <span>KES {{ tour.price }}</span> / Person</p>
                     </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="tg-tour-details-video-feature-price mb-15">
+                        <a href="{% url 'dede:tour_booking' tour_slug=tour.slug %}" class="tg-btn">Book Now</a>                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +137,7 @@
         <!-- About Section -->
         <div class="tg-tour-about-inner mb-25">
             <h4 class="tg-tour-about-title mb-15">About This Tour</h4>
-            <p class="text-capitalize lh-28">{{ destination.description }}</p>
+            <p class="text-capitalize lh-28">{{ tour.description }}</p>
         </div>
 
         <!-- Trip Highlights -->
@@ -214,12 +225,11 @@
                 <div class="head-reviews">
                     <div class="review-left">
                         <div class="review-info-inner">
-                            <h2>{{ destination.rating }}</h2>
-                            <span>{% if destination.rating >= 4.5 %}Excellent{% elif destination.rating >= 4.0 %}Very Good{% elif destination.rating >= 3.0 %}Good{% else %}Average{% endif %}</span>
-                            <p>Based On {{ destination.reviews_count }} Reviews</p>
+                            <h2>{{ tour.rating }}</h2>
+                            <span>{% if tour.rating >= 4.5 %}Excellent{% elif tour.rating >= 4.0 %}Very Good{% elif tour.rating >= 3.0 %}Good{% else %}Average{% endif %}</span>
+                            <p>Based On {{ tour.reviews_count }} Reviews</p>
                         </div>
                     </div>
-                    <!-- Rating bars -->
                 </div>
             </div>
         </div>
@@ -247,7 +257,25 @@
                                 </span>
                             </div>
                             <p class="text-capitalize lh-28 mb-10">{{ review.comment }}</p>
-                            <a class="tg-tour-about-cus-reply" href="#">Reply</a>
+                            
+                            <!-- Rating Details -->
+                            <div class="review-ratings mt-3">
+                                <div class="rating-item">
+                                    <span>Location: {{ review.location_rating }}/5</span>
+                                </div>
+                                <div class="rating-item">
+                                    <span>Price: {{ review.price_rating }}/5</span>
+                                </div>
+                                <div class="rating-item">
+                                    <span>Services: {{ review.services_rating }}/5</span>
+                                </div>
+                                <div class="rating-item">
+                                    <span>Amenities: {{ review.amenities_rating }}/5</span>
+                                </div>
+                                <div class="rating-item">
+                                    <span>Rooms: {{ review.rooms_rating }}/5</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {% if not forloop.last %}
@@ -259,12 +287,87 @@
         </div>
 
         <!-- Review Form -->
-        <!-- Keep the review form as is, but you might want to add a form action URL -->
-        <form action="{% url 'dede:submit_review' destination.slug %}" method="post">
+        <form action="{% url 'dede:submit_review' tour_slug=tour.slug %}" method="post" class="review-form">
             {% csrf_token %}
-            <!-- Rest of the form remains the same -->
+            <h4 class="tg-tour-about-title mb-30">Write a Review</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-30">
+                        <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-30">
+                        <select name="rating" class="form-control" required>
+                            <option value="">Overall Rating</option>
+                            {% for i in "54321"|make_list %}
+                            <option value="{{ i }}">{{ i }} Stars</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group mb-30">
+                        <textarea name="message" class="form-control" placeholder="Your Review" rows="5" required></textarea>
+                    </div>
+                </div>
+                
+                <!-- Category Ratings -->
+                <div class="col-md-4">
+                    <div class="form-group mb-30">
+                        <select name="location_rating" class="form-control" required>
+                            <option value="">Location Rating</option>
+                            {% for i in "54321"|make_list %}
+                            <option value="{{ i }}">{{ i }} Stars</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-30">
+                        <select name="price_rating" class="form-control" required>
+                            <option value="">Price Rating</option>
+                            {% for i in "54321"|make_list %}
+                            <option value="{{ i }}">{{ i }} Stars</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-30">
+                        <select name="services_rating" class="form-control" required>
+                            <option value="">Services Rating</option>
+                            {% for i in "54321"|make_list %}
+                            <option value="{{ i }}">{{ i }} Stars</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-30">
+                        <select name="amenities_rating" class="form-control" required>
+                            <option value="">Amenities Rating</option>
+                            {% for i in "54321"|make_list %}
+                            <option value="{{ i }}">{{ i }} Stars</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-30">
+                        <select name="rooms_rating" class="form-control" required>
+                            <option value="">Rooms Rating</option>
+                            {% for i in "54321"|make_list %}
+                            <option value="{{ i }}">{{ i }} Stars</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="tg-btn">Submit Review</button>
+                </div>
+            </div>
         </form>
-
     </div>
 </div>
 

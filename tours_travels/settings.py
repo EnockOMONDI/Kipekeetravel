@@ -119,6 +119,12 @@ DATABASES = {
     'PASSWORD': 'npg_Ma7RYsHgW9Dy',
     'HOST': 'ep-late-boat-a5k7e5pp-pooler.us-east-2.aws.neon.tech',
     'PORT': '5432',
+    'CONN_MAX_AGE': 0,  # Disable connection persistence
+    'OPTIONS': {
+        'client_encoding': 'UTF8',
+        'application_name': 'django',
+        'sslmode': 'prefer',
+        },
   }
 }
 
@@ -196,8 +202,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 UPLOADCARE = {
   # Don’t forget to set real keys when it gets real :)
 
-  'pub_key': 'f914008525312051b54c',
-  'secret': '06f605e3fa31437f2a51',
+  'pub_key': '78d346d0c3fddd461d67',
+  'secret': 'e9badc357e7202f35ddb',
 }
 
 TEMPLATE_DIRS = (
@@ -206,11 +212,23 @@ TEMPLATE_DIRS = (
 )
 
 
+# Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Or your SMTP server
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# Use app password for security
-DEFAULT_FROM_EMAIL = 'novustellke@gmail.co'
-EMAIL_HOST_USER='your_email@gmail.com'
-EMAIL_HOST_PASSWORD='your_app_password'
+DEFAULT_FROM_EMAIL = 'novustellke@gmail.com'
+
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'novustellke@gmail.com')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  
+
+# If you're not using environment variables, uncomment and update these lines:
+EMAIL_HOST_USER = 'novustellke@gmail.com'
+EMAIL_HOST_PASSWORD = 'wyravhncrdvyfuqa'  # Replace with your App Password
+
+# Django Jet settings
+JET_DEFAULT_THEME = 'light-gray'
+JET_SIDE_MENU_COMPACT = True
+
+# Disable Django Jet's select2 for better compatibility
+JET_SELECT2_THEME = None

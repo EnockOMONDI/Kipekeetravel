@@ -1,0 +1,159 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Booking Form Styles */
+.booking-form-wrapper {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.single-input-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.single-input-field input,
+.single-input-field textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.single-input-field input:focus,
+.single-input-field textarea:focus {
+    border-color: #ff4838;
+    outline: none;
+}
+
+.booking-info-wrapper {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.booking-price-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.booking-price-details li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.booking-price-details .total-price {
+    font-weight: 700;
+    font-size: 1.1em;
+    border-bottom: none;
+}
+
+/* Confirmation Page Styles */
+.success-icon {
+    color: #28a745;
+    font-size: 4em;
+    display: block;
+}
+
+.single-confirmation-box {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+.single-confirmation-box h4 {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.single-confirmation-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.single-confirmation-box li {
+    padding: 8px 0;
+}
+
+.single-confirmation-box li span {
+    font-weight: 600;
+    margin-right: 10px;
+}
+</style>
+
+<!-- tg-breadcrumb-area-start -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Booking Confirmation</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="{% url 'dede:home' %}">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Booking Confirmation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tg-breadcrumb-area-end -->
+
+<!-- confirmation-area-start -->
+<div class="confirmation-area pt-120 pb-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="confirmation-wrapper">
+                    <div class="confirmation-header text-center mb-45">
+                        <i class="fas fa-check-circle success-icon mb-20"></i>
+                        <h3>Thank You! Your Booking is Confirmed</h3>
+                        <p>Your booking reference number is: <strong>{{ booking.booking_reference }}</strong></p>
+                    </div>
+
+                    <div class="confirmation-details">
+                        <div class="single-confirmation-box mb-30">
+                            <h4>Booking Details</h4>
+                            <ul>
+                                <li><span>Tour:</span> {{ booking.tour.name }}</li>
+                                <li><span>Travel Date:</span> {{ booking.travel_date }}</li>
+                                <li><span>Number of People:</span> {{ booking.number_of_people }}</li>
+                                <li><span>Total Price:</span> KES {{ booking.total_price }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="single-confirmation-box mb-30">
+                            <h4>Personal Information</h4>
+                            <ul>
+                                <li><span>Full Name:</span> {{ booking.full_name }}</li>
+                                <li><span>Email:</span> {{ booking.email }}</li>
+                                <li><span>Phone:</span> {{ booking.phone }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="confirmation-footer text-center mt-40">
+                            <p>A confirmation email has been sent to your email address.</p>
+                            <div class="confirmation-buttons mt-30">
+                                <a href="{% url 'dede:home' %}" class="tg-btn">Return to Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- confirmation-area-end -->
+{% endblock %}

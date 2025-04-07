@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from users.models import UserBookings
 from django.db.models import BigAutoField
 from pyuploadcare.dj.models import ImageField
+
 # Create your models here.
 
 class Destination(models.Model):

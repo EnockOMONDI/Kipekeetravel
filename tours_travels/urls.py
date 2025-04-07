@@ -17,15 +17,14 @@ urlpatterns = [
     path('jet/', include('jet.urls', 'jet')), 
     path('admin/', admin.site.urls),
     #path('',tours_travels_views.home,name = 'home'),
-  
-    path('', include(('users.urls', 'users'), namespace='home')),
+    path('', include(('dede.urls', 'dede'), namespace='dede')),
+    path('old/', include(('users.urls', 'users'), namespace='home')),
     path('tours/', include(('adminside.urls', 'adminside'), namespace='adminside')),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
-    path('dede/', include(('dede.urls', 'dede'), namespace='dede')),
     path('login/',auth_views.LoginView.as_view(template_name='users/login.html'),name='login'),
     path('logout/',auth_views.LogoutView.as_view(template_name='users/index.html'),name='logout'),
     path('mail/',tours_travels_views.mail,name='mail'),
-    path('', include('users.urls')),
+  
     
 
 ]

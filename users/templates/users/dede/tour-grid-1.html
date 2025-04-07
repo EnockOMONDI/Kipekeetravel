@@ -3,16 +3,16 @@
 
 {% block content %}
         <!-- tg-breadcrumb-area-start -->
-        <div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="assets/img/breadcrumb/breadcrumb.jpg">
+        <div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}  ">
             <div class="tg-hero-top-shadow"></div>
             <div class="tg-breadcrumb-shadow"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <div class="tg-breadcrumb-content text-center">
-                            <h2 class="tg-breadcrumb-title mb-15">Let’s Tour The World</h2>
+                            <h2 class="tg-breadcrumb-title mb-15">Our Tours</h2>
                             <div class="tg-breadcrumb-list">
-                                <span><a href="index-2.html">Home</a></span>
+                                <span><a href="{% url 'dede:home' %}">Home</a></span>
                                 <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
                                 <span>Tour Grid</span>
                             </div>
@@ -55,12 +55,6 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <!-- <div class="col-lg-3 col-md-6">
-                                        <div class="price-range">
-                                            <input type="number" name="price_min" placeholder="Min Price" value="{{ request.GET.price_min }}">
-                                            <input type="number" name="price_max" placeholder="Max Price" value="{{ request.GET.price_max }}">
-                                        </div>
-                                    </div> -->
                                     <div class="col-lg-3 col-md-6">
                                         <select name="duration" class="form-select">
                                             <option value="">Duration (Days)</option>
@@ -95,13 +89,11 @@
                                     <ul>
                                         {% for destination in destinations %}
                                         <li>
-                                            <option value="{{ destination.slug }}" {% if request.GET.destination == destination.slug %}selected{% endif %}>
+                                            <a href="?destination={{ destination.slug }}" class="{% if request.GET.destination == destination.slug %}active{% endif %}">
                                                 {{ destination.name }}
-                                            </option>
-                                      
+                                            </a>
                                         </li>
                                         {% endfor %}
-                                     
                                     </ul>
                                 </div>
                                 <div class="tg-filter-seemore">
@@ -109,14 +101,9 @@
                                     <span class="more">See All</span>
                                 </div>
                                 <span class="tg-filter-border mt-25 mb-25"></span>
-                               
-                               
                             </div>
                         </div>
                     </div>
-
-
-
                     
                     <div class="col-xl-9 col-lg-8">
                         <div class="tg-listing-item-box-wrap ml-10">
@@ -124,49 +111,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-lg-5 col-md-5 mb-15">
                                         <div class="tg-listing-box-number-found">
-                                            <span>3,269 properties in Europe</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 mb-15">
-                                        <div class="tg-listing-box-view-type d-flex justify-content-end align-items-center">
-                                            <div class="tg-listing-sort">
-                                                <span>Sort by:</span>
-                                                <a href="#">
-                                                    <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M8.46918 3.27934C8.6098 3.41979 8.80043 3.49868 8.99918 3.49868C9.19793 3.49868 9.38855 3.41979 9.52918 3.27934L10.2492 2.55934V12.7493C10.2492 12.9483 10.3282 13.139 10.4688 13.2797C10.6095 13.4203 10.8003 13.4993 10.9992 13.4993C11.1981 13.4993 11.3889 13.4203 11.5295 13.2797C11.6702 13.139 11.7492 12.9483 11.7492 12.7493V2.55934L12.4692 3.27934C12.5378 3.35303 12.6206 3.41213 12.7126 3.45312C12.8046 3.49411 12.904 3.51615 13.0047 3.51793C13.1054 3.51971 13.2054 3.50118 13.2988 3.46346C13.3922 3.42574 13.477 3.3696 13.5482 3.29838C13.6194 3.22716 13.6756 3.14233 13.7133 3.04894C13.751 2.95555 13.7695 2.85552 13.7678 2.75482C13.766 2.65411 13.7439 2.5548 13.703 2.4628C13.662 2.3708 13.6029 2.288 13.5292 2.21934L11.5292 0.21934C11.3886 0.0788894 11.1979 0 10.9992 0C10.8004 0 10.6098 0.0788894 10.4692 0.21934L8.46918 2.21934C8.32873 2.35997 8.24984 2.55059 8.24984 2.74934C8.24984 2.94809 8.32873 3.13871 8.46918 3.27934ZM3.74918 12.9393L4.46918 12.2193C4.53784 12.1457 4.62064 12.0866 4.71264 12.0456C4.80464 12.0046 4.90395 11.9825 5.00465 11.9807C5.10536 11.979 5.20539 11.9975 5.29877 12.0352C5.39216 12.0729 5.477 12.1291 5.54821 12.2003C5.61943 12.2715 5.67558 12.3564 5.7133 12.4497C5.75102 12.5431 5.76955 12.6432 5.76777 12.7439C5.76599 12.8446 5.74395 12.9439 5.70296 13.0359C5.66197 13.1279 5.60286 13.2107 5.52918 13.2793L3.52918 15.2793C3.38855 15.4198 3.19793 15.4987 2.99918 15.4987C2.80043 15.4987 2.6098 15.4198 2.46918 15.2793L0.469177 13.2793C0.39549 13.2107 0.336388 13.1279 0.295396 13.0359C0.254404 12.9439 0.232362 12.8446 0.230585 12.7439C0.228809 12.6432 0.247333 12.5431 0.285054 12.4497C0.322775 12.3564 0.37892 12.2715 0.450138 12.2003C0.521357 12.1291 0.606191 12.0729 0.699579 12.0352C0.792967 11.9975 0.892997 11.979 0.993699 11.9807C1.0944 11.9825 1.19372 12.0046 1.28571 12.0456C1.37771 12.0866 1.46052 12.1457 1.52918 12.2193L2.24918 12.9393V2.74934C2.24918 2.55043 2.32819 2.35966 2.46885 2.21901C2.6095 2.07836 2.80026 1.99934 2.99918 1.99934C3.19809 1.99934 3.38885 2.07836 3.52951 2.21901C3.67016 2.35966 3.74918 2.55043 3.74918 2.74934V12.9393Z" fill="currentColor" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="tg-listing-select-price ml-10">
-                                                <select class="select">
-                                                      <option>Price Low</option>
-                                                      <option>Price High</option>
-                                                      <option>Default</option>
-                                                      <option>Latest</option>
-                                                      <option>Trending</option>
-                                                </select>
-                                            </div>
-                                            <div class="d-none d-sm-block">
-                                                <div class="tg-listing-box-view ml-10 d-flex">
-                                                     <div class="list-switch-item active">
-                                                         <button class="grid-view ">
-                                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                 <path d="M8 1H1V8H8V1Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                                                 <path d="M19 1H12V8H19V1Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                                                 <path d="M19 12H12V19H19V12Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                                                 <path d="M8 12H1V19H8V12Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                                             </svg>
-                                                         </button>
-                                                     </div>
-                                                     <div class="list-switch-item ml-5">
-                                                         <button class="list-view">
-                                                             <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                 <path d="M6 1H19M6 7H19M6 13H19M1 1H1.01M1 7H1.01M1 13H1.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                             </svg>
-                                                         </button>
-                                                     </div>
-                                                </div>
-                                            </div>
+                                            <span> Found {{ tours.count }} Tours</span>
                                         </div>
                                     </div>
                                 </div>
@@ -177,8 +122,12 @@
                                     <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6 tg-grid-full">
                                         <div class="tg-listing-card-item mb-30">
                                             <div class="tg-listing-card-thumb fix mb-15 p-relative">
-                                                <a href="{% url 'dede:tour_detail' tour.slug %}">
-                                                    <img class="tg-card-border w-100" src="{{ tour.main_image.url }}" alt="listing">
+                                                <a href="{% url 'dede:tour_detail' tour_slug=tour.slug %}">
+                                                    {% if tour.Image %}
+                                                        <img class="tg-card-border w-100" src="{{ tour.Image.cdn_url }}" alt="{{ tour.name }}">
+                                                    {% else %}
+                                                        <img class="tg-card-border w-100" src="{% static 'assets3/img/default-tour.jpg' %}" alt="{{ tour.name }}">
+                                                    {% endif %}
                                                     <span class="tg-listing-item-price-discount shape">New</span>
                                                 </a>
                                                 <div class="tg-listing-item-wishlist">
@@ -191,7 +140,9 @@
                                             </div>
                                             <div class="tg-listing-main-content">
                                                 <div class="tg-listing-card-content">
-                                                    <h4 class="tg-listing-card-title"><a href="{% url 'dede:tour_detail' tour.slug %}">{{ tour.name }}</a></h4>
+                                                    <h4 class="tg-listing-card-title">
+                                                        <a href="{% url 'dede:tour_detail' tour_slug=tour.slug %}">{{ tour.name }}</a>
+                                                    </h4>
                                                     <div class="tg-listing-card-duration-tour">
                                                         <span class="tg-listing-card-duration-map mb-5">
                                                             <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,7 +162,7 @@
                                                 <div class="tg-listing-card-price d-flex align-items-end justify-content-between">
                                                     <div class="tg-listing-card-price-wrap price-bg d-flex align-items-center">
                                                         <span class="tg-listing-card-currency-amount mr-5">
-                                                            <span class="currency-symbol">${{ tour.price }}</span>
+                                                            <span class="currency-symbol">KES {{ tour.price }}</span>
                                                         </span>
                                                         <span class="tg-listing-card-activity-person">/Person</span>
                                                     </div>
@@ -225,18 +176,29 @@
                                     </div>
                                     {% endfor %}
                                 </div>
+                                {% if tours.has_other_pages %}
                                 <div class="tg-pagenation-wrap text-center mt-50 mb-30">
                                     <nav>
                                         <ul>
-                                            <li><a class="p-btn mr-25" href="#">Previous Page</a></li>
-                                            <li><a class="active" href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>
-                                            <li><a class="p-btn ml-25" href="#">Next Page</a></li>
+                                            {% if tours.has_previous %}
+                                                <li><a class="p-btn mr-25" href="?page={{ tours.previous_page_number }}{% if request.GET.destination %}&destination={{ request.GET.destination }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}">Previous Page</a></li>
+                                            {% endif %}
+                                            
+                                            {% for num in tours.paginator.page_range %}
+                                                {% if tours.number == num %}
+                                                    <li><a class="active" href="#">{{ num }}</a></li>
+                                                {% else %}
+                                                    <li><a href="?page={{ num }}{% if request.GET.destination %}&destination={{ request.GET.destination }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}">{{ num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                            {% if tours.has_next %}
+                                                <li><a class="p-btn ml-25" href="?page={{ tours.next_page_number }}{% if request.GET.destination %}&destination={{ request.GET.destination }}{% endif %}{% if request.GET.duration %}&duration={{ request.GET.duration }}{% endif %}">Next Page</a></li>
+                                            {% endif %}
                                         </ul>
                                     </nav>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

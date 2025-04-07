@@ -89,7 +89,7 @@
                                     {% endfor %}
                                     <span>({{ tour.reviews_count }})</span>
                                 </span>
-                                <span class="tg-tour-price">${{ tour.price }}</span>
+                                <span class="tg-tour-price">KES {{ tour.price }}</span>
                             </div>
                             <h4 class="tg-tour-title">
                                 <a href="{% url 'dede:tour_detail' tour.slug %}">{{ tour.name }}</a>

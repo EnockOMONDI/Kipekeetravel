@@ -9,51 +9,18 @@
                         <nav class="tgmenu__nav tgmenu-1-space">
                             <div class="tgmenu__navbar-wrap tgmenu__main-menu tgmenu__navbar-wrap-2 d-none d-xl-flex">
                                 <ul class="navigation">
-                                    <li class="active menu-item-has-children"><a href="index-2.html">Home</a>
+                                    <li class="active menu-item-has-children"><a href="{% url 'dede:home' %}">  Home </a>
+                                    </li>
+                                    <li class=""><a href="{% url 'dede:tour_list' %}">Tours</a>
+                                     
+                                    </li>
+                                    <li class="menu-item-has-children"><a href="#">Who we are</a>
                                         <ul class="sub-menu">
-                                            <li><a href="index-2.html">Home One</a></li>
-                                            <li><a href="index-3.html">Home Two</a></li>
-                                            <li><a href="index-4.html">Home Three</a></li>
-                                            <li class="active"><a href="index-5.html">Home Four</a></li>
-                                            <li><a href="index-6.html">Home Five</a></li>
-                                            <li><a href="index-7.html">Home Six</a></li>
-                                            <li><a href="index-8.html">Home Saven</a></li>
+                                            <li><a href="{% url 'dede:about' %}">About us <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><a href="hotel-grid.html">Features</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="hotel-grid.html">Hotel Grid</a></li>
-                                            <li><a href="tour-grid-1.html">Tour Grid One</a></li>
-                                            <li><a href="tour-grid-2.html">Tour Grid Two</a></li>
-                                            <li><a href="map-listing.html">Hotel Listing</a></li>
-                                            <li><a href="tour-details.html">Tour Details One</a></li>
-                                            <li><a href="tour-details-2.html">Tour Details Two</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children"><a href="#">Pages</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="team.html">Team</a></li>
-                                            <li><a href="team-details.html">Team Details</a></li>
-                                            <li><a href="shop.html">Shop</a></li>
-                                            <li><a href="shop-details.html">Shop Details</a></li>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="pricing.html">Pricing</a></li>
-                                            <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="login.html">Log In</a></li>
-                                            <li><a href="register.html">Register</a></li>
-                                            <li><a href="error.html">Error</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children"><a href="blog-grid.html">Blogs</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-grid.html">Blog Grid</a></li>
-                                            <li><a href="blog-standard.html">Blog Standard</a></li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                  
+                                    <li><a href="{% url 'dede:contact' %}">Contact</a></li>
                                 </ul>
                             </div>
                         </nav>

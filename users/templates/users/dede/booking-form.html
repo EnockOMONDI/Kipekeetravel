@@ -1,0 +1,260 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Booking Form Styles */
+.booking-form-wrapper {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.single-input-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.single-input-field input,
+.single-input-field textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.single-input-field input:focus,
+.single-input-field textarea:focus {
+    border-color: #ff4838;
+    outline: none;
+}
+
+.booking-info-wrapper {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.booking-price-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.booking-price-details li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.booking-price-details .total-price {
+    font-weight: 700;
+    font-size: 1.1em;
+    border-bottom: none;
+}
+
+/* Confirmation Page Styles */
+.success-icon {
+    color: #28a745;
+    font-size: 4em;
+    display: block;
+}
+
+.single-confirmation-box {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+.single-confirmation-box h4 {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.single-confirmation-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.single-confirmation-box li {
+    padding: 8px 0;
+}
+
+.single-confirmation-box li span {
+    font-weight: 600;
+    margin-right: 10px;
+}
+</style>
+
+<!-- tg-breadcrumb-area-start -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Book Your Tour</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="{% url 'dede:home' %}">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'dede:tour_detail' tour_slug=tour.slug %}">{{ tour.name }}</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Booking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tg-breadcrumb-area-end -->
+
+<!-- booking-form-area-start -->
+<div class="booking-form-area pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="booking-form-wrapper">
+                    <div class="booking-form-title mb-40">
+                        <h3>Personal Information</h3>
+                    </div>
+                    
+                    {% if messages %}
+                    <div class="messages mb-30">
+                        {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form action="" method="POST" class="booking-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="full_name">Full Name *</label>
+                                    <input type="text" id="full_name" name="full_name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="travel_date">Travel Date *</label>
+                                    <input type="date" id="travel_date" name="travel_date" required min="{{ today|date:'Y-m-d' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="number_of_people">Number of People *</label>
+                                    <input type="number" id="number_of_people" name="number_of_people" required min="1" max="{{ tour.group_size }}" value="1">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="special_requirements">Special Requirements</label>
+                                    <textarea id="special_requirements" name="special_requirements" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-payment-info mt-50 mb-30">
+                            <h4>Price Details</h4>
+                            <div class="booking-price-details mt-20">
+                                <ul>
+                                    <li>Price per person: <span>KES {{ tour.price }}</span></li>
+                                    <li class="total-price">Total Price: <span id="total_price">KES {{ tour.price }}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="booking-form-agreement mb-30">
+                            <div class="agreement-check">
+                                <input type="checkbox" id="terms" required>
+                                <label for="terms">I agree to the terms and conditions</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="tg-btn">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-5">
+                <div class="booking-info-wrapper">
+                    <div class="booking-info-title mb-30">
+                        <h4>Tour Information</h4>
+                    </div>
+                    <div class="booking-info-content">
+                        <div class="booking-info-item mb-20">
+                            <h5>{{ tour.name }}</h5>
+                            <div class="booking-info-image">
+                                {% if tour.Image %}
+                                    <img src="{{ tour.Image.cdn_url }}" alt="{{ tour.name }}" class="img-fluid">
+                                {% else %}
+                                    <img src="{% static 'assets3/img/default-tour.jpg' %}" alt="{{ tour.name }}" class="img-fluid">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="booking-info-list">
+                            <ul>
+                                <li><i class="far fa-calendar-alt"></i> Duration: {{ tour.duration }} Days</li>
+                                <li><i class="far fa-users"></i> Max Group Size: {{ tour.group_size }} People</li>
+                                <li><i class="far fa-map-marker-alt"></i> Location: {{ tour.destination.name }}</li>
+                                <li><i class="far fa-language"></i> Languages: {{ tour.languages }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- booking-form-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const numberOfPeopleInput = document.getElementById('number_of_people');
+    const totalPriceSpan = document.getElementById('total_price');
+    const pricePerPerson = {{ tour.price }};
+    const maxGroupSize = {{ tour.group_size }};
+
+    function updateTotalPrice() {
+        const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
+        if (numberOfPeople > maxGroupSize) {
+            numberOfPeopleInput.value = maxGroupSize;
+            alert('Maximum group size is ' + maxGroupSize + ' people');
+            return;
+        }
+        const totalPrice = (pricePerPerson * numberOfPeople).toFixed(2);
+        totalPriceSpan.textContent = '$' + totalPrice;
+    }
+
+    numberOfPeopleInput.addEventListener('input', updateTotalPrice);
+
+    // Set minimum date to today
+    const travelDateInput = document.getElementById('travel_date');
+    const today = new Date().toISOString().split('T')[0];
+    travelDateInput.min = today;
+});
+</script>
+{% endblock %}
