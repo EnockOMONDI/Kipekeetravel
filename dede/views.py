@@ -215,29 +215,104 @@ def tour_booking(request, tour_slug):
                 s.starttls()
                 s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
-                msg = MIMEMultipart()
-                msg['From'] = "DEDE TOURS TRAVEL"
+                msg = MIMEMultipart('alternative')
+                msg['From'] = "DEDE TOURS TRAVEL <novustellke@gmail.com>"
                 msg['To'] = booking.email
                 msg['Subject'] = f"Booking Confirmation - {booking.booking_reference}"
 
                 email_message = f"""
-                Dear {booking.full_name},
-
-                Thank you for booking {tour.name}!
-
-                Booking Details:
-                - Booking Reference: {booking.booking_reference}
-                - Tour: {tour.name}
-                - Travel Date: {booking.travel_date}
-                - Number of People: {booking.number_of_people}
-                - Total Price: ${booking.total_price}
-
-                Your booking status is currently pending. Our team will contact you shortly regarding payment and final confirmation.
-
-                If you have any questions, please contact us with your booking reference: {booking.booking_reference}
-
-                Best regards,
-                The Travel Team
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Booking Confirmation</title>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .email-container {{
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }}
+                        .header {{
+                            text-align: center;
+                            padding: 20px 0;
+                            background-color: #f8f9fa;
+                        }}
+                        .logo {{
+                            max-width: 200px;
+                            height: auto;
+                        }}
+                        .content {{
+                            padding: 20px 0;
+                        }}
+                        .booking-details {{
+                            background-color: #f8f9fa;
+                            padding: 20px;
+                            border-radius: 5px;
+                            margin: 20px 0;
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                            font-size: 12px;
+                            color: #666;
+                        }}
+                        .button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            background-color: #4CAF50;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin: 20px 0;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="header">
+                            <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE TOURS TRAVEL" class="logo">
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Booking Confirmation</h2>
+                            <p>Dear {booking.full_name},</p>
+                            
+                            <p>Thank you for booking your adventure with DEDE TOURS TRAVEL! We're excited to help you explore {tour.name}.</p>
+                            
+                            <div class="booking-details">
+                                <h3>Booking Details:</h3>
+                                <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
+                                <p><strong>Tour:</strong> {tour.name}</p>
+                                <p><strong>Travel Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Number of People:</strong> {booking.number_of_people}</p>
+                                <p><strong>Total Price:</strong> KES{booking.total_price}</p>
+                            </div>
+                            
+                            <p>Your booking status is currently <strong>pending</strong>. Our team will contact you shortly regarding payment and final confirmation.</p>
+                            
+                            <p>If you have any questions, please contact us with your booking reference: {booking.booking_reference}</p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>Best regards,<br>The DEDE TOURS TRAVEL Team</p>
+                            <p>© 2024 DEDE TOURS TRAVEL. All rights reserved.</p>
+                            <p>
+                                <a href="tel:+254123456789">+254 123 456 789</a> |
+                                <a href="mailto:info@dedetours.com">info@dedetours.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </body>
+                </html>
                 """
 
                 msg.attach(MIMEText(email_message, 'html'))

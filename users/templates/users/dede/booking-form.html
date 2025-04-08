@@ -124,16 +124,7 @@
                         <h3>Personal Information</h3>
                     </div>
                     
-                    {% if messages %}
-                    <div class="messages mb-30">
-                        {% for message in messages %}
-                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                            {{ message }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
+                  
                     <form action="" method="POST" class="booking-form">
                         {% csrf_token %}
                         <div class="row">
