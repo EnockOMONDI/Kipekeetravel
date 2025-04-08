@@ -1,0 +1,179 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">My Tickets</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>My Tickets</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- my-tickets-area -->
+<section class="tg-destination-area pt-120 pb-90">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-xl-3 col-lg-4">
+                <aside class="tg-destination-sidebar">
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Filter Tickets</h4>
+                        </div>
+                        <div class="cat-list">
+                            <ul class="list-wrap">
+                                <li>
+                                    <a href="{% url 'events:my_tickets' %}" class="{% if not status %}active{% endif %}">
+                                        All Tickets
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_tickets' %}?status=upcoming" class="{% if status == 'upcoming' %}active{% endif %}">
+                                        Upcoming Events
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_tickets' %}?status=past" class="{% if status == 'past' %}active{% endif %}">
+                                        Past Events
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_tickets' %}?status=cancelled" class="{% if status == 'cancelled' %}active{% endif %}">
+                                        Cancelled Tickets
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Ticket List -->
+            <div class="col-xl-9 col-lg-8">
+                {% if tickets %}
+                <div class="row">
+                    {% for ticket in tickets %}
+                    <div class="col-12">
+                        <div class="tg-destination-item mb-30">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <div class="tg-destination-thumb">
+                                        <a href="{% url 'events:event_detail' ticket.event.slug %}">
+                                            {% if ticket.event.main_image %}
+                                            <img src="{{ ticket.event.main_image.cdn_url }}" alt="{{ ticket.event.title }}">
+                                            {% else %}
+                                            <img src="{% static 'assets3/img/destination/default-event.jpg' %}" alt="{{ ticket.event.title }}">
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="tg-destination-content">
+                                        <div class="tg-destination-info">
+                                            <h4 class="title">
+                                                <a href="{% url 'events:event_detail' ticket.event.slug %}">{{ ticket.event.title }}</a>
+                                            </h4>
+                                            <div class="tg-destination-meta">
+                                                <ul class="list-wrap">
+                                                    <li><i class="fas fa-map-marker-alt"></i>{{ ticket.event.venue }}, {{ ticket.event.city }}</li>
+                                                    <li><i class="far fa-calendar"></i>{{ ticket.event.start_date|date:"M d, Y" }}</li>
+                                                    <li><i class="far fa-clock"></i>{{ ticket.event.start_time|time:"H:i" }}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="ticket-details mt-3">
+                                                <p><strong>Ticket Type:</strong> {{ ticket.ticket_type.name }}</p>
+                                                <p><strong>Quantity:</strong> {{ ticket.quantity }}</p>
+                                                <p><strong>Total Amount:</strong> KES {{ ticket.total_amount|floatformat:2 }}</p>
+                                                <p><strong>Status:</strong> 
+                                                    <span class="badge {% if ticket.status == 'VALID' %}bg-success{% elif ticket.status == 'USED' %}bg-warning{% else %}bg-danger{% endif %}">
+                                                        {{ ticket.get_status_display }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="tg-destination-bottom">
+                                            <div class="btn-group">
+                                                <a href="{% url 'events:download_ticket' ticket.id %}" class="btn tg-btn-2">
+                                                    <i class="fas fa-download"></i> Download Ticket
+                                                </a>
+                                                {% if ticket.can_cancel %}
+                                                <a href="{% url 'events:cancel_ticket' ticket.id %}" class="btn tg-btn-3" 
+                                                   onclick="return confirm('Are you sure you want to cancel this ticket?')">
+                                                    <i class="fas fa-times"></i> Cancel Ticket
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <div class="pagination-wrap">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="no-tickets-found text-center">
+                    <h3>No tickets found</h3>
+                    <p>You haven't purchased any tickets yet. Browse our <a href="{% url 'events:event_list' %}">events</a> to find something interesting!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- my-tickets-area-end -->
+{% endblock %}

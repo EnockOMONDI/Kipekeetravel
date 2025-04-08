@@ -1,0 +1,141 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">{{ event.title }}</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:event_list' %}">Events</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>{{ event.title }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- event-details-area -->
+<section class="tg-tour-details-area pt-120 pb-90">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <!-- Event Main Image -->
+                {% if event.main_image %}
+                <div class="tg-tour-details-thumb mb-50">
+                    <img src="{{ event.main_image.cdn_url }}" alt="{{ event.title }}">
+                </div>
+                {% endif %}
+
+                <!-- Event Description -->
+                <div class="tg-tour-details-content mb-50">
+                    <h3 class="title mb-20">About This Event</h3>
+                    <p>{{ event.description|linebreaks }}</p>
+                </div>
+
+                <!-- Event Details -->
+                <div class="tg-tour-details-info mb-50">
+                    <h3 class="title mb-20">Event Details</h3>
+                    <ul class="tg-tour-details-list list-wrap">
+                        <li><span>Date:</span> {{ event.start_date }}</li>
+                        <li><span>Time:</span> {{ event.start_time }} - {{ event.end_time }}</li>
+                        <li><span>Venue:</span> {{ event.venue }}</li>
+                        <li><span>Address:</span> {{ event.address }}</li>
+                        <li><span>City:</span> {{ event.city }}</li>
+                        <li><span>Country:</span> {{ event.country }}</li>
+                        <li><span>Capacity:</span> {{ event.max_capacity }} attendees</li>
+                        <li><span>Registration Deadline:</span> {{ event.registration_deadline }}</li>
+                    </ul>
+                </div>
+
+                <!-- Event Gallery -->
+                {% if event.images.exists %}
+                <div class="tg-tour-details-gallery mb-50">
+                    <h3 class="title mb-20">Event Gallery</h3>
+                    <div class="row">
+                        {% for image in event.images.all %}
+                        <div class="col-md-4 mb-30">
+                            <a href="{{ image.image.cdn_url }}" class="popup-image">
+                                <img src="{{ image.image.cdn_url }}" alt="{{ image.caption }}">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-xl-4 col-lg-5">
+                <aside class="tg-tour-sidebar">
+                    <!-- Ticket Types -->
+                    <div class="tg-tour-sidebar-item mb-40">
+                        <h4 class="tg-tour-sidebar-title">Available Tickets</h4>
+                        {% if ticket_types %}
+                            {% for ticket_type in ticket_types %}
+                            <div class="tg-tour-sidebar-price mb-30">
+                                <h4 class="title">{{ ticket_type.name }}</h4>
+                                <p>{{ ticket_type.description }}</p>
+                                <div class="price">${{ ticket_type.price }}</div>
+                                {% if ticket_type.is_available %}
+                                <a href="{% url 'events:purchase_ticket' ticket_type.id %}" 
+                                   class="btn tg-btn-2 tg-mt-20">Purchase Tickets</a>
+                                {% else %}
+                                <button class="btn tg-btn-2 tg-mt-20" disabled>Sold Out</button>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No tickets available at this time.</p>
+                        {% endif %}
+
+                        {% if user == event.organizer %}
+                        <a href="{% url 'events:create_ticket_type' event.id %}" 
+                           class="btn tg-btn-2 tg-mt-20">Add Ticket Type</a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Organizer Information -->
+                    <div class="tg-tour-sidebar-item mb-40">
+                        <h4 class="tg-tour-sidebar-title">Contact Information</h4>
+                        <div class="tg-tour-sidebar-contact">
+                            <ul class="list-wrap">
+                                <li><i class="fa-regular fa-user"></i> {{ event.organizer.username }}</li>
+                                <li><i class="fa-regular fa-envelope"></i> {{ event.contact_email }}</li>
+                                <li><i class="fa-regular fa-phone"></i> {{ event.contact_phone }}</li>
+                                {% if event.website %}
+                                <li><i class="fa-regular fa-globe"></i> <a href="{{ event.website }}" target="_blank">Visit Website</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Event Actions -->
+                    {% if user == event.organizer %}
+                    <div class="tg-tour-sidebar-item mb-40">
+                        <h4 class="tg-tour-sidebar-title">Manage Event</h4>
+                        <div class="tg-tour-sidebar-btn">
+                            <a href="{% url 'events:event_update' event.slug %}" 
+                               class="btn tg-btn-2 tg-mt-20">Edit Event</a>
+                            <a href="{% url 'events:event_delete' event.slug %}" 
+                               class="btn tg-btn-3 tg-mt-20">Delete Event</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- event-details-area-end -->
+{% endblock %}

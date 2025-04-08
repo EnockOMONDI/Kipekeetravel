@@ -1,0 +1,128 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Purchase Confirmation</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="/">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:event_detail' event.slug %}">{{ event.title }}</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Confirmation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- confirmation-area -->
+<section class="tg-booking-area pt-120 pb-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="tg-booking-form">
+                    <div class="text-center mb-5">
+                        <div class="confirmation-icon mb-4">
+                            <i class="fas fa-check-circle text-success" style="font-size: 64px;"></i>
+                        </div>
+                        <h3 class="mb-3">Thank You for Your Purchase!</h3>
+                        <p>Your ticket purchase has been confirmed and processed successfully.</p>
+                    </div>
+
+                    <!-- Order Details -->
+                    <div class="order-details mb-5">
+                        <h4 class="title mb-4">Order Details</h4>
+                        <div class="order-info">
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Order Number:</strong></div>
+                                <div class="col-sm-8">{{ order.reference_number }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Event:</strong></div>
+                                <div class="col-sm-8">{{ event.title }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Date & Time:</strong></div>
+                                <div class="col-sm-8">{{ event.start_date|date:"M d, Y" }} at {{ event.start_time|time:"H:i" }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Venue:</strong></div>
+                                <div class="col-sm-8">{{ event.venue }}, {{ event.city }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Details -->
+                        <h5 class="mb-3 mt-4">Tickets Purchased</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Ticket Type</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                    <tr>
+                                        <td>{{ item.ticket_type.name }}</td>
+                                        <td>{{ item.quantity }}</td>
+                                        <td>KES {{ item.ticket_type.price|floatformat:2 }}</td>
+                                        <td>KES {{ item.subtotal|floatformat:2 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                                        <td><strong>KES {{ order.total_amount|floatformat:2 }}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="next-steps">
+                        <h4 class="title mb-4">Next Steps</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-envelope me-2"></i>
+                                A confirmation email has been sent to {{ order.email }}
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-ticket-alt me-2"></i>
+                                Your tickets are available in your account
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-calendar me-2"></i>
+                                Add this event to your calendar
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="text-center mt-5">
+                        <a href="{% url 'events:download_tickets' order.id %}" class="btn tg-btn-2 me-3">
+                            <i class="fas fa-download"></i> Download Tickets
+                        </a>
+                        <a href="{% url 'events:my_tickets' %}" class="btn tg-btn-3">
+                            <i class="fas fa-ticket-alt"></i> View My Tickets
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- confirmation-area-end -->
+{% endblock %}

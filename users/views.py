@@ -35,6 +35,8 @@ from .forms import UserRegisterForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .utils import send_booking_confirmation_email
+from events.views import EventListView
+
 
 
 

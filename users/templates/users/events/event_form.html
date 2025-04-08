@@ -1,0 +1,264 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">
+                        {% if form.instance.pk %}Edit Event{% else %}Create Event{% endif %}
+                    </h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:event_list' %}">Events</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>{% if form.instance.pk %}Edit Event{% else %}Create Event{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- event-form-area -->
+<section class="tg-booking-area pt-120 pb-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="tg-booking-form">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Please correct the errors below.
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <!-- Basic Information -->
+                            <div class="col-12">
+                                <h4 class="title mb-25">Basic Information</h4>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.title.id_for_label }}">Event Title *</label>
+                                    {{ form.title }}
+                                    {{ form.title.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.category.id_for_label }}">Category *</label>
+                                    {{ form.category }}
+                                    {{ form.category.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.main_image.id_for_label }}">Main Image</label>
+                                    {{ form.main_image }}
+                                    {{ form.main_image.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.description.id_for_label }}">Description *</label>
+                                    {{ form.description }}
+                                    {{ form.description.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Event Details -->
+                            <div class="col-12">
+                                <h4 class="title mb-25">Event Details</h4>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.start_date.id_for_label }}">Start Date *</label>
+                                    {{ form.start_date }}
+                                    {{ form.start_date.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.start_time.id_for_label }}">Start Time *</label>
+                                    {{ form.start_time }}
+                                    {{ form.start_time.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.end_date.id_for_label }}">End Date *</label>
+                                    {{ form.end_date }}
+                                    {{ form.end_date.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.end_time.id_for_label }}">End Time *</label>
+                                    {{ form.end_time }}
+                                    {{ form.end_time.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Venue Information -->
+                            <div class="col-12">
+                                <h4 class="title mb-25">Venue Information</h4>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.venue.id_for_label }}">Venue Name *</label>
+                                    {{ form.venue }}
+                                    {{ form.venue.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.address.id_for_label }}">Address *</label>
+                                    {{ form.address }}
+                                    {{ form.address.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.city.id_for_label }}">City *</label>
+                                    {{ form.city }}
+                                    {{ form.city.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.country.id_for_label }}">Country *</label>
+                                    {{ form.country }}
+                                    {{ form.country.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Additional Information -->
+                            <div class="col-12">
+                                <h4 class="title mb-25">Additional Information</h4>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.max_capacity.id_for_label }}">Maximum Capacity *</label>
+                                    {{ form.max_capacity }}
+                                    {{ form.max_capacity.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.registration_deadline.id_for_label }}">Registration Deadline *</label>
+                                    {{ form.registration_deadline }}
+                                    {{ form.registration_deadline.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.website.id_for_label }}">Website</label>
+                                    {{ form.website }}
+                                    {{ form.website.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.contact_email.id_for_label }}">Contact Email *</label>
+                                    {{ form.contact_email }}
+                                    {{ form.contact_email.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.contact_phone.id_for_label }}">Contact Phone *</label>
+                                    {{ form.contact_phone }}
+                                    {{ form.contact_phone.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Event Status -->
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.status.id_for_label }}">Status</label>
+                                    {{ form.status }}
+                                    {{ form.status.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.is_featured.id_for_label }}">Featured Event</label>
+                                    {{ form.is_featured }}
+                                    {{ form.is_featured.errors }}
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="col-12">
+                                <div class="tg-booking-form-btn mt-20">
+                                    <button type="submit" class="btn tg-btn-2">
+                                        {% if form.instance.pk %}Save Changes{% else %}Create Event{% endif %}
+                                    </button>
+                                    <a href="{% url 'events:event_list' %}" class="btn tg-btn-3">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- event-form-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize flatpickr for date and time inputs
+    flatpickr("#id_start_date", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
+    flatpickr("#id_end_date", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
+    flatpickr("#id_start_time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i"
+    });
+    flatpickr("#id_end_time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i"
+    });
+    flatpickr("#id_registration_deadline", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i"
+    });
+</script>
+{% endblock %}

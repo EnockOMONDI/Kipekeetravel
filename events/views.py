@@ -13,7 +13,7 @@ from .forms import EventForm, TicketTypeForm, TicketPurchaseForm, EventImageForm
 
 class EventListView(ListView):
     model = Event
-    template_name = 'events/event_list.html'
+    template_name = 'users/events/event_list.html'
     context_object_name = 'events'
     paginate_by = 9
 
@@ -66,7 +66,7 @@ class EventListView(ListView):
 
 class EventDetailView(DetailView):
     model = Event
-    template_name = 'events/event_detail.html'
+    template_name = 'users/events/event_detail.html'
     context_object_name = 'event'
 
     def get_context_data(self, **kwargs):
@@ -79,7 +79,7 @@ class EventDetailView(DetailView):
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
-    template_name = 'events/event_form.html'
+    template_name = 'users/events/event_form.html'
     form_class = EventForm
 
     def form_valid(self, form):
@@ -89,7 +89,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Event
-    template_name = 'events/event_form.html'
+    template_name = 'users/events/event_form.html'
     form_class = EventForm
 
     def test_func(self):
@@ -102,7 +102,7 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Event
-    template_name = 'events/event_confirm_delete.html'
+    template_name = 'users/events/event_confirm_delete.html'
     success_url = reverse_lazy('events:my_events')
 
     def test_func(self):
@@ -124,7 +124,7 @@ def create_ticket_type(request, event_id):
     else:
         form = TicketTypeForm()
     
-    return render(request, 'events/ticket_type_form.html', {
+    return render(request, 'users/events/ticket_type_form.html', {
         'form': form,
         'event': event
     })
@@ -155,7 +155,7 @@ def purchase_ticket(request, ticket_type_id):
     else:
         form = TicketPurchaseForm()
     
-    return render(request, 'events/purchase_ticket.html', {
+    return render(request, 'users/events/purchase_ticket.html', {
         'form': form,
         'ticket_type': ticket_type
     })
@@ -163,13 +163,13 @@ def purchase_ticket(request, ticket_type_id):
 @login_required
 def my_events(request):
     events = Event.objects.filter(organizer=request.user)
-    return render(request, 'events/my_events.html', {'events': events})
+    return render(request, 'users/events/my_events.html', {'events': events})
 
 @login_required
 def my_tickets(request):
     tickets = Ticket.objects.filter(purchaser=request.user)
-    return render(request, 'events/my_tickets.html', {'tickets': tickets})
+    return render(request, 'users/events/my_tickets.html', {'tickets': tickets})
 
 def purchase_confirmation(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id, purchaser=request.user)
-    return render(request, 'events/purchase_confirmation.html', {'ticket': ticket})
+    return render(request, 'users/events/purchase_confirmation.html', {'ticket': ticket})

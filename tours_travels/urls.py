@@ -14,10 +14,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    path('jet/', include('jet.urls', 'jet')), 
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
-    #path('',tours_travels_views.home,name = 'home'),
     path('', include(('dede.urls', 'dede'), namespace='dede')),
+    path('events/', include(('events.urls', 'events'), namespace='events')),
     path('old/', include(('users.urls', 'users'), namespace='home')),
     path('tours/', include(('adminside.urls', 'adminside'), namespace='adminside')),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),

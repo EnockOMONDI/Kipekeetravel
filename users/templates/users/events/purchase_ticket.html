@@ -1,0 +1,213 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Purchase Tickets</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:event_detail' event.slug %}">{{ event.title }}</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Purchase Tickets</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- purchase-ticket-area -->
+<section class="tg-booking-area pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <!-- Ticket Purchase Form -->
+            <div class="col-xl-8 col-lg-7">
+                <div class="tg-booking-form">
+                    <form method="post" id="ticket-purchase-form">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Please correct the errors below.
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="title mb-25">Ticket Selection</h4>
+                            </div>
+
+                            {% for ticket_type in event.ticket_types.all %}
+                            <div class="col-12">
+                                <div class="ticket-type-item mb-25">
+                                    <div class="ticket-type-header d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>{{ ticket_type.name }}</h5>
+                                            <p>{{ ticket_type.description }}</p>
+                                        </div>
+                                        <div class="ticket-price">
+                                            <span>KES {{ ticket_type.price|floatformat:2 }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="ticket-quantity mt-3">
+                                        <label>Quantity:</label>
+                                        <input type="number" 
+                                               name="ticket_quantity_{{ ticket_type.id }}" 
+                                               min="{{ ticket_type.min_tickets_per_order }}" 
+                                               max="{{ ticket_type.max_tickets_per_order }}"
+                                               value="0"
+                                               class="form-control ticket-quantity-input"
+                                               data-price="{{ ticket_type.price }}"
+                                               data-available="{{ ticket_type.available_tickets }}">
+                                        <small class="text-muted">
+                                            Available: {{ ticket_type.available_tickets }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="col-12">
+                                <h4 class="title mb-25">Contact Information</h4>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.first_name.id_for_label }}">First Name *</label>
+                                    {{ form.first_name }}
+                                    {{ form.first_name.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.last_name.id_for_label }}">Last Name *</label>
+                                    {{ form.last_name }}
+                                    {{ form.last_name.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.email.id_for_label }}">Email *</label>
+                                    {{ form.email }}
+                                    {{ form.email.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.phone.id_for_label }}">Phone *</label>
+                                    {{ form.phone }}
+                                    {{ form.phone.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.special_requirements.id_for_label }}">Special Requirements</label>
+                                    {{ form.special_requirements }}
+                                    {{ form.special_requirements.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="tg-booking-form-btn mt-20">
+                                    <button type="submit" class="btn tg-btn-2">Proceed to Payment</button>
+                                    <a href="{% url 'events:event_detail' event.slug %}" class="btn tg-btn-3">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-xl-4 col-lg-5">
+                <aside class="tg-booking-sidebar">
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Order Summary</h4>
+                        </div>
+                        <div class="booking-widget-content">
+                            <div class="booking-widget-top">
+                                <div class="bw-thumb">
+                                    {% if event.main_image %}
+                                    <img src="{{ event.main_image.cdn_url }}" alt="{{ event.title }}">
+                                    {% else %}
+                                    <img src="{% static 'assets3/img/destination/default-event.jpg' %}" alt="{{ event.title }}">
+                                    {% endif %}
+                                </div>
+                                <div class="bw-content">
+                                    <h4 class="title">{{ event.title }}</h4>
+                                    <p><i class="fas fa-map-marker-alt"></i> {{ event.venue }}, {{ event.city }}</p>
+                                    <p><i class="far fa-calendar"></i> {{ event.start_date|date:"M d, Y" }}</p>
+                                </div>
+                            </div>
+                            <div class="booking-widget-bottom">
+                                <ul class="selected-tickets-list">
+                                    <!-- Dynamically populated by JavaScript -->
+                                </ul>
+                                <div class="total-amount mt-4">
+                                    <h5>Total Amount</h5>
+                                    <span class="amount">KES 0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- purchase-ticket-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ticketInputs = document.querySelectorAll('.ticket-quantity-input');
+        const selectedTicketsList = document.querySelector('.selected-tickets-list');
+        const totalAmountSpan = document.querySelector('.amount');
+
+        function updateOrderSummary() {
+            let total = 0;
+            selectedTicketsList.innerHTML = '';
+
+            ticketInputs.forEach(input => {
+                const quantity = parseInt(input.value) || 0;
+                const price = parseFloat(input.dataset.price);
+                const ticketName = input.closest('.ticket-type-item').querySelector('h5').textContent;
+
+                if (quantity > 0) {
+                    const subtotal = quantity * price;
+                    total += subtotal;
+
+                    selectedTicketsList.innerHTML += `
+                        <li class="d-flex justify-content-between">
+                            <span>${ticketName} x ${quantity}</span>
+                            <span>KES ${subtotal.toFixed(2)}</span>
+                        </li>
+                    `;
+                }
+            });
+
+            totalAmountSpan.textContent = `KES ${total.toFixed(2)}`;
+        }
+
+        ticketInputs.forEach(input => {
+            input.addEventListener('change', updateOrderSummary);
+            input.addEventListener('input', updateOrderSummary);
+        });
+    });
+</script>
+{% endblock %}

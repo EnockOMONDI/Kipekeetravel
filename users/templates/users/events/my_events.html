@@ -1,0 +1,169 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">My Events</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>My Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- my-events-area -->
+<section class="tg-destination-area pt-120 pb-90">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-xl-3 col-lg-4">
+                <aside class="tg-destination-sidebar">
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Event Management</h4>
+                        </div>
+                        <div class="cat-list">
+                            <ul class="list-wrap">
+                                <li>
+                                    <a href="{% url 'events:event_create' %}" class="btn tg-btn-2 w-100 mb-3"><i class="fas fa-plus"></i> Create New Event
+                                    </a>
+                               
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_events' %}" class="{% if view == 'all' %}active{% endif %}">
+                                        All Events
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_events' %}?status=draft" class="{% if status == 'draft' %}active{% endif %}">
+                                        Draft Events
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_events' %}?status=published" class="{% if status == 'published' %}active{% endif %}">
+                                        Published Events
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'events:my_events' %}?status=past" class="{% if status == 'past' %}active{% endif %}">
+                                        Past Events
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Event List -->
+            <div class="col-xl-9 col-lg-8">
+                {% if events %}
+                <div class="row">
+                    {% for event in events %}
+                    <div class="col-lg-6 col-md-6">
+                        <div class="tg-destination-item mb-30">
+                            <div class="tg-destination-thumb">
+                                <a href="{% url 'events:event_detail' event.slug %}">
+                                    {% if event.main_image %}
+                                    <img src="{{ event.main_image.cdn_url }}" alt="{{ event.title }}">
+                                    {% else %}
+                                    <img src="{% static 'assets3/img/destination/default-event.jpg' %}" alt="{{ event.title }}">
+                                    {% endif %}
+                                </a>
+                                <span class="tg-destination-tag">{{ event.get_status_display }}</span>
+                            </div>
+                            <div class="tg-destination-content">
+                                <div class="tg-destination-info">
+                                    <h4 class="title">
+                                        <a href="{% url 'events:event_detail' event.slug %}">{{ event.title }}</a>
+                                    </h4>
+                                    <div class="tg-destination-meta">
+                                        <ul class="list-wrap">
+                                            <li><i class="fas fa-map-marker-alt"></i>{{ event.city }}, {{ event.country }}</li>
+                                            <li><i class="far fa-calendar"></i>{{ event.start_date|date:"M d, Y" }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="event-stats mt-3">
+                                        <span class="badge bg-primary">{{ event.total_tickets_sold }} Tickets Sold</span>
+                                        <span class="badge bg-info">{{ event.total_revenue|floatformat:2 }} KES Revenue</span>
+                                    </div>
+                                </div>
+                                <div class="tg-destination-bottom">
+                                    <div class="btn-group">
+                                        <a href="{% url 'events:edit_event' event.slug %}" class="btn tg-btn-2">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="{% url 'events:event_tickets' event.slug %}" class="btn tg-btn-3">
+                                            <i class="fas fa-ticket-alt"></i> Manage Tickets
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <div class="pagination-wrap">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="no-events-found text-center">
+                    <h3>No events found</h3>
+                    <p>You haven't created any events yet. Click the "Create New Event" button to get started!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- my-events-area-end -->
+{% endblock %}

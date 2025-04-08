@@ -1,0 +1,140 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Create Ticket Type</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:event_detail' event.slug %}">{{ event.title }}</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Create Ticket Type</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- ticket-type-form-area -->
+<section class="tg-booking-area pt-120 pb-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="tg-booking-form">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Please correct the errors below.
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="title mb-25">Ticket Information</h4>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.name.id_for_label }}">Ticket Name *</label>
+                                    {{ form.name }}
+                                    {{ form.name.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.description.id_for_label }}">Description *</label>
+                                    {{ form.description }}
+                                    {{ form.description.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.price.id_for_label }}">Price *</label>
+                                    {{ form.price }}
+                                    {{ form.price.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.quantity.id_for_label }}">Quantity Available *</label>
+                                    {{ form.quantity }}
+                                    {{ form.quantity.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.sales_start.id_for_label }}">Sales Start *</label>
+                                    {{ form.sales_start }}
+                                    {{ form.sales_start.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.sales_end.id_for_label }}">Sales End *</label>
+                                    {{ form.sales_end }}
+                                    {{ form.sales_end.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.min_tickets_per_order.id_for_label }}">Minimum Tickets Per Order</label>
+                                    {{ form.min_tickets_per_order }}
+                                    {{ form.min_tickets_per_order.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="{{ form.max_tickets_per_order.id_for_label }}">Maximum Tickets Per Order</label>
+                                    {{ form.max_tickets_per_order }}
+                                    {{ form.max_tickets_per_order.errors }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="tg-booking-form-btn mt-20">
+                                    <button type="submit" class="btn tg-btn-2">Create Ticket Type</button>
+                                    <a href="{% url 'events:event_detail' event.slug %}" class="btn tg-btn-3">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ticket-type-form-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize flatpickr for datetime inputs
+    flatpickr("#id_sales_start", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i"
+    });
+    flatpickr("#id_sales_end", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i"
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Events</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- event-list-area -->
+<section class="tg-destination-area pt-120 pb-90">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-xl-3 col-lg-4">
+                <aside class="tg-destination-sidebar">
+                    <!-- Search Widget -->
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Search Events</h4>
+                        </div>
+                        <form action="{% url 'events:event_list' %}" method="get" class="sidebar-search-form">
+                            <input type="text" name="search" placeholder="Search..." value="{{ request.GET.search }}">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Categories</h4>
+                        </div>
+                        <div class="cat-list">
+                            <ul class="list-wrap">
+                                {% for category in categories %}
+                                <li>
+                                    <a href="{% url 'events:event_list' %}?category={{ category.slug }}" 
+                                       class="{% if category.slug == selected_category %}active{% endif %}">
+                                        {{ category.name }}
+                                        <span>({{ category.event_count }})</span>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Date Filter Widget -->
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Date Range</h4>
+                        </div>
+                        <form action="{% url 'events:event_list' %}" method="get" class="date-filter-form">
+                            <div class="form-group mb-3">
+                                <label>From</label>
+                                <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label>To</label>
+                                <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+                            </div>
+                            <button type="submit" class="btn tg-btn-2 w-100">Apply Filter</button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Event List -->
+            <div class="col-xl-9 col-lg-8">
+                {% if events %}
+                <div class="row">
+                    {% for event in events %}
+                    <div class="col-lg-6 col-md-6">
+                        <div class="tg-destination-item mb-30">
+                            <div class="tg-destination-thumb">
+                                <a href="{% url 'events:event_detail' event.slug %}">
+                                    {% if event.main_image %}
+                                    <img src="{{ event.main_image.cdn_url }}" alt="{{ event.title }}">
+                                    {% else %}
+                                    <img src="{% static 'assets3/img/destination/default-event.jpg' %}" alt="{{ event.title }}">
+                                    {% endif %}
+                                </a>
+                                {% if event.is_featured %}
+                                <span class="tg-destination-tag">Featured</span>
+                                {% endif %}
+                            </div>
+                            <div class="tg-destination-content">
+                                <div class="tg-destination-info">
+                                    <h4 class="title">
+                                        <a href="{% url 'events:event_detail' event.slug %}">{{ event.title }}</a>
+                                    </h4>
+                                    <div class="tg-destination-meta">
+                                        <ul class="list-wrap">
+                                            <li><i class="fas fa-map-marker-alt"></i>{{ event.city }}, {{ event.country }}</li>
+                                            <li><i class="far fa-calendar"></i>{{ event.start_date|date:"M d, Y" }}</li>
+                                        </ul>
+                                    </div>
+                                    <p>{{ event.description|truncatewords:20 }}</p>
+                                </div>
+                                <div class="tg-destination-bottom">
+                                    <div class="tg-destination-price">
+                                        From <span>{{ event.get_min_ticket_price|floatformat:2 }} KES</span>
+                                    </div>
+                                    {% if event.status == 'OPEN' %}
+                                    <a href="{% url 'events:event_detail' event.slug %}" class="btn tg-btn-2">Book Now</a>
+                                    {% else %}
+                                    <span class="btn tg-btn-3">{{ event.get_status_display }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <div class="pagination-wrap">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="no-events-found text-center">
+                    <h3>No events found</h3>
+                    <p>Try adjusting your search criteria or check back later for new events.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- event-list-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize flatpickr for date inputs
+    flatpickr("input[type=date]", {
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
+</script>
+{% endblock %}

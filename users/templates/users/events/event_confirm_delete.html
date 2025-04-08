@@ -1,0 +1,98 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Confirm Delete</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="/">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:my_events' %}">My Events</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Delete {{ event.title }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- confirm-delete-area -->
+<section class="tg-booking-area pt-120 pb-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <div class="tg-booking-form">
+                    <div class="text-center mb-5">
+                        <div class="warning-icon mb-4">
+                            <i class="fas fa-exclamation-triangle text-warning" style="font-size: 64px;"></i>
+                        </div>
+                        <h3 class="mb-3">Are you sure you want to delete this event?</h3>
+                        <p class="text-danger">This action cannot be undone. All associated tickets and bookings will also be deleted.</p>
+                    </div>
+
+                    <!-- Event Details -->
+                    <div class="event-details mb-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                {% if event.main_image %}
+                                <img src="{{ event.main_image.cdn_url }}" alt="{{ event.title }}" class="img-fluid rounded">
+                                {% else %}
+                                <img src="{% static 'assets3/img/destination/default-event.jpg' %}" alt="{{ event.title }}" class="img-fluid rounded">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-8">
+                                <h4>{{ event.title }}</h4>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-calendar me-2"></i>{{ event.start_date|date:"M d, Y" }}</li>
+                                    <li><i class="fas fa-clock me-2"></i>{{ event.start_time|time:"H:i" }}</li>
+                                    <li><i class="fas fa-map-marker-alt me-2"></i>{{ event.venue }}, {{ event.city }}</li>
+                                    <li><i class="fas fa-ticket-alt me-2"></i>{{ event.total_tickets_sold }} tickets sold</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Form -->
+                    <form method="post" class="text-center">
+                        {% csrf_token %}
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="confirmDelete" required>
+                            <label class="form-check-label" for="confirmDelete">
+                                I understand that this action cannot be undone
+                            </label>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn tg-btn-3">
+                                <i class="fas fa-trash"></i> Delete Event
+                            </button>
+                            <a href="{% url 'events:my_events' %}" class="btn tg-btn-2">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- confirm-delete-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Confirm delete checkbox validation
+    document.getElementById('confirmDelete').addEventListener('change', function() {
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = !this.checked;
+    });
+</script>
+{% endblock %}

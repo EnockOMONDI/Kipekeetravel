@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
@@ -52,6 +53,8 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'pyuploadcare.dj',
+    
+    'jet.dashboard',
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,6 +66,7 @@ INSTALLED_APPS = [
     'users',
     'blog',
     'dede',
+    'events',
     'taggit',
     'crispy_forms',
 ]
@@ -114,10 +118,10 @@ WSGI_APPLICATION = 'tours_travels.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'dedetraveln',
-    'USER': 'dedetraveln_owner',
-    'PASSWORD': 'npg_Ma7RYsHgW9Dy',
-    'HOST': 'ep-late-boat-a5k7e5pp-pooler.us-east-2.aws.neon.tech',
+    'NAME': 'kipekeee',
+    'USER': 'kipekeee_owner',
+    'PASSWORD': 'npg_zrNq4ZhMote6',
+    'HOST': 'ep-tight-forest-a2rv8c0o-pooler.eu-central-1.aws.neon.tech',
     'PORT': '5432',
     'CONN_MAX_AGE': 0,  # Disable connection persistence
     'OPTIONS': {
@@ -228,7 +232,21 @@ EMAIL_HOST_PASSWORD = 'wyravhncrdvyfuqa'  # Replace with your App Password
 
 # Django Jet settings
 JET_DEFAULT_THEME = 'light-gray'
+JET_DEFAULT_THEME = 'light-gray'
+JET_THEMES = [
+    {
+        'theme': 'default',
+        'color': '#47bac1',
+        'title': 'Default'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
 JET_SIDE_MENU_COMPACT = True
+
 
 # Disable Django Jet's select2 for better compatibility
 JET_SELECT2_THEME = None

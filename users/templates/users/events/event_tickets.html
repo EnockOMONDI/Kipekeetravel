@@ -1,0 +1,171 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- breadcrumb-area -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Manage Event Tickets</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'events:my_events' %}">My Events</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>{{ event.title }} - Tickets</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area-end -->
+
+<!-- event-tickets-area -->
+<section class="tg-destination-area pt-120 pb-90">
+    <div class="container">
+        <div class="row">
+            <!-- Event Info Sidebar -->
+            <div class="col-xl-3 col-lg-4">
+                <aside class="tg-destination-sidebar">
+                    <div class="widget tg-widget">
+                        <div class="widget-title mb-20">
+                            <h4 class="title">Event Information</h4>
+                        </div>
+                        <div class="booking-widget-content">
+                            <div class="booking-widget-top">
+                                <div class="bw-thumb">
+                                    {% if event.main_image %}
+                                    <img src="{{ event.main_image.cdn_url }}" alt="{{ event.title }}">
+                                    {% else %}
+                                    <img src="{% static 'assets3/img/destination/default-event.jpg' %}" alt="{{ event.title }}">
+                                    {% endif %}
+                                </div>
+                                <div class="bw-content">
+                                    <h4 class="title">{{ event.title }}</h4>
+                                    <p><i class="fas fa-map-marker-alt"></i> {{ event.venue }}, {{ event.city }}</p>
+                                    <p><i class="far fa-calendar"></i> {{ event.start_date|date:"M d, Y" }}</p>
+                                    <p><i class="far fa-clock"></i> {{ event.start_time|time:"H:i" }}</p>
+                                </div>
+                            </div>
+                            <div class="booking-widget-bottom">
+                                <ul class="list-wrap">
+                                    <li>
+                                        <span>Status:</span>
+                                        <span class="badge {% if event.status == 'PUBLISHED' %}bg-success{% else %}bg-warning{% endif %}">
+                                            {{ event.get_status_display }}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>Total Tickets Sold:</span>
+                                        <span>{{ event.total_tickets_sold }}</span>
+                                    </li>
+                                    <li>
+                                        <span>Total Revenue:</span>
+                                        <span>KES {{ event.total_revenue|floatformat:2 }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Ticket Types List -->
+            <div class="col-xl-9 col-lg-8">
+                <div class="tg-booking-form">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="title">Ticket Types</h4>
+                        <a href="{% url 'events:create_ticket_type' event.slug %}" class="btn tg-btn-2">
+                            <i class="fas fa-plus"></i> Add Ticket Type
+                        </a>
+                    </div>
+
+                    {% if ticket_types %}
+                    <div class="row">
+                        {% for ticket_type in ticket_types %}
+                        <div class="col-12">
+                            <div class="tg-destination-item mb-30">
+                                <div class="ticket-type-content p-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h5>{{ ticket_type.name }}</h5>
+                                            <p>{{ ticket_type.description }}</p>
+                                            <div class="ticket-type-meta mt-3">
+                                                <span class="badge bg-primary">Price: KES {{ ticket_type.price|floatformat:2 }}</span>
+                                                <span class="badge bg-info">Available: {{ ticket_type.available_tickets }}</span>
+                                                <span class="badge bg-success">Sold: {{ ticket_type.tickets_sold }}</span>
+                                            </div>
+                                            <div class="ticket-type-details mt-3">
+                                                <p><small>Sales Period: {{ ticket_type.sales_start|date:"M d, Y H:i" }} - {{ ticket_type.sales_end|date:"M d, Y H:i" }}</small></p>
+                                                <p><small>Limit per Order: {{ ticket_type.min_tickets_per_order }} - {{ ticket_type.max_tickets_per_order }} tickets</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <div class="btn-group">
+                                                <a href="{% url 'events:edit_ticket_type' event.slug ticket_type.id %}" class="btn tg-btn-2">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <a href="{% url 'events:delete_ticket_type' event.slug ticket_type.id %}" 
+                                                   class="btn tg-btn-3"
+                                                   onclick="return confirm('Are you sure you want to delete this ticket type?')">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="no-tickets-found text-center">
+                        <h3>No ticket types found</h3>
+                        <p>Click the "Add Ticket Type" button to create your first ticket type for this event.</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Sales Report -->
+                <div class="tg-booking-form mt-4">
+                    <h4 class="title mb-4">Sales Report</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket Type</th>
+                                    <th>Total Sales</th>
+                                    <th>Revenue</th>
+                                    <th>Available</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ticket_type in ticket_types %}
+                                <tr>
+                                    <td>{{ ticket_type.name }}</td>
+                                    <td>{{ ticket_type.tickets_sold }}</td>
+                                    <td>KES {{ ticket_type.total_revenue|floatformat:2 }}</td>
+                                    <td>{{ ticket_type.available_tickets }}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr class="table-primary">
+                                    <td><strong>Total</strong></td>
+                                    <td><strong>{{ event.total_tickets_sold }}</strong></td>
+                                    <td><strong>KES {{ event.total_revenue|floatformat:2 }}</strong></td>
+                                    <td><strong>{{ event.total_available_tickets }}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- event-tickets-area-end -->
+{% endblock %}
