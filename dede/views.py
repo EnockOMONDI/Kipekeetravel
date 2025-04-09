@@ -41,6 +41,11 @@ class AboutView(TemplateView):
         # Add any additional context data you want to display on the about page
         return context
 
+
+def destination_detail(request, slug):
+    destination = get_object_or_404(Destination, slug=slug)
+    return render(request, 'users/dede/destination_detail.html', {'destination': destination})
+
 # class ShopView(ListView):
 #     model = Product
 #     template_name = 'users/dede/shop.html'

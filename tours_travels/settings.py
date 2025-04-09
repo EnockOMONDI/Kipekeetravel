@@ -52,7 +52,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'pyuploadcare.dj',
+
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,13 +60,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'pyuploadcare.dj',
+    'taggit',
+    'crispy_forms',
+
     'adminside',
     'users',
     'blog',
     'dede',
     'events',
-    'taggit',
-    'crispy_forms',
+   
 ]
 
 MIDDLEWARE = [

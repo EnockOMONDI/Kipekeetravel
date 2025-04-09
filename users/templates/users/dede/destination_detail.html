@@ -1,0 +1,42 @@
+{% extends "users/dede/basemain.html" %}
+
+{% block content %}
+<div class="tg-destination-detail-area pt-45 pb-90">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-destination-detail-title text-center mb-40">
+                    <h2 class="mb-15">{{ destination.name }}</h2>
+                    <p>{{ destination.description }}</p>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="tg-destination-tours">
+                    <h3 class="mb-30">Tours Available in {{ destination.name }}</h3>
+                    <div class="row">
+                        {% for tour in destination.tours.all %}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="tg-tour-item mb-30">
+                                <div class="tg-tour-thumb">
+                                    <img class="w-100" src="{{ tour.image.url }}" alt="{{ tour.name }}">
+                                </div>
+                                <div class="tg-tour-content">
+                                    <h4>{{ tour.name }}</h4>
+                                    <p>{{ tour.description|truncatewords:20 }}</p>
+                                    <p>Price: {{ tour.price }}</p>
+                                    <a href="{% url 'dede:tour_detail' tour.slug %}" class="tg-btn">View Tour</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <p>No tours available for this destination.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
