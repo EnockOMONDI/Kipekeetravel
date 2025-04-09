@@ -4,6 +4,7 @@ from django.conf import global_settings
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+SITE_ID=1
 SECRET_KEY = '!DJANGO_JET_TESTS!'
 
 DEBUG = True
@@ -17,6 +18,7 @@ INSTALLED_APPS = (
     'jet',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.staticfiles',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',

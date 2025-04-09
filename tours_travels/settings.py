@@ -53,7 +53,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'pyuploadcare.dj',
-    'jet.dashboard',
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
