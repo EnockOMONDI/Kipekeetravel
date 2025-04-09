@@ -18,12 +18,12 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="tg-tour-item mb-30">
                                 <div class="tg-tour-thumb">
-                                    <img class="w-100" src="{{ tour.image.url }}" alt="{{ tour.name }}">
+                                    <img class="w-100" src="{{ tour.Image.cdn_url }}" alt="{{ tour.name }}">
                                 </div>
                                 <div class="tg-tour-content">
                                     <h4>{{ tour.name }}</h4>
                                     <p>{{ tour.description|truncatewords:20 }}</p>
-                                    <p>Price: {{ tour.price }}</p>
+                                    <p>Price: KES {{ tour.price }}</p>
                                     <a href="{% url 'dede:tour_detail' tour.slug %}" class="tg-btn">View Tour</a>
                                 </div>
                             </div>
