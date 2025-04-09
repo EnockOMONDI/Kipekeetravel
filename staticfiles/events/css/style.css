@@ -1,0 +1,19 @@
+/* Add your custom styles here */
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ticket-type {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.ticket-type:last-child {
+    border-bottom: none;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #28a745;
+}

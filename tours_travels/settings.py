@@ -53,7 +53,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'pyuploadcare.dj',
-    
     'jet.dashboard',
     'jet',
     'django.contrib.admin',
@@ -118,10 +117,10 @@ WSGI_APPLICATION = 'tours_travels.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'kipekeee',
-    'USER': 'kipekeee_owner',
-    'PASSWORD': 'npg_zrNq4ZhMote6',
-    'HOST': 'ep-tight-forest-a2rv8c0o-pooler.eu-central-1.aws.neon.tech',
+    'NAME': 'dedemain',
+    'USER': 'dedemain_owner',
+    'PASSWORD': 'npg_pIPejigM36Nw',
+    'HOST': 'ep-lucky-tree-a29r8zlc-pooler.eu-central-1.aws.neon.tech',
     'PORT': '5432',
     'CONN_MAX_AGE': 0,  # Disable connection persistence
     'OPTIONS': {

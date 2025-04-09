@@ -13,6 +13,7 @@ import datetime
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from events.models import EventCategory
 
 
 
@@ -24,8 +25,12 @@ class HomeView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['featured_tours'] = Tour.objects.filter(rating__gte=4.5)[:6]
-        context['popular_destinations'] = Destination.objects.all()[:6]
+        context.update({
+            'featured_tours': Tour.objects.filter(rating__gte=4.5)[:6],
+            'popular_destinations': Destination.objects.all()[:6],
+            'event_categories': EventCategory.objects.all(),
+            'today': timezone.now().date(),
+        })
         return context
     
 class AboutView(TemplateView):
