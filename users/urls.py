@@ -20,4 +20,9 @@ urlpatterns = [
     path('booking_success/<int:booking_id>/', views.booking_success, name='users-booking-success'),
     path('activate/<uid64>/<token>',views.ActivateAccountView.as_view(),name='activate'),
     path('send-mice-email/', views.send_mice_email, name='send_mice_email'),
+    path('profile/', views.profile, name='users-profile'),
+    path('profile/edit/', views.profile_edit, name='profile-edit'),
+    
+
+
 ] 

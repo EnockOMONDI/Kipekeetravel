@@ -119,14 +119,14 @@ class TourDayAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['booking_reference', 'tour', 'full_name', 'travel_date', 
+    list_display = ['booking_reference', 'user', 'tour', 'full_name', 'travel_date', 
                    'number_of_people', 'booking_status', 'payment_status', 'total_price']
-    list_filter = ['booking_status', 'payment_status', 'travel_date', 'created_at']
-    search_fields = ['booking_reference', 'full_name', 'email', 'tour__name']
+    list_filter = ['booking_status', 'payment_status', 'travel_date', 'created_at', 'user']
+    search_fields = ['booking_reference', 'full_name', 'email', 'tour__name', 'user__username']
     readonly_fields = ['booking_reference', 'created_at', 'updated_at']
     fieldsets = (
         ('Booking Information', {
-            'fields': ('booking_reference', 'tour', 'travel_date', 'number_of_people')
+            'fields': ('booking_reference', 'user', 'tour', 'travel_date', 'number_of_people')
         }),
         ('Customer Information', {
             'fields': ('full_name', 'email', 'phone', 'special_requirements')

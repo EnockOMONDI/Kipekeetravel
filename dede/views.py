@@ -18,6 +18,7 @@ from events.models import EventCategory
 
 
 
+
 class HomeView(ListView):
     model = Tour
     template_name = 'users/dede/index.html'

@@ -32,15 +32,33 @@ from django.views import View
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .forms import UserRegisterForm
 
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .utils import send_booking_confirmation_email
 from events.views import EventListView
+from .forms import ProfileForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import ProfileForm
 
 
 
+@login_required
+def profile(request):
+    return render(request, 'users/dede/profile.html', {'user': request.user})
 
-
+@login_required
+def profile_edit(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('users:users-profile')
+    else:
+        form = ProfileForm(instance=request.user.profile)
+    return render(request, 'users/dede/profile_edit.html', {'form': form})
 
 
 

@@ -18,7 +18,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('dede.urls', 'dede'), namespace='dede')),
     path('events/', include(('events.urls', 'events'), namespace='events')),
-    path('old/', include(('users.urls', 'users'), namespace='home')),
+    path('users/', include(('users.urls', 'users'), namespace='home')),
     path('tours/', include(('adminside.urls', 'adminside'), namespace='adminside')),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
     path('login/',auth_views.LoginView.as_view(template_name='users/login.html'),name='login'),
