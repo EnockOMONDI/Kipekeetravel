@@ -5,6 +5,7 @@ from pyuploadcare.dj.models import ImageField
 from django.utils import timezone
 import random
 
+
 class Destination(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
@@ -34,14 +35,13 @@ class Tour(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.IntegerField(help_text="Duration in days")
-    group_size = models.IntegerField()
+    group_size = models.IntegerField(blank=True, null=True, default=30)
     languages = models.CharField(max_length=100)
     rating = models.DecimalField(max_digits=3, decimal_places=2, 
                                validators=[MinValueValidator(0), MaxValueValidator(5)])
     reviews_count = models.IntegerField(default=0)
-    
-    # Remove this line since we're using pyuploadcare's ImageField
-    # main_image = models.ImageField(upload_to='tours/', blank=True)
+    is_featured = models.BooleanField(default=False)
+   
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -95,6 +95,73 @@ class Review(models.Model):
     
     def __str__(self):
         return f"{self.tour.name} - {self.user_name}"
+
+
+class DayTrip(models.Model):
+    # Basic Information
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, blank=True)
+    Image = ImageField(blank=True, null=True, manual_crop="16:9")
+    gallery_image1 = ImageField(blank=True, null=True, manual_crop="4:4")
+    gallery_image2 = ImageField(blank=True, null=True, manual_crop="4:4")
+    gallery_image3 = ImageField(blank=True, null=True, manual_crop="4:4")
+    date = models.DateField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    # Pickup Information
+    pickup_location = models.CharField(max_length=200)
+    pickup_time = models.TimeField()
+    
+    # What's Included
+    included_items = models.ManyToManyField('IncludedItem')
+    
+    is_featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} - {self.date}"
+
+    class Meta:
+        ordering = ['date']
+
+class ItineraryItem(models.Model):
+    daytrip = models.ForeignKey(DayTrip, on_delete=models.CASCADE, related_name='itinerary_items')
+    time = models.TimeField()
+    activity = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'time']
+
+    def __str__(self):
+        return f"{self.time.strftime('%H:%M')} - {self.activity}"
+
+class IncludedItem(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    icon = models.CharField(max_length=50, blank=True)  # For emoji or icon
+
+    def __str__(self):
+        return self.name
+
+class OptionalActivity(models.Model):
+    daytrip = models.ForeignKey(DayTrip, on_delete=models.CASCADE, related_name='optional_activities')
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Optional Activities"
+
+    def __str__(self):
+        return self.name
 
 
 class Booking(models.Model):

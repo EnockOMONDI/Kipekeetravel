@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Tour, TourHighlight, TourInclusion, TourDay, Review, Destination, Booking
+from .models import DayTrip, ItineraryItem, IncludedItem, OptionalActivity
 
 class TourHighlightInline(admin.TabularInline):
     model = TourHighlight
@@ -20,8 +21,8 @@ class ReviewInline(admin.TabularInline):
 
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    list_display = ('name', 'destination', 'price', 'duration', 'rating', 'reviews_count')
-    list_filter = ('destination', 'duration', 'rating')
+    list_display = ('name', 'destination', 'price', 'duration', 'reviews_count', 'is_featured')
+    list_filter = ('destination', 'duration', 'is_featured')
     search_fields = ('name', 'description', 'destination__name')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [TourHighlightInline, TourInclusionInline, TourDayInline, ReviewInline]
@@ -31,7 +32,7 @@ class TourAdmin(admin.ModelAdmin):
             'fields': ('destination', 'name', 'slug', 'description')
         }),
         ('Tour Details', {
-            'fields': ('price', 'duration', 'group_size', 'languages')
+            'fields': ('price', 'duration', 'group_size', 'languages', 'is_featured')  # Added group_size here
         }),
         ('Images', {
             'fields': (
@@ -144,3 +145,49 @@ class BookingAdmin(admin.ModelAdmin):
         if not obj.total_price:
             obj.total_price = obj.calculate_total_price()
         super().save_model(request, obj, form, change)
+
+
+
+class ItineraryItemInline(admin.TabularInline):
+    model = ItineraryItem
+    extra = 1
+    ordering = ['order', 'time']
+
+class OptionalActivityInline(admin.TabularInline):
+    model = OptionalActivity
+    extra = 1
+@admin.register(DayTrip)
+class DayTripAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date', 'price', 'pickup_location', 'pickup_time', 'is_featured')
+    list_filter = ('date', 'is_featured')
+    search_fields = ('name', 'pickup_location')
+    prepopulated_fields = {'slug': ('name',)}
+    inlines = [ItineraryItemInline, OptionalActivityInline]
+    
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'slug')
+        }),
+        ('Images', {
+            'fields': ('Image', 'gallery_image1', 'gallery_image2', 'gallery_image3'),
+            'classes': ('wide',)
+        }),
+        ('Trip Details', {
+            'fields': ('date', 'price')
+        }),
+        ('Pickup Details', {
+            'fields': ('pickup_location', 'pickup_time')
+        }),
+        ('Inclusions', {
+            'fields': ('included_items',)
+        }),
+        ('Settings', {
+            'fields': ('is_featured',),
+            'classes': ('collapse',)
+        })
+    )
+
+@admin.register(IncludedItem)
+class IncludedItemAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name', 'description')

@@ -1,0 +1,194 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+        <!-- tg-breadcrumb-area-start -->
+        <div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}  ">
+            <div class="tg-hero-top-shadow"></div>
+            <div class="tg-breadcrumb-shadow"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="tg-breadcrumb-content text-center">
+                            <h2 class="tg-breadcrumb-title mb-15">Day Trips</h2>
+                            <div class="tg-breadcrumb-list">
+                                <span><a href="{% url 'dede:home' %}">Home</a></span>
+                                <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                                <span>Day Trips</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tg-hero-bottom-shape d-none d-md-block">
+                <span>
+                    <svg width="432" height="290" viewBox="0 0 432 290" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line-1" opacity="0.4" d="M39.6042 428.345C4.41235 355.065 -24.3018 203.867 142.377 185.309C350.725 162.111 488.893 393.541 289.169 313.515C129.389 249.494 458.202 85.4772 642.58 11.4713" stroke="white" stroke-width="24" />
+                    </svg>
+                </span>
+            </div>
+            <div class="tg-hero-bottom-shape-2 d-none d-md-block">
+                <span>
+                    <svg width="154" height="243" viewBox="0 0 154 243" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line-1" opacity="0.4" d="M144.616 328.905C116.117 300.508 62.5986 230.961 76.5162 179.949C93.9131 116.184 275.231 7.44494 -65.0181 12.8762" stroke="white" stroke-width="24" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <!-- tg-breadcrumb-area-end -->
+
+        <!-- tg-booking-form-area-start -->
+        <div class="tg-booking-form-area tg-booking-form-grid-space pb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tg-booking-form-item tg-booking-form-grid">
+                            <form class="tg-filter-form" method="GET">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-3 col-md-6">
+                                        <input type="date" name="date" class="form-control" value="{{ request.GET.date }}" min="{{ today|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <button type="submit" class="tg-btn">Filter Results</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- tg-booking-form-area-end -->
+
+        <!-- tg-listing-grid-area-start -->
+        <div class="tg-listing-grid-area mb-85">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 order-last order-lg-first">
+                        <div class="tg-filter-sidebar mb-40 top-sticky">
+                            <div class="tg-filter-item">
+                                <h4 class="tg-filter-title mb-15">Featured Day Trips</h4>
+                                <div class="tg-filter-list">
+                                    <ul>
+                                        {% for daytrip in featured_daytrips %}
+                                        <li>
+                                            <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">
+                                                {{ daytrip.name }}
+                                                <span class="float-end">KES {{ daytrip.price }}</span>
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <span class="tg-filter-border mt-25 mb-25"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="tg-listing-item-box-wrap ml-10">
+                            <div class="tg-listing-box-filter mb-15">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-5 col-md-5 mb-15">
+                                        <div class="tg-listing-box-number-found">
+                                            <span>Found {{ daytrips.count }} Day Trips</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tg-listing-grid-item">
+                                <div class="row list-card">
+                                    {% for daytrip in daytrips %}
+                                    <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6 tg-grid-full">
+                                        <div class="tg-listing-card-item mb-30">
+                                            <div class="tg-listing-card-thumb fix mb-15 p-relative">
+                                                <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">
+                                                    {% if daytrip.Image %}
+                                                        <img class="tg-card-border w-100" src="{{ daytrip.Image.cdn_url }}" alt="{{ daytrip.name }}">
+                                                    {% else %}
+                                                        <img class="tg-card-border w-100" src="{% static 'assets3/img/default-daytrip.jpg' %}" alt="{{ daytrip.name }}">
+                                                    {% endif %}
+                                                    {% if daytrip.is_featured %}
+                                                        <span class="tg-listing-item-price-discount shape">Featured</span>
+                                                    {% endif %}
+                                                </a>
+                                                <div class="tg-listing-item-wishlist">
+                                                    <a href="#">
+                                                        <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M10.5167 16.3416C10.2334 16.4416 9.76675 16.4416 9.48341 16.3416C7.06675 15.5166 1.66675 12.075 1.66675 6.24165C1.66675 3.66665 3.74175 1.58331 6.30008 1.58331C7.81675 1.58331 9.15841 2.31665 10.0001 3.44998C10.8417 2.31665 12.1917 1.58331 13.7001 1.58331C16.2584 1.58331 18.3334 3.66665 18.3334 6.24165C18.3334 12.075 12.9334 15.5166 10.5167 16.3416Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="tg-listing-main-content">
+                                                <div class="tg-listing-card-content">
+                                                    <h4 class="tg-listing-card-title">
+                                                        <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">{{ daytrip.name }}</a>
+                                                    </h4>
+                                                    <div class="tg-listing-card-duration-tour">
+                                                        <span class="tg-listing-card-duration-map mb-5">
+                                                            <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M12.3329 6.7071C12.3329 11.2324 6.55512 15.1111 6.55512 15.1111C6.55512 15.1111 0.777344 11.2324 0.777344 6.7071C0.777344 5.16402 1.38607 3.68414 2.46962 2.59302C3.55316 1.5019 5.02276 0.888916 6.55512 0.888916C8.08748 0.888916 9.55708 1.5019 10.6406 2.59302C11.7242 3.68414 12.3329 5.16402 12.3329 6.7071Z" stroke="currentColor" stroke-width="1.15556" stroke-linecap="round" stroke-linejoin="round" />
+                                                                <path d="M6.55512 8.64649C7.61878 8.64649 8.48105 7.7782 8.48105 6.7071C8.48105 5.636 7.61878 4.7677 6.55512 4.7677C5.49146 4.7677 4.6292 5.636 4.6292 6.7071C4.6292 7.7782 5.49146 8.64649 6.55512 8.64649Z" stroke="currentColor" stroke-width="1.15556" stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                            {{ daytrip.pickup_location }}
+                                                        </span>
+                                                        <span class="tg-listing-card-duration-time">
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M8.00175 3.73329V7.99996L10.8462 9.42218M15.1128 8.00003C15.1128 11.9274 11.9291 15.1111 8.00174 15.1111C4.07438 15.1111 0.890625 11.9274 0.890625 8.00003C0.890625 4.07267 4.07438 0.888916 8.00174 0.888916C11.9291 0.888916 15.1128 4.07267 15.1128 8.00003Z" stroke="currentColor" stroke-width="1.06667" stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                            {{ daytrip.pickup_time|time:"H:i" }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="tg-listing-card-price d-flex align-items-end justify-content-between">
+                                                    <div class="tg-listing-card-price-wrap price-bg d-flex align-items-center">
+                                                        <span class="tg-listing-card-currency-amount mr-5">
+                                                            <span class="currency-symbol">KES {{ daytrip.price }}</span>
+                                                        </span>
+                                                        <span class="tg-listing-card-activity-person">/Person</span>
+                                                    </div>
+                                                    <div class="tg-listing-card-review space">
+                                                        <span class="tg-listing-rating-icon">
+                                                            <i class="fa-solid fa-calendar-day"></i>
+                                                        </span>
+                                                        <span class="tg-listing-rating-percent">{{ daytrip.date|date:"F j, Y" }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% if is_paginated %}
+                                <div class="tg-pagenation-wrap text-center mt-50 mb-30">
+                                    <nav>
+                                        <ul>
+                                            {% if page_obj.has_previous %}
+                                                <li><a class="p-btn mr-25" href="?page={{ page_obj.previous_page_number }}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">Previous Page</a></li>
+                                            {% endif %}
+                                            
+                                            {% for num in page_obj.paginator.page_range %}
+                                                {% if page_obj.number == num %}
+                                                    <li><a class="active" href="#">{{ num }}</a></li>
+                                                {% else %}
+                                                    <li><a href="?page={{ num }}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">{{ num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                            {% if page_obj.has_next %}
+                                                <li><a class="p-btn ml-25" href="?page={{ page_obj.next_page_number }}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">Next Page</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- tg-listing-grid-area-end -->
+  {% include 'users/dede/footer.html' %}
+{% endblock %}

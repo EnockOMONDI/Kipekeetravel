@@ -4,7 +4,7 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
-    path('google-one-tap/', views.google_one_tap_login, name='google-one-tap'),
+    # path('google-one-tap/', views.google_one_tap_login, name='google-one-tap'),
     path('', views.home, name='users-home'),
     path('about/', views.aboutus, name='aboutus'),
     path('corporate/', views.corporate, name='corporatepage'),

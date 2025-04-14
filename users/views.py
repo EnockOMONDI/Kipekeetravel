@@ -54,95 +54,95 @@ import json
 
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 # users/views.py
-@csrf_protect
-def google_one_tap_login(request):
-    if request.method == 'POST':
-        try:
-            logger.debug('Received Google One Tap request')
-            logger.debug(f'Request body: {request.body}')
+# @csrf_protect
+# def google_one_tap_login(request):
+#     if request.method == 'POST':
+#         try:
+#             logger.debug('Received Google One Tap request')
+#             logger.debug(f'Request body: {request.body}')
             
-            data = json.loads(request.body)
-            credential = data.get('credential')
+#             data = json.loads(request.body)
+#             credential = data.get('credential')
             
-            if not credential:
-                logger.error('No credential provided in request')
-                return JsonResponse({
-                    'success': False,
-                    'error': 'No credential provided'
-                })
+#             if not credential:
+#                 logger.error('No credential provided in request')
+#                 return JsonResponse({
+#                     'success': False,
+#                     'error': 'No credential provided'
+#                 })
 
-            try:
-                idinfo = id_token.verify_oauth2_token(
-                    credential,
-                    requests.Request(),
-                    settings.GOOGLE_CLIENT_ID
-                )
-                logger.debug('Token verified successfully')
+#             try:
+#                 idinfo = id_token.verify_oauth2_token(
+#                     credential,
+#                     requests.Request(),
+#                     settings.GOOGLE_CLIENT_ID
+#                 )
+#                 logger.debug('Token verified successfully')
                 
-                # Get user info from the token
-                email = idinfo['email']
-                first_name = idinfo.get('given_name', '')
-                last_name = idinfo.get('family_name', '')
+#                 # Get user info from the token
+#                 email = idinfo['email']
+#                 first_name = idinfo.get('given_name', '')
+#                 last_name = idinfo.get('family_name', '')
                 
-                # Check if user exists
-                try:
-                    user = User.objects.get(email=email)
-                    logger.debug(f'Existing user found: {email}')
-                except User.DoesNotExist:
-                    # Create new user
-                    logger.debug(f'Creating new user for: {email}')
-                    user = User.objects.create_user(
-                        username=email,  # Using email as username
-                        email=email,
-                        first_name=first_name,
-                        last_name=last_name,
-                        is_active=True  # Google users are pre-verified
-                    )
-                    # Create profile for new user
-                    Profile.objects.create(user=user)
-                    logger.debug(f'Created new user profile for: {email}')
+#                 # Check if user exists
+#                 try:
+#                     user = User.objects.get(email=email)
+#                     logger.debug(f'Existing user found: {email}')
+#                 except User.DoesNotExist:
+#                     # Create new user
+#                     logger.debug(f'Creating new user for: {email}')
+#                     user = User.objects.create_user(
+#                         username=email,  # Using email as username
+#                         email=email,
+#                         first_name=first_name,
+#                         last_name=last_name,
+#                         is_active=True  # Google users are pre-verified
+#                     )
+#                     # Create profile for new user
+#                     Profile.objects.create(user=user)
+#                     logger.debug(f'Created new user profile for: {email}')
 
-                # Log the user in
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                logger.debug(f'User logged in successfully: {email}')
+#                 # Log the user in
+#                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+#                 logger.debug(f'User logged in successfully: {email}')
 
-                # Generate absolute redirect URL
-                redirect_url = request.build_absolute_uri(reverse('dede:home'))
-                logger.debug(f'Generated redirect URL: {redirect_url}')
+#                 # Generate absolute redirect URL
+#                 redirect_url = request.build_absolute_uri(reverse('dede:home'))
+#                 logger.debug(f'Generated redirect URL: {redirect_url}')
 
-                return JsonResponse({
-                    'success': True,
-                    'redirect_url': redirect_url,
-                    'message': f'Welcome {first_name}! Login successful.'
-                })
+#                 return JsonResponse({
+#                     'success': True,
+#                     'redirect_url': redirect_url,
+#                     'message': f'Welcome {first_name}! Login successful.'
+#                 })
 
-            except ValueError as e:
-                logger.error(f'Token verification failed: {str(e)}')
-                return JsonResponse({
-                    'success': False,
-                    'error': 'Invalid token'
-                })
+#             except ValueError as e:
+#                 logger.error(f'Token verification failed: {str(e)}')
+#                 return JsonResponse({
+#                     'success': False,
+#                     'error': 'Invalid token'
+#                 })
 
-        except json.JSONDecodeError as e:
-            logger.error(f'JSON decode error: {str(e)}')
-            return JsonResponse({
-                'success': False,
-                'error': 'Invalid JSON data'
-            })
-        except Exception as e:
-            logger.error(f'Unexpected error: {str(e)}')
-            return JsonResponse({
-                'success': False,
-                'error': str(e)
-            })
+#         except json.JSONDecodeError as e:
+#             logger.error(f'JSON decode error: {str(e)}')
+#             return JsonResponse({
+#                 'success': False,
+#                 'error': 'Invalid JSON data'
+#             })
+#         except Exception as e:
+#             logger.error(f'Unexpected error: {str(e)}')
+#             return JsonResponse({
+#                 'success': False,
+#                 'error': str(e)
+#             })
 
-    return JsonResponse({
-        'success': False,
-        'error': 'Invalid request method'
-    })
+#     return JsonResponse({
+#         'success': False,
+#         'error': 'Invalid request method'
+#     })
 
 def register(request):
     if request.method == 'POST':

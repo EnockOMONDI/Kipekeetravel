@@ -56,27 +56,6 @@
                                     </div>
                                     <br>
 
-                                    <!-- Google One Tap Sign In -->
-                                    <div class="google-btn-container">
-                                        <div id="g_id_onload"
-                                        data-client_id="{{ GOOGLE_CLIENT_ID }}"
-                                        data-context="signup"
-                                        data-ux_mode="popup"
-                                        data-login_uri="{{ request.scheme }}://{{ request.get_host }}{% url 'users:google-one-tap' %}"
-                                        data-auto_prompt="false"
-                                        data-itp_support="true">
-                                   </div>
-                                   
-                                   <div class="g_id_signin"
-                                        data-type="standard"
-                                        data-shape="rectangular"
-                                        data-theme="outline"
-                                        data-text="continue_with"
-                                        data-size="large"
-                                        data-logo_alignment="left">
-                                   </div>
-</div>
-                                  
 
                                     <div class="text-center mb-4">
                                         <p>- OR -</p>
@@ -118,39 +97,5 @@
         </div>
     </section>
 
-    <script>
-        function handleCredentialResponse(response) {
-            console.log("Received credential response:", response);
-            
-            fetch('{% url "users:google-one-tap" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    credential: response.credential
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Server response:", data);
-                if (data.success) {
-                    window.location.href = data.redirect_url;
-                } else {
-                    console.error('Login failed:', data.error);
-                    alert('Login failed: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred during login');
-            });
-        }
-    </script>
-    <script>
-        console.log("Google Client ID:", "{{ GOOGLE_CLIENT_ID }}");
-        console.log("CSRF Token:", "{{ csrf_token }}");
-    </script>
 </body>
 </html>

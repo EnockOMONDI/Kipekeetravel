@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db.models import Avg
 from .models import Destination, Tour, Review
 from django.views.generic.edit import CreateView
-from .models import Tour, Booking
+from .models import Tour, Booking, DayTrip
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -14,6 +14,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from events.models import EventCategory
+from django.utils import timezone
 
 
 
@@ -27,11 +28,50 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'featured_tours': Tour.objects.filter(rating__gte=4.5)[:6],
+            'featured_tours': Tour.objects.filter(is_featured=True)[:6],  # Changed from rating__gte=4.5
+            'top_tours': Tour.objects.filter(rating__gte=4.5)[:6],
             'popular_destinations': Destination.objects.all()[:6],
             'event_categories': EventCategory.objects.all(),
             'today': timezone.now().date(),
         })
+        return context
+
+
+
+class DayTripListView(ListView):
+    model = DayTrip
+    template_name = 'users/dede/daytrip_list.html'
+    context_object_name = 'daytrips'
+    paginate_by = 9
+
+    def get_queryset(self):
+        # Show only upcoming daytrips
+        return DayTrip.objects.filter(
+            date__gte=timezone.now().date()
+        ).order_by('date')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['featured_daytrips'] = DayTrip.objects.filter(
+            is_featured=True,
+            date__gte=timezone.now().date()
+        )[:6]
+        return context
+
+class DayTripDetailView(DetailView):
+    model = DayTrip
+    template_name = 'users/dede/daytrip_detail.html'
+    context_object_name = 'daytrip'
+    slug_url_kwarg = 'daytrip_slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get next 3 upcoming daytrips for recommendations
+        context['upcoming_daytrips'] = DayTrip.objects.filter(
+            date__gte=timezone.now().date()
+        ).exclude(
+            id=self.object.id
+        ).order_by('date')[:3]
         return context
     
 class AboutView(TemplateView):
@@ -95,6 +135,7 @@ class TourListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['destinations'] = Destination.objects.all()
+        context['featured_tours'] = Tour.objects.filter(is_featured=True)
         return context
 
     def get_queryset(self):
@@ -103,6 +144,7 @@ class TourListView(ListView):
         price_min = self.request.GET.get('price_min')
         price_max = self.request.GET.get('price_max')
         duration = self.request.GET.get('duration')
+        featured = self.request.GET.get('featured')  # Add this line
 
         if destination:
             queryset = queryset.filter(destination__slug=destination)
@@ -112,6 +154,8 @@ class TourListView(ListView):
             queryset = queryset.filter(price__lte=price_max)
         if duration:
             queryset = queryset.filter(duration=duration)
+        if featured:  # Add this block
+            queryset = queryset.filter(is_featured=True)
 
         return queryset.select_related('destination')  # Optimize database queries
 

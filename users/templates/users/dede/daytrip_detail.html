@@ -1,0 +1,127 @@
+<!-- users/templates/users/dede/daytrips/daytrip_detail.html -->
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<section class="daytrip-details-area pt-120 pb-90">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="daytrip-details-wrapper mb-30">
+                    <div class="daytrip-thumb mb-30">
+                        <img src="{{ daytrip.Image.cdn_url }}" alt="{{ daytrip.name }}">
+                    </div>
+                    
+                    <div class="daytrip-details-content">
+                        <h1>{{ daytrip.name }} – ITINERARY</h1>
+                        <div class="daytrip-meta">
+                            <span><i class="far fa-calendar"></i> {{ daytrip.date|date:"F j, Y" }}</span>
+                            <span class="price">Ksh {{ daytrip.price }} per person</span>
+                        </div>
+
+                        <!-- Itinerary Breakdown -->
+                        <div class="itinerary-section mt-40">
+                            <h3>⏰ Itinerary Breakdown:</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Activity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in daytrip.itinerary_items.all %}
+                                        <tr>
+                                            <td>{{ item.time|time:"H:i" }}</td>
+                                            <td>{{ item.activity }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- What's Included -->
+                        <div class="included-section mt-40">
+                            <h3>✅ What's Included:</h3>
+                            <ul class="included-list">
+                                {% for item in daytrip.included_items.all %}
+                                <li>
+                                    {% if item.icon %}
+                                    <i class="{{ item.icon }}"></i>
+                                    {% endif %}
+                                    {{ item.name }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Optional Activities -->
+                        {% if daytrip.optional_activities.exists %}
+                        <div class="optional-activities-section mt-40">
+                            <h3>🎯 Other Activities (Optional):</h3>
+                            <ul class="optional-activities-list">
+                                {% for activity in daytrip.optional_activities.all %}
+                                <li>
+                                    {{ activity.name }}
+                                    {% if activity.price %}
+                                    - Ksh {{ activity.price }}
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- Pickup Information -->
+                        <div class="pickup-section mt-40">
+                            <h3>📍 Pickup Point:</h3>
+                            <p>{{ daytrip.pickup_location }}</p>
+                            <p>Time: {{ daytrip.pickup_time|time:"H:i" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="daytrip-sidebar">
+                    <!-- Booking Widget -->
+                    <div class="widget booking-widget mb-30">
+                        <h3 class="widget-title">Book This Trip</h3>
+                        <div class="booking-info">
+                            <p><strong>Date:</strong> {{ daytrip.date|date:"F j, Y" }}</p>
+                            <p><strong>Price:</strong> Ksh {{ daytrip.price }} per person</p>
+                            <p><strong>Pickup:</strong> {{ daytrip.pickup_location }}</p>
+                            <p><strong>Time:</strong> {{ daytrip.pickup_time|time:"H:i" }}</p>
+                        </div>
+                        <a href="#" class="btn btn-primary w-100">Book Now</a>
+                    </div>
+
+                    <!-- Upcoming Trips Widget -->
+                    {% if upcoming_daytrips %}
+                    <div class="widget upcoming-trips-widget">
+                        <h3 class="widget-title">Upcoming Trips</h3>
+                        <ul class="upcoming-trips-list">
+                            {% for trip in upcoming_daytrips %}
+                            <li>
+                                <a href="{% url 'dede:daytrip_detail' trip.slug %}">
+                                    <img src="{{ trip.Image.cdn_url }}" alt="{{ trip.name }}">
+                                    <div class="trip-info">
+                                        <h4>{{ trip.name }}</h4>
+                                        <span>{{ trip.date|date:"F j, Y" }}</span>
+                                        <span class="price">Ksh {{ trip.price }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
