@@ -1,3 +1,5 @@
+import logging
+from django.urls import reverse
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from django.http import Http404
 import os
@@ -39,10 +41,138 @@ from events.views import EventListView
 from .forms import ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from .forms import ProfileForm
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse
+from django.contrib.auth import login
+from django.conf import settings
+from google.oauth2 import id_token
+from google.auth.transport import requests
+from .models import User, Profile
+import json
 
 
+
+
+logger = logging.getLogger(__name__)
+
+# users/views.py
+@csrf_protect
+def google_one_tap_login(request):
+    if request.method == 'POST':
+        try:
+            logger.debug('Received Google One Tap request')
+            logger.debug(f'Request body: {request.body}')
+            
+            data = json.loads(request.body)
+            credential = data.get('credential')
+            
+            if not credential:
+                logger.error('No credential provided in request')
+                return JsonResponse({
+                    'success': False,
+                    'error': 'No credential provided'
+                })
+
+            try:
+                idinfo = id_token.verify_oauth2_token(
+                    credential,
+                    requests.Request(),
+                    settings.GOOGLE_CLIENT_ID
+                )
+                logger.debug('Token verified successfully')
+                
+                # Get user info from the token
+                email = idinfo['email']
+                first_name = idinfo.get('given_name', '')
+                last_name = idinfo.get('family_name', '')
+                
+                # Check if user exists
+                try:
+                    user = User.objects.get(email=email)
+                    logger.debug(f'Existing user found: {email}')
+                except User.DoesNotExist:
+                    # Create new user
+                    logger.debug(f'Creating new user for: {email}')
+                    user = User.objects.create_user(
+                        username=email,  # Using email as username
+                        email=email,
+                        first_name=first_name,
+                        last_name=last_name,
+                        is_active=True  # Google users are pre-verified
+                    )
+                    # Create profile for new user
+                    Profile.objects.create(user=user)
+                    logger.debug(f'Created new user profile for: {email}')
+
+                # Log the user in
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                logger.debug(f'User logged in successfully: {email}')
+
+                # Generate absolute redirect URL
+                redirect_url = request.build_absolute_uri(reverse('dede:home'))
+                logger.debug(f'Generated redirect URL: {redirect_url}')
+
+                return JsonResponse({
+                    'success': True,
+                    'redirect_url': redirect_url,
+                    'message': f'Welcome {first_name}! Login successful.'
+                })
+
+            except ValueError as e:
+                logger.error(f'Token verification failed: {str(e)}')
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Invalid token'
+                })
+
+        except json.JSONDecodeError as e:
+            logger.error(f'JSON decode error: {str(e)}')
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON data'
+            })
+        except Exception as e:
+            logger.error(f'Unexpected error: {str(e)}')
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method'
+    })
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)  # Save the user object in memory
+            user.is_active = False
+
+            # Save the user object to the database only when the form is valid
+            user.save()
+
+            current_site = get_current_site(request)
+            uid64 = urlsafe_base64_encode(force_bytes(user.pk))
+            token = PasswordResetTokenGenerator().make_token(user)
+            activation_link = f'http://{current_site.domain}/users/activate/{uid64}/{token}/'
+
+            mail_f.verification_mail(activation_link, user)
+
+            # Store username and email in session
+            request.session['username'] = form.cleaned_data['username']
+            request.session['email'] = form.cleaned_data['email']
+
+            # Redirect to the success message page
+            return redirect('users:success')
+
+    else:
+        form = UserRegisterForm()
+
+    return render(request, 'users/register.html', {'form': form})
 
 @login_required
 def profile(request):
@@ -60,37 +190,6 @@ def profile_edit(request):
         form = ProfileForm(instance=request.user.profile)
     return render(request, 'users/dede/profile_edit.html', {'form': form})
 
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-
-        if form.is_valid():
-            user = form.save(commit=False)  # Save the user object in memory
-            user.is_active = False
-
-            # Save the user object to the database only when the form is valid
-            user.save()
-
-            current_site = get_current_site(request)
-            uid64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = PasswordResetTokenGenerator().make_token(user)
-            activation_link = f'http://{current_site}/activate/{uid64}/{token}'
-
-            mail_f.verification_mail(activation_link, user)
-
-            # Store username and email in session
-            request.session['username'] = form.cleaned_data['username']
-            request.session['email'] = form.cleaned_data['email']
-
-            # Redirect to the success message page
-            return redirect('users:success')
-
-    else:
-        form = UserRegisterForm()
-
-    return render(request, 'users/register.html', {'form': form})
 
 
 

@@ -46,8 +46,28 @@ SECRET_KEY = "seen"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+# Google OAuth settings
+GOOGLE_CLIENT_ID = '876054945568-ma5924no5c16cetu6umbkanpsu3djppt.apps.googleusercontent.com'
 
+# Security settings
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'https://127.0.0.1:8000',
+    'https://localhost:8000'
+]
+
+# If you're using HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = False  # Set to True in production
+SESSION_COOKIE_SECURE = True  # Set to True in production
+CSRF_COOKIE_SECURE = True  # Set to True in production
+
+# Update your ALLOWED_HOSTS if needed
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
+# settings.py
+# tours_travels/settings.py
+GOOGLE_CLIENT_ID = '876054945568-ma5924no5c16cetu6umbkanpsu3djppt.apps.googleusercontent.com'
 
 # Application definition
 
@@ -98,6 +118,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'users.context_processors.google_client_id',
+                
             ],
         },
     },
@@ -192,10 +214,28 @@ STATICFILES_DIRS = [
 
 CRISPY_TEMPLATE_PACK='bootstrap4'
 
-LOGIN_REDIRECT_URL='users:users-home'
+LOGIN_REDIRECT_URL='dede:home'
 LOGIN_URL='login'
-LOGOUT_REDIRECT_URL = 'users:users-home'
+LOGOUT_REDIRECT_URL = 'dede:home'
 
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'users': {  # This will catch all loggers in the users app
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 ## For media files
 MEDIA_URL = '/media/'
@@ -206,7 +246,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 UPLOADCARE = {
-  # Don’t forget to set real keys when it gets real :)
+  # Don't forget to set real keys when it gets real :)
 
   'pub_key': '78d346d0c3fddd461d67',
   'secret': 'e9badc357e7202f35ddb',
