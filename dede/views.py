@@ -25,7 +25,6 @@ from django.core.exceptions import ValidationError
 
 
 
-
 class HomeView(ListView):
     model = Tour
     template_name = 'users/dede/index.html'
@@ -34,10 +33,14 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'featured_tours': Tour.objects.filter(is_featured=True)[:6],  # Changed from rating__gte=4.5
+            'featured_tours': Tour.objects.filter(is_featured=True)[:6],
             'top_tours': Tour.objects.filter(rating__gte=4.5)[:6],
             'popular_destinations': Destination.objects.all()[:6],
             'event_categories': EventCategory.objects.all(),
+            'featured_daytrips': DayTrip.objects.filter(
+                is_featured=True,
+                date__gte=timezone.now().date()
+            )[:4],  # Show only upcoming featured day trips
             'today': timezone.now().date(),
         })
         return context
