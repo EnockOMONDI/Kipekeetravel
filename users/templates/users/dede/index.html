@@ -37,7 +37,7 @@
                                         <span>Holidays</span>
                                     </button>
                                     <!-- Tours Tab Button -->
-                                    <button class="nav-links " id="nav-platform-tab" data-bs-toggle="tab" data-bs-target="#nav-platform" type="button" role="tab" aria-controls="nav-platform" aria-selected="true">
+                                    <button class="nav-links " id="nav-daytrip-tab" data-bs-toggle="tab" data-bs-target="#nav-daytrip" type="button" role="tab" aria-controls="nav-dayrrip" aria-selected="false">
                                         <span class="borders"></span>
                                         <span class="icon">
                                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -127,6 +127,55 @@
                                                 <!-- Search Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
                                                     <button class="bk-search-button" type="submit">Find Tours
+                                                        <span class="ml-5">
+                                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade show " id="nav-daytrip" role="tabpanel" aria-labelledby="nav-daytrip-tab" tabindex="0">
+                                    <div class="tg-booking-form-item">
+                                        <form action="{% url 'dede:daytrip_list' %}" method="get">
+                                            <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
+                                                <!-- Pickup Location -->
+                                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
+                                                    <span class="tg-booking-form-title mb-5">Pickup Location:</span>
+                                                    <select name="pickup_location" class="form-select">
+                                                        <option value="">Select Pickup Point</option>
+                                                        {% for location in pickup_locations %}
+                                                        <option value="{{ location }}">{{ location }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                
+                                                <!-- Date -->
+                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
+                                                    <span class="tg-booking-form-title mb-5">Trip Date:</span>
+                                                    <div class="tg-booking-add-input-date p-relative">
+                                                        <input class="input" name="date" type="date" min="{{ today|date:'Y-m-d' }}">
+                                                    </div>
+                                                </div>
+                                
+                                                <!-- Price Range -->
+                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
+                                                    <span class="tg-booking-form-title mb-5">Price Range:</span>
+                                                    <select name="price_range" class="form-select">
+                                                        <option value="">Any Price</option>
+                                                        <option value="0-5000">Under KES 5,000</option>
+                                                        <option value="5000-10000">KES 5,000 - 10,000</option>
+                                                        <option value="10000-15000">KES 10,000 - 15,000</option>
+                                                        <option value="15000+">Above KES 15,000</option>
+                                                    </select>
+                                                </div>
+                                
+                                                <!-- Search Button -->
+                                                <div class="tg-booking-form-search-btn mb-15">
+                                                    <button class="bk-search-button" type="submit">Find Day Trips
                                                         <span class="ml-5">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>

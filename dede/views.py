@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.db.models import Avg
 from .models import Destination, Tour, Review
 from django.views.generic.edit import CreateView
-from .models import Tour, Booking, DayTrip
+from .models import Tour, Booking, DayTrip, DayTripBooking
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -15,6 +15,12 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from events.models import EventCategory
 from django.utils import timezone
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+
+
+# Add this view function
 
 
 
@@ -73,6 +79,228 @@ class DayTripDetailView(DetailView):
             id=self.object.id
         ).order_by('date')[:3]
         return context
+
+def send_daytrip_confirmation_email(booking):
+    try:
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+        s.starttls()
+        s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        msg = MIMEMultipart('alternative')
+        msg['From'] = "DEDE TOURS TRAVEL <novustellke@gmail.com>"
+        msg['To'] = booking.email
+        msg['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
+
+        # Create activities list for email if any were selected
+        activities_html = ""
+        if booking.optional_activities.exists():
+            activities_html = """
+            <div class="booking-details" style="margin-top: 20px;">
+                <h3>Optional Activities Booked:</h3>
+                <ul>
+            """
+            for activity in booking.optional_activities.all():
+                activities_html += f"<li>{activity.name} - KES {activity.price} per person</li>"
+            activities_html += "</ul></div>"
+
+        email_message = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Day Trip Booking Confirmation</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333333;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .email-container {{
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }}
+                .header {{
+                    text-align: center;
+                    padding: 20px 0;
+                    background-color: #f8f9fa;
+                }}
+                .logo {{
+                    max-width: 200px;
+                    height: auto;
+                }}
+                .content {{
+                    padding: 20px 0;
+                }}
+                .booking-details {{
+                    background-color: #f8f9fa;
+                    padding: 20px;
+                    border-radius: 5px;
+                    margin: 20px 0;
+                }}
+                .footer {{
+                    text-align: center;
+                    padding: 20px;
+                    background-color: #f8f9fa;
+                    font-size: 12px;
+                    color: #666;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE TOURS TRAVEL" class="logo">
+                </div>
+                
+                <div class="content">
+                    <h2>Day Trip Booking Confirmation</h2>
+                    <p>Dear {booking.full_name},</p>
+                    
+                    <p>Thank you for booking your day trip with DEDE TOURS TRAVEL! We're excited to have you join us for {booking.daytrip.name}.</p>
+                    
+                    <div class="booking-details">
+                        <h3>Booking Details:</h3>
+                        <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
+                        <p><strong>Day Trip:</strong> {booking.daytrip.name}</p>
+                        <p><strong>Date:</strong> {booking.daytrip.date}</p>
+                        <p><strong>Pickup Time:</strong> {booking.daytrip.pickup_time}</p>
+                        <p><strong>Pickup Location:</strong> {booking.daytrip.pickup_location}</p>
+                        <p><strong>Number of People:</strong> {booking.number_of_people}</p>
+                        <p><strong>Total Price:</strong> KES {booking.total_price}</p>
+                    </div>
+                    
+                    {activities_html}
+                    
+                    <p>Your booking status is currently <strong>pending</strong>. Our team will contact you shortly regarding payment and final confirmation.</p>
+                    
+                    <p>If you have any questions, please contact us with your booking reference: {booking.booking_reference}</p>
+                </div>
+                
+                <div class="footer">
+                    <p>Best regards,<br>The DEDE TOURS TRAVEL Team</p>
+                    <p>© 2024 DEDE TOURS TRAVEL. All rights reserved.</p>
+                    <p>
+                        <a href="tel:+254758355325">+254758355325</a> |
+                        <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        msg.attach(MIMEText(email_message, 'html'))
+        s.send_message(msg)
+        s.quit()
+        print(f"SUCCESSFULLY SENT EMAIL to {booking.email} for booking {booking.booking_reference}")
+    except Exception as e:
+        print(f"Email sending failed: {str(e)}")
+        raise e
+
+def daytrip_booking(request, daytrip_slug):
+    daytrip = get_object_or_404(DayTrip, slug=daytrip_slug)
+    today = timezone.now().date()
+    
+    if request.method == 'POST':
+        try:
+            # Validate number of people
+            try:
+                number_of_people = int(request.POST.get('number_of_people', 1))
+                if number_of_people < 1:
+                    raise ValidationError("Number of people must be at least 1")
+                
+                # Check available slots
+                remaining_slots = daytrip.get_remaining_slots()
+                if number_of_people > remaining_slots:
+                    raise ValidationError(f"Only {remaining_slots} slots available for this day trip")
+            except ValueError:
+                raise ValidationError("Please enter a valid number of people")
+
+            # Calculate base price
+            base_price = daytrip.price * number_of_people
+            
+            # Handle optional activities
+            total_price = base_price
+            selected_activities = []
+            optional_activities = request.POST.getlist('optional_activities')
+            
+            if optional_activities:
+                for activity_id in optional_activities:
+                    try:
+                        activity = OptionalActivity.objects.get(id=activity_id, daytrip=daytrip)
+                        if activity.price:
+                            total_price += activity.price * number_of_people
+                        selected_activities.append(activity)
+                    except OptionalActivity.DoesNotExist:
+                        continue
+
+            # Create new booking
+            booking = DayTripBooking(
+                daytrip=daytrip,
+                full_name=request.POST.get('full_name'),
+                email=request.POST.get('email'),
+                phone=request.POST.get('phone'),
+                travel_date=daytrip.date,
+                number_of_people=number_of_people,
+                special_requirements=request.POST.get('special_requirements'),
+                total_price=total_price,
+                booking_status='pending',
+                payment_status='pending'
+            )
+            
+            # Validate the model
+            booking.full_clean()
+            
+            # Save the booking
+            booking.save()
+
+            # Add optional activities after saving
+            if selected_activities:
+                booking.optional_activities.set(selected_activities)
+
+            # Send confirmation email
+            try:
+                send_daytrip_confirmation_email(booking)
+            except Exception as e:
+                print(f"Email sending failed: {str(e)}")
+                # Continue with the booking process even if email fails
+
+            messages.success(request, 'Day Trip booking successful! Check your email for confirmation.')
+            return redirect('dede:daytrip_booking_confirmation', booking_reference=booking.booking_reference)
+            
+        except ValidationError as e:
+            if hasattr(e, 'message_dict'):
+                for field, errors in e.message_dict.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+            else:
+                messages.error(request, str(e))
+            print(f"Validation error: {str(e)}")  # For debugging
+        except Exception as e:
+            messages.error(request, 'There was an error processing your booking. Please try again.')
+            print(f"Booking error: {str(e)}")  # For debugging
+        
+        # If there's an error, re-render the form with the submitted data
+        return render(request, 'users/dede/daytrip-booking-form.html', {
+            'daytrip': daytrip,
+            'form_data': request.POST,
+            'today': today,
+        })
+    
+    # For GET requests, render empty form
+    return render(request, 'users/dede/daytrip-booking-form.html', {
+        'daytrip': daytrip,
+        'today': today,
+        'form_data': None,
+    })
+
+def daytrip_booking_confirmation(request, booking_reference):
+    booking = get_object_or_404(DayTripBooking, booking_reference=booking_reference)
+    return render(request, 'users/dede/daytrip-booking-confirmation.html', {'booking': booking})
     
 class AboutView(TemplateView):
     template_name = 'users/dede/about.html'
@@ -361,8 +589,8 @@ def tour_booking(request, tour_slug):
                             <p>Best regards,<br>The DEDE TOURS TRAVEL Team</p>
                             <p>© 2024 DEDE TOURS TRAVEL. All rights reserved.</p>
                             <p>
-                                <a href="tel:+254123456789">+254 123 456 789</a> |
-                                <a href="mailto:info@dedetours.com">info@dedetours.com</a>
+                                <a href="tel:++254758355325">+254758355325</a> |
+                                <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
                             </p>
                         </div>
                     </div>

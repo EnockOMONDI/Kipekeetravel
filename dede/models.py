@@ -107,6 +107,7 @@ class DayTrip(models.Model):
     gallery_image3 = ImageField(blank=True, null=True, manual_crop="4:4")
     date = models.DateField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    group_size = models.IntegerField(default=30, help_text="Maximum number of participants")
     
     # Pickup Information
     pickup_location = models.CharField(max_length=200)
@@ -118,6 +119,19 @@ class DayTrip(models.Model):
     is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+    def get_remaining_slots(self):
+        # Default group size if not specified
+        default_group_size = 30
+        # Get total bookings for this day trip
+        total_booked = self.bookings.filter(
+            booking_status__in=['pending', 'confirmed']
+        ).aggregate(
+            total=models.Sum('number_of_people')
+        )['total'] or 0
+        
+        return default_group_size - total_booked
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -241,6 +255,111 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"Booking {self.booking_reference} - {self.tour.name} for {self.full_name}"
+
+    def get_remaining_payment(self):
+        return self.total_price - self.deposit_paid
+
+    def is_fully_paid(self):
+        return self.payment_status == 'paid'
+
+    def can_be_cancelled(self):
+        return self.booking_status not in ['completed', 'cancelled']
+
+class DayTripBooking(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('cancelled', 'Cancelled'),
+        ('completed', 'Completed'),
+    )
+
+    PAYMENT_STATUS = (
+        ('pending', 'Pending'),
+        ('partial', 'Partial'),
+        ('paid', 'Paid'),
+        ('refunded', 'Refunded'),
+    )
+
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
+    daytrip = models.ForeignKey(DayTrip, on_delete=models.CASCADE, related_name='bookings')
+    booking_date = models.DateTimeField(auto_now_add=True)
+    travel_date = models.DateField()
+    number_of_people = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1, message="Number of people must be at least 1"),
+            MaxValueValidator(1000, message="Number of people cannot exceed 1000")
+        ]
+    )
+    
+    # Customer information
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    special_requirements = models.TextField(blank=True, null=True)
+
+    # Booking details
+    booking_status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    
+    # Payment information
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS,
+        default='pending'
+    )
+    deposit_paid = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        default=0
+    )
+    
+    # Additional information
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    booking_reference = models.CharField(max_length=20, unique=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Day Trip Booking"
+        verbose_name_plural = "Day Trip Bookings"
+
+    def clean(self):
+        # Validate number of people against available slots
+        if self.daytrip:
+            remaining_slots = self.daytrip.get_remaining_slots()
+            if self.number_of_people > remaining_slots:
+                raise ValidationError(f"Only {remaining_slots} slots available for this day trip.")
+
+    def save(self, *args, **kwargs):
+        # Generate unique booking reference if not exists
+        if not self.booking_reference:
+            self.booking_reference = self.generate_booking_reference()
+        
+        # Set travel date from daytrip
+        if not self.travel_date:
+            self.travel_date = self.daytrip.date
+
+        # Calculate total price if not set
+        if not self.total_price:
+            self.total_price = self.calculate_total_price()
+
+        super().save(*args, **kwargs)
+
+    def generate_booking_reference(self):
+        # Generate a unique booking reference based on timestamp and random numbers
+        timestamp = timezone.now().strftime('%Y%m%d%H%M')
+        random_nums = ''.join([str(random.randint(0, 9)) for _ in range(4)])
+        return f'DT{timestamp}{random_nums}'
+
+    def calculate_total_price(self):
+        return self.daytrip.price * self.number_of_people
+
+    def __str__(self):
+        return f"Day Trip Booking {self.booking_reference} - {self.daytrip.name} for {self.full_name}"
 
     def get_remaining_payment(self):
         return self.total_price - self.deposit_paid

@@ -96,8 +96,8 @@
                             <p><strong>Pickup:</strong> {{ daytrip.pickup_location }}</p>
                             <p><strong>Time:</strong> {{ daytrip.pickup_time|time:"H:i" }}</p>
                         </div>
-                        <a href="#" class="btn btn-primary w-100">Book Now</a>
-                    </div>
+                        <a href="{% url 'dede:daytrip_booking' daytrip.slug %}" class="btn btn-primary w-100">Book Now</a>     
+                                                    </div>
 
                     <!-- Upcoming Trips Widget -->
                     {% if upcoming_daytrips %}
