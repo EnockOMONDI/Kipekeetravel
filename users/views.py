@@ -144,21 +144,48 @@ import json
 #         'error': 'Invalid request method'
 #     })
 
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserRegisterForm(request.POST)
+
+#         if form.is_valid():
+#             user = form.save(commit=False)  # Save the user object in memory
+#             user.is_active = False
+
+#             # Save the user object to the database only when the form is valid
+#             user.save()
+
+#             current_site = get_current_site(request)
+#             uid64 = urlsafe_base64_encode(force_bytes(user.pk))
+#             token = PasswordResetTokenGenerator().make_token(user)
+#             activation_link = f'http://{current_site.domain}/users/activate/{uid64}/{token}/'
+
+#             mail_f.verification_mail(activation_link, user)
+
+#             # Store username and email in session
+#             request.session['username'] = form.cleaned_data['username']
+#             request.session['email'] = form.cleaned_data['email']
+
+#             # Redirect to the success message page
+#             return redirect('users:success')
+
+#     else:
+#         form = UserRegisterForm()
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
 
         if form.is_valid():
-            user = form.save(commit=False)  # Save the user object in memory
+            user = form.save(commit=False)  
             user.is_active = False
 
-            # Save the user object to the database only when the form is valid
             user.save()
 
             current_site = get_current_site(request)
             uid64 = urlsafe_base64_encode(force_bytes(user.pk))
             token = PasswordResetTokenGenerator().make_token(user)
-            activation_link = f'http://{current_site.domain}/users/activate/{uid64}/{token}/'
+            activation_link = f'http://{current_site}/activate/{uid64}/{token}'
 
             mail_f.verification_mail(activation_link, user)
 
@@ -171,6 +198,23 @@ def register(request):
 
     else:
         form = UserRegisterForm()
+
+    return render(request, 'users/register.html', {'form': form})
+
+
+
+
+def success(request):
+    username = request.session.pop('username', None)
+    email = request.session.pop('email', None)
+
+    if username and email:
+        success_message = f"Jambo! <b>{username}</b>, Your registration was successful! We've sent an email to <b>{email}</b>. Kindly click the received link to confirm and complete the registration. Remember to check your spam folder."
+        messages.success(request, success_message)
+    else:
+        messages.error(request, 'Oops! Something is not right. Please start over.')
+
+    return render(request, 'users/success.html')
 
     return render(request, 'users/register.html', {'form': form})
 
