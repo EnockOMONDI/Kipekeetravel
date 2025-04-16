@@ -91,7 +91,8 @@ def send_daytrip_confirmation_email(booking):
 
         msg = MIMEMultipart('alternative')
         msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
-        msg['To'] = f"{booking.email}, info@dedeexpeditions.com"  # Add both email addresses
+        msg['To'] = booking.email
+        recipients = [booking.email, "enock@novustelltravel.com"]  # Include both emails in the recipients list
         msg['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
 
         # Create activities list for email if any were selected
@@ -197,9 +198,9 @@ def send_daytrip_confirmation_email(booking):
         """
 
         msg.attach(MIMEText(email_message, 'html'))
-        s.send_message(msg)
+        s.send_message(msg, to_addrs=recipients)  # Explicitly specify all recipients
         s.quit()
-        print(f"SUCCESSFULLY SENT EMAIL to {booking.email} for booking {booking.booking_reference}")
+        print(f"SUCCESSFULLY SENT EMAIL to {booking.email} and {recipients[1]} for booking {booking.booking_reference}")
     except Exception as e:
         print(f"Email sending failed: {str(e)}")
         raise e
@@ -504,6 +505,7 @@ def tour_booking(request, tour_slug):
                 msg = MIMEMultipart('alternative')
                 msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
                 msg['To'] = booking.email
+                msg['Bcc'] = "info@dedeexpeditions.com"
                 msg['Subject'] = f"Booking Confirmation - {booking.booking_reference}"
 
                 email_message = f"""
