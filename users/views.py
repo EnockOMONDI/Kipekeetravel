@@ -469,15 +469,15 @@ def send_booking_email(booking):
         s.starttls()
 
         # Email credentials
-        sender_email = "novustellke@gmail.com"
-        password = "jdxozdtmtoeljezk"
+        sender_email = "dedeexpeditions@gmail.com"
+        password = "jzuy eqkw ovpu wcxv"
 
         s.login(sender_email, password)
 
         # Email content
         msg = MIMEMultipart()
         msg['From'] = "Novustell Travel"
-        msg['To'] = "info@novustelltravel.com"
+        msg['To'] = "info@dedeexpeditions.com"
         msg['Subject'] = f"New Booking: {booking.full_name} for {booking.package.name}"
 
         message = f"""

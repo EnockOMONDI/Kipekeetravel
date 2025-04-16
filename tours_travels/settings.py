@@ -263,14 +263,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'novustellke@gmail.com'
+DEFAULT_FROM_EMAIL = 'dedeexpeditions@gmail.com '
 
-# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'novustellke@gmail.com')
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'dedeexpeditions@gmail.com')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'jzuy eqkw ovpu wcxv')  
 
 # If you're not using environment variables, uncomment and update these lines:
-EMAIL_HOST_USER = 'novustellke@gmail.com'
-EMAIL_HOST_PASSWORD = 'wyravhncrdvyfuqa'  # Replace with your App Password
+EMAIL_HOST_USER = 'dedeexpeditions@gmail.com'
+EMAIL_HOST_PASSWORD = 'jzuy eqkw ovpu wcxv'  # Replace with your App Password
 
 # Django Jet settings
 JET_DEFAULT_THEME = 'light-gray'

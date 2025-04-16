@@ -8,8 +8,8 @@ def verification_mail(link, user):
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
 
-    ei = "novustellke@gmail.com"
-    password = "wyravhncrdvyfuqa"
+    ei = "dedeexpeditions@gmail.com"
+    password = "jzuy eqkw ovpu wcxv"
 
     # print(ei, password)
 

@@ -90,7 +90,7 @@ def send_daytrip_confirmation_email(booking):
         s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
         msg = MIMEMultipart('alternative')
-        msg['From'] = "DEDE TOURS TRAVEL <novustellke@gmail.com>"
+        msg['From'] = "DEDE TOURS TRAVEL <dedeexpeditions@gmail.com>"
         msg['To'] = booking.email
         msg['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
 
@@ -502,7 +502,7 @@ def tour_booking(request, tour_slug):
                 s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
                 msg = MIMEMultipart('alternative')
-                msg['From'] = "DEDE TOURS TRAVEL <novustellke@gmail.com>"
+                msg['From'] = "DEDE TOURS TRAVEL <dedeexpeditions@gmail.com>"
                 msg['To'] = booking.email
                 msg['Subject'] = f"Booking Confirmation - {booking.booking_reference}"
 
