@@ -90,7 +90,7 @@ def send_daytrip_confirmation_email(booking):
         s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
         msg = MIMEMultipart('alternative')
-        msg['From'] = "DEDE TOURS TRAVEL <dedeexpeditions@gmail.com>"
+        msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
         msg['To'] = booking.email
         msg['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
 
@@ -156,14 +156,14 @@ def send_daytrip_confirmation_email(booking):
         <body>
             <div class="email-container">
                 <div class="header">
-                    <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE TOURS TRAVEL" class="logo">
+                    <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE EXPEDITIONS" class="logo">
                 </div>
                 
                 <div class="content">
                     <h2>Day Trip Booking Confirmation</h2>
                     <p>Dear {booking.full_name},</p>
                     
-                    <p>Thank you for booking your day trip with DEDE TOURS TRAVEL! We're excited to have you join us for {booking.daytrip.name}.</p>
+                    <p>Thank you for booking your day trip with DEDE EXPEDITIONS! We're excited to have you join us for {booking.daytrip.name}.</p>
                     
                     <div class="booking-details">
                         <h3>Booking Details:</h3>
@@ -184,8 +184,8 @@ def send_daytrip_confirmation_email(booking):
                 </div>
                 
                 <div class="footer">
-                    <p>Best regards,<br>The DEDE TOURS TRAVEL Team</p>
-                    <p>© 2024 DEDE TOURS TRAVEL. All rights reserved.</p>
+                    <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                    <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
                     <p>
                         <a href="tel:+254758355325">+254758355325</a> |
                         <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
@@ -502,7 +502,7 @@ def tour_booking(request, tour_slug):
                 s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
                 msg = MIMEMultipart('alternative')
-                msg['From'] = "DEDE TOURS TRAVEL <dedeexpeditions@gmail.com>"
+                msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
                 msg['To'] = booking.email
                 msg['Subject'] = f"Booking Confirmation - {booking.booking_reference}"
 
@@ -565,14 +565,14 @@ def tour_booking(request, tour_slug):
                 <body>
                     <div class="email-container">
                         <div class="header">
-                            <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE TOURS TRAVEL" class="logo">
+                            <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE EXPEDITIONS" class="logo">
                         </div>
                         
                         <div class="content">
                             <h2>Booking Confirmation</h2>
                             <p>Dear {booking.full_name},</p>
                             
-                            <p>Thank you for booking your adventure with DEDE TOURS TRAVEL! We're excited to help you explore {tour.name}.</p>
+                            <p>Thank you for booking your adventure with DEDE EXPEDITIONS! We're excited to help you explore {tour.name}.</p>
                             
                             <div class="booking-details">
                                 <h3>Booking Details:</h3>
@@ -589,8 +589,8 @@ def tour_booking(request, tour_slug):
                         </div>
                         
                         <div class="footer">
-                            <p>Best regards,<br>The DEDE TOURS TRAVEL Team</p>
-                            <p>© 2024 DEDE TOURS TRAVEL. All rights reserved.</p>
+                                    <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                            <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
                             <p>
                                 <a href="tel:++254758355325">+254758355325</a> |
                                 <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
