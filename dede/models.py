@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from pyuploadcare.dj.models import ImageField
 from django.utils import timezone
 import random
+from django.core.exceptions import ValidationError
 
 
 class Destination(models.Model):
@@ -108,6 +109,7 @@ class DayTrip(models.Model):
     date = models.DateField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     group_size = models.IntegerField(default=30, help_text="Maximum number of participants")
+    
     
     # Pickup Information
     pickup_location = models.CharField(max_length=200)
@@ -290,12 +292,14 @@ class DayTripBooking(models.Model):
             MaxValueValidator(1000, message="Number of people cannot exceed 1000")
         ]
     )
+
     
     # Customer information
     full_name = models.CharField(max_length=200)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     special_requirements = models.TextField(blank=True, null=True)
+    optional_activities = models.ManyToManyField('OptionalActivity', blank=True)
 
     # Booking details
     booking_status = models.CharField(

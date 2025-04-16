@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib import messages
 from django.db.models import Avg
-from .models import Destination, Tour, Review
+from .models import Destination, Tour, Review, OptionalActivity
 from django.views.generic.edit import CreateView
 from .models import Tour, Booking, DayTrip, DayTripBooking
 from django.core.mail import send_mail
@@ -91,7 +91,7 @@ def send_daytrip_confirmation_email(booking):
 
         msg = MIMEMultipart('alternative')
         msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
-        msg['To'] = booking.email
+        msg['To'] = f"{booking.email}, info@dedeexpeditions.com"  # Add both email addresses
         msg['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
 
         # Create activities list for email if any were selected
