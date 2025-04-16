@@ -89,11 +89,18 @@ def send_daytrip_confirmation_email(booking):
         s.starttls()
         s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
-        msg = MIMEMultipart('alternative')
-        msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
-        msg['To'] = booking.email
-        recipients = [booking.email, "enock@novustelltravel.com"]  # Include both emails in the recipients list
-        msg['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
+        # Create two separate messages - one for each recipient
+        # First message (for customer)
+        msg1 = MIMEMultipart('alternative')
+        msg1['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+        msg1['To'] = booking.email
+        msg1['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
+
+        # Second message (for info@dedeexpeditions.com)
+        msg2 = MIMEMultipart('alternative')
+        msg2['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+        msg2['To'] = "info@dedeexpeditions.com"
+        msg2['Subject'] = f"New Day Trip Booking - {booking.booking_reference}"
 
         # Create activities list for email if any were selected
         activities_html = ""
@@ -107,7 +114,8 @@ def send_daytrip_confirmation_email(booking):
                 activities_html += f"<li>{activity.name} - KES {activity.price} per person</li>"
             activities_html += "</ul></div>"
 
-        email_message = f"""
+        # Customer email message
+        customer_email = f"""
         <!DOCTYPE html>
         <html>
         <head>
@@ -197,14 +205,110 @@ def send_daytrip_confirmation_email(booking):
         </html>
         """
 
-        msg.attach(MIMEText(email_message, 'html'))
-        s.send_message(msg, to_addrs=recipients)  # Explicitly specify all recipients
+        # Admin email message
+        admin_email = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>New Day Trip Booking</title>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333333;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .email-container {{
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }}
+                .header {{
+                    text-align: center;
+                    padding: 20px 0;
+                    background-color: #f8f9fa;
+                }}
+                .logo {{
+                    max-width: 200px;
+                    height: auto;
+                }}
+                .content {{
+                    padding: 20px 0;
+                }}
+                .booking-details {{
+                    background-color: #f8f9fa;
+                    padding: 20px;
+                    border-radius: 5px;
+                    margin: 20px 0;
+                }}
+                .footer {{
+                    text-align: center;
+                    padding: 20px;
+                    background-color: #f8f9fa;
+                    font-size: 12px;
+                    color: #666;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE EXPEDITIONS" class="logo">
+                </div>
+                
+                <div class="content">
+                    <h2>New Day Trip Booking</h2>
+                    <p>A booking has been made for a day trip. Here are the details:</p>
+                    
+                    <div class="booking-details">
+                        <h3>Customer Information:</h3>
+                        <p><strong>Customer Name:</strong> {booking.full_name}</p>
+                        <p><strong>Email:</strong> {booking.email}</p>
+                        <p><strong>Phone:</strong> {booking.phone}</p>
+                        
+                        <h3>Booking Details:</h3>
+                        <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
+                        <p><strong>Day Trip:</strong> {booking.daytrip.name}</p>
+                        <p><strong>Date:</strong> {booking.daytrip.date}</p>
+                        <p><strong>Pickup Time:</strong> {booking.daytrip.pickup_time}</p>
+                        <p><strong>Pickup Location:</strong> {booking.daytrip.pickup_location}</p>
+                        <p><strong>Number of People:</strong> {booking.number_of_people}</p>
+                        <p><strong>Total Price:</strong> KES {booking.total_price}</p>
+                        
+                        <h3>Special Requirements:</h3>
+                        <p>{booking.special_requirements if booking.special_requirements else 'None specified'}</p>
+                    </div>
+                    
+                    {activities_html}
+                    
+                    <p>Please review and process this booking as soon as possible.</p>
+                </div>
+                
+                <div class="footer">
+                    <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        # Attach the HTML content to respective messages
+        msg1.attach(MIMEText(customer_email, 'html'))
+        msg2.attach(MIMEText(admin_email, 'html'))
+
+        # Send both messages
+        s.send_message(msg1)
+        s.send_message(msg2)
+        
         s.quit()
-        print(f"SUCCESSFULLY SENT EMAIL to {booking.email} and {recipients[1]} for booking {booking.booking_reference}")
+        print(f"SUCCESSFULLY SENT EMAIL to {booking.email} and info@dedeexpeditions.com for booking {booking.booking_reference}")
     except Exception as e:
         print(f"Email sending failed: {str(e)}")
         raise e
-
+    
 def daytrip_booking(request, daytrip_slug):
     daytrip = get_object_or_404(DayTrip, slug=daytrip_slug)
     today = timezone.now().date()
@@ -502,19 +606,27 @@ def tour_booking(request, tour_slug):
                 s.starttls()
                 s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
-                msg = MIMEMultipart('alternative')
-                msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
-                msg['To'] = booking.email
-                msg['Bcc'] = "info@dedeexpeditions.com"
-                msg['Subject'] = f"Booking Confirmation - {booking.booking_reference}"
+                # Create two separate messages - one for each recipient
+                # First message (for customer)
+                msg1 = MIMEMultipart('alternative')
+                msg1['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                msg1['To'] = booking.email
+                msg1['Subject'] = f"Tour Booking Confirmation - {booking.booking_reference}"
 
-                email_message = f"""
+                # Second message (for info@dedeexpeditions.com)
+                msg2 = MIMEMultipart('alternative')
+                msg2['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                msg2['To'] = "info@dedeexpeditions.com"
+                msg2['Subject'] = f"New Tour Booking - {booking.booking_reference}"
+
+                # Customer email message
+                customer_email = f"""
                 <!DOCTYPE html>
                 <html>
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Booking Confirmation</title>
+                    <title>Tour Booking Confirmation</title>
                     <style>
                         body {{
                             font-family: Arial, sans-serif;
@@ -553,14 +665,93 @@ def tour_booking(request, tour_slug):
                             font-size: 12px;
                             color: #666;
                         }}
-                        .button {{
-                            display: inline-block;
-                            padding: 10px 20px;
-                            background-color: #4CAF50;
-                            color: white;
-                            text-decoration: none;
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="header">
+                            <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE EXPEDITIONS" class="logo">
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Tour Booking Confirmation</h2>
+                            <p>Dear {booking.full_name},</p>
+                            
+                            <p>Thank you for booking your tour with DEDE EXPEDITIONS! We're excited to help you explore {tour.name}.</p>
+                            
+                            <div class="booking-details">
+                                <h3>Booking Details:</h3>
+                                <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
+                                <p><strong>Tour:</strong> {tour.name}</p>
+                                <p><strong>Travel Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Duration:</strong> {tour.duration} days</p>
+                                <p><strong>Number of People:</strong> {booking.number_of_people}</p>
+                                <p><strong>Total Price:</strong> KES {booking.total_price}</p>
+                            </div>
+                            
+                            <p>Your booking status is currently <strong>pending</strong>. Our team will contact you shortly regarding payment and final confirmation.</p>
+                            
+                            <p>If you have any questions, please contact us with your booking reference: {booking.booking_reference}</p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                            <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
+                            <p>
+                                <a href="tel:+254758355325">+254758355325</a> |
+                                <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+
+                # Admin email message
+                admin_email = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>New Tour Booking</title>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .email-container {{
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }}
+                        .header {{
+                            text-align: center;
+                            padding: 20px 0;
+                            background-color: #f8f9fa;
+                        }}
+                        .logo {{
+                            max-width: 200px;
+                            height: auto;
+                        }}
+                        .content {{
+                            padding: 20px 0;
+                        }}
+                        .booking-details {{
+                            background-color: #f8f9fa;
+                            padding: 20px;
                             border-radius: 5px;
                             margin: 20px 0;
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                            font-size: 12px;
+                            color: #666;
                         }}
                     </style>
                 </head>
@@ -571,45 +762,51 @@ def tour_booking(request, tour_slug):
                         </div>
                         
                         <div class="content">
-                            <h2>Booking Confirmation</h2>
-                            <p>Dear {booking.full_name},</p>
-                            
-                            <p>Thank you for booking your adventure with DEDE EXPEDITIONS! We're excited to help you explore {tour.name}.</p>
+                            <h2>New Tour Booking</h2>
+                            <p>A booking has been made for a tour. Here are the details:</p>
                             
                             <div class="booking-details">
+                                <h3>Customer Information:</h3>
+                                <p><strong>Customer Name:</strong> {booking.full_name}</p>
+                                <p><strong>Email:</strong> {booking.email}</p>
+                                <p><strong>Phone:</strong> {booking.phone}</p>
+                                
                                 <h3>Booking Details:</h3>
                                 <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
                                 <p><strong>Tour:</strong> {tour.name}</p>
                                 <p><strong>Travel Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Duration:</strong> {tour.duration} days</p>
                                 <p><strong>Number of People:</strong> {booking.number_of_people}</p>
-                                <p><strong>Total Price:</strong> KES{booking.total_price}</p>
+                                <p><strong>Total Price:</strong> KES {booking.total_price}</p>
+                                
+                                <h3>Special Requirements:</h3>
+                                <p>{booking.special_requirements if booking.special_requirements else 'None specified'}</p>
                             </div>
                             
-                            <p>Your booking status is currently <strong>pending</strong>. Our team will contact you shortly regarding payment and final confirmation.</p>
-                            
-                            <p>If you have any questions, please contact us with your booking reference: {booking.booking_reference}</p>
+                            <p>Please review and process this booking as soon as possible.</p>
                         </div>
                         
                         <div class="footer">
-                                    <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
                             <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
-                            <p>
-                                <a href="tel:++254758355325">+254758355325</a> |
-                                <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
-                            </p>
                         </div>
                     </div>
                 </body>
                 </html>
                 """
 
-                msg.attach(MIMEText(email_message, 'html'))
-                s.send_message(msg)
+                # Attach the HTML content to respective messages
+                msg1.attach(MIMEText(customer_email, 'html'))
+                msg2.attach(MIMEText(admin_email, 'html'))
+
+                # Send both messages
+                s.send_message(msg1)
+                s.send_message(msg2)
+                
                 s.quit()
-                print(f"SUCCESSFULLY SENT EMAIL to {booking.email} for booking {booking.booking_reference}")
+                print(f"SUCCESSFULLY SENT EMAIL to {booking.email} and info@dedeexpeditions.com for booking {booking.booking_reference}")
             except Exception as e:
                 # Log the error but don't stop the booking process
-                print(f"Email sending failed: {e}")
+                print(f"Email sending failed: {str(e)}")
                 print(f"Error type: {type(e).__name__}")
                 print(f"Error details: {str(e)}")
 
