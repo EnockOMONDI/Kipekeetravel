@@ -368,10 +368,27 @@
                                 <div class="tg-listing-card-duration-tour">
                                   
                                     <span class="tg-listing-card-duration-time">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8.00175 3.73329V7.99996L10.8462 9.42218M15.1128 8.00003C15.1128 11.9274 11.9291 15.1111 8.00174 15.1111C4.07438 15.1111 0.890625 11.9274 0.890625 8.00003C0.890625 4.07267 4.07438 0.888916 8.00174 0.888916C11.9291 0.888916 15.1128 4.07267 15.1128 8.00003Z" stroke="currentColor" stroke-width="1.06667" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        {{ daytrip.date|date:"F j, Y" }}
+                                        <i class="far fa-calendar me-2"></i>
+                                        <span>
+                                            {% if daytrip.recurrence == 'none' %}
+                                                {{ daytrip.start_date|date:"F j, Y" }}
+                                            {% elif daytrip.recurrence == 'weekend' %}
+                                                Every Weekend
+                                                {% if daytrip.end_date %}
+                                                    <small class="ms-1">until {{ daytrip.end_date|date:"M j" }}</small>
+                                                {% endif %}
+                                            {% elif daytrip.recurrence == 'saturday' %}
+                                                Every Saturday
+                                                {% if daytrip.end_date %}
+                                                    <small class="ms-1">until {{ daytrip.end_date|date:"M j" }}</small>
+                                                {% endif %}
+                                            {% elif daytrip.recurrence == 'sunday' %}
+                                                Every Sunday
+                                                {% if daytrip.end_date %}
+                                                    <small class="ms-1">until {{ daytrip.end_date|date:"M j" }}</small>
+                                                {% endif %}
+                                            {% endif %}
+                                        </span>
                                     </span>
                                 </div>
                                 <div class="tg-listing-card-info">
