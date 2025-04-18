@@ -99,6 +99,13 @@ class Review(models.Model):
 
 
 class DayTrip(models.Model):
+    RECURRENCE_CHOICES = (
+        ('none', 'One-time Trip'),
+        ('weekend', 'Every Weekend'),
+        ('saturday', 'Every Saturday'),
+        ('sunday', 'Every Sunday'),
+    )
+
     # Basic Information
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
@@ -106,10 +113,20 @@ class DayTrip(models.Model):
     gallery_image1 = ImageField(blank=True, null=True, manual_crop="4:4")
     gallery_image2 = ImageField(blank=True, null=True, manual_crop="4:4")
     gallery_image3 = ImageField(blank=True, null=True, manual_crop="4:4")
-    date = models.DateField()
+    
+    # Date and Recurrence
+    start_date = models.DateField(help_text="Start date for recurring trips or the date for one-time trips")
+    end_date = models.DateField(null=True, blank=True, help_text="End date for recurring trips (optional)")
+    description = models.TextField(blank=True)
+    recurrence = models.CharField(
+        max_length=20,
+        choices=RECURRENCE_CHOICES,
+        default='none',
+        help_text="Select if this is a recurring trip"
+    )
+    
     price = models.DecimalField(max_digits=10, decimal_places=2)
     group_size = models.IntegerField(default=30, help_text="Maximum number of participants")
-    
     
     # Pickup Information
     pickup_location = models.CharField(max_length=200)
@@ -122,18 +139,66 @@ class DayTrip(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def get_available_dates(self, num_weeks=8):
+        """Return available dates for the next num_weeks based on recurrence pattern"""
+        from datetime import datetime, timedelta
+        available_dates = []
+        today = timezone.now().date()
+        end_date = self.end_date or today + timedelta(weeks=num_weeks)
 
-    def get_remaining_slots(self):
+        current_date = max(self.start_date, today)
+
+        while current_date <= end_date:
+            if self.recurrence == 'none':
+                if self.start_date >= today:
+                    available_dates.append(self.start_date)
+                break
+            elif self.recurrence == 'weekend':
+                if current_date.weekday() in [5, 6]:  # Saturday = 5, Sunday = 6
+                    available_dates.append(current_date)
+            elif self.recurrence == 'saturday' and current_date.weekday() == 5:
+                available_dates.append(current_date)
+            elif self.recurrence == 'sunday' and current_date.weekday() == 6:
+                available_dates.append(current_date)
+            
+            current_date += timedelta(days=1)
+
+        return available_dates
+
+    def get_remaining_slots(self, date=None):
+        """Get remaining slots for a specific date"""
         # Default group size if not specified
-        default_group_size = 30
-        # Get total bookings for this day trip
+        if date is None:
+            date = timezone.now().date()
+            
         total_booked = self.bookings.filter(
+            travel_date=date,
             booking_status__in=['pending', 'confirmed']
         ).aggregate(
             total=models.Sum('number_of_people')
         )['total'] or 0
         
-        return default_group_size - total_booked
+        return self.group_size - total_booked
+
+    def is_available_on_date(self, check_date):
+        """Check if the trip is available on a specific date"""
+        if self.recurrence == 'none':
+            return check_date == self.start_date
+        
+        if self.end_date and check_date > self.end_date:
+            return False
+            
+        if check_date < self.start_date:
+            return False
+            
+        if self.recurrence == 'weekend':
+            return check_date.weekday() in [5, 6]
+        elif self.recurrence == 'saturday':
+            return check_date.weekday() == 5
+        elif self.recurrence == 'sunday':
+            return check_date.weekday() == 6
+            
+        return False
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -141,11 +206,13 @@ class DayTrip(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} - {self.date}"
+        if self.recurrence == 'none':
+            return f"{self.name} - {self.start_date}"
+        return f"{self.name} - {self.get_recurrence_display()}"
 
     class Meta:
-        ordering = ['date']
-
+        ordering = ['start_date']
+        
 class ItineraryItem(models.Model):
     daytrip = models.ForeignKey(DayTrip, on_delete=models.CASCADE, related_name='itinerary_items')
     time = models.TimeField()

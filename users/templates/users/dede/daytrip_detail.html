@@ -13,12 +13,31 @@
                     </div>
                     
                     <div class="daytrip-details-content">
-                        <h1>{{ daytrip.name }} – ITINERARY</h1>
+                        <h1>{{ daytrip.name }} </h1>
                         <div class="daytrip-meta">
-                            <span><i class="far fa-calendar"></i> {{ daytrip.date|date:"F j, Y" }}</span>
-                            <span class="price">Ksh {{ daytrip.price }} per person</span>
+                            <span><i class="far fa-calendar"></i> 
+                                {% if daytrip.recurrence == 'none' %}
+                                    {{ daytrip.start_date|date:"F j, Y" }}
+                                {% elif daytrip.recurrence == 'weekend' %}
+                                    Every Weekend
+                                    {% if daytrip.end_date %}
+                                        until {{ daytrip.end_date|date:"F j, Y" }}
+                                    {% endif %}
+                                {% elif daytrip.recurrence == 'saturday' %}
+                                    Every Saturday
+                                    {% if daytrip.end_date %}
+                                        until {{ daytrip.end_date|date:"F j, Y" }}
+                                    {% endif %}
+                                {% elif daytrip.recurrence == 'sunday' %}
+                                    Every Sunday
+                                    {% if daytrip.end_date %}
+                                        until {{ daytrip.end_date|date:"F j, Y" }}
+                                    {% endif %}
+                                {% endif %}
+                            </span>
                         </div>
-
+                        <br>
+                        <span class="price"> <b>Ksh {{ daytrip.price }} per person</b></span>
                         <!-- Itinerary Breakdown -->
                         <div class="itinerary-section mt-40">
                             <h3>⏰ Itinerary Breakdown:</h3>
@@ -91,7 +110,24 @@
                     <div class="widget booking-widget mb-30">
                         <h3 class="widget-title">Book This Trip</h3>
                         <div class="booking-info">
-                            <p><strong>Date:</strong> {{ daytrip.date|date:"F j, Y" }}</p>
+                            <p><strong>Date:</strong> {% if daytrip.recurrence == 'none' %}
+                                {{ daytrip.start_date|date:"F j, Y" }}
+                            {% elif daytrip.recurrence == 'weekend' %}
+                                Every Weekend
+                                {% if daytrip.end_date %}
+                                    until {{ daytrip.end_date|date:"F j, Y" }}
+                                {% endif %}
+                            {% elif daytrip.recurrence == 'saturday' %}
+                                Every Saturday
+                                {% if daytrip.end_date %}
+                                    until {{ daytrip.end_date|date:"F j, Y" }}
+                                {% endif %}
+                            {% elif daytrip.recurrence == 'sunday' %}
+                                Every Sunday
+                                {% if daytrip.end_date %}
+                                    until {{ daytrip.end_date|date:"F j, Y" }}
+                                {% endif %}
+                            {% endif %}</p>
                             <p><strong>Price:</strong> Ksh {{ daytrip.price }} per person</p>
                             <p><strong>Pickup:</strong> {{ daytrip.pickup_location }}</p>
                             <p><strong>Time:</strong> {{ daytrip.pickup_time|time:"H:i" }}</p>

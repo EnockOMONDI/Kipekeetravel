@@ -32,10 +32,25 @@
         <div class="row mb-4">
             <div class="col-12">
                 {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                     {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if booking_success %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Booking Successful!</h4>
+                    <p>Your booking has been confirmed. A confirmation email has been sent to {{ booking.email }}.</p>
+                    <hr>
+                    <p class="mb-0">Booking Reference: <strong>{{ booking.booking_reference }}</strong></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -75,7 +90,12 @@
                                     <small class="text-muted">Available slots: {{ daytrip.get_remaining_slots }}</small>
                                 </div>
                             </div>
-
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="travel_date">Travel Date *</label>
+                                    <input type="date" id="travel_date" name="travel_date" required min="{{ today|date:'Y-m-d' }}" value="{{ form_data.travel_date|default:'' }}">
+                                </div>
+                            </div>
                             {% if daytrip.optional_activities.exists %}
                             <div class="col-12">
                                 <div class="optional-activities mb-25">
@@ -144,12 +164,32 @@
                             </div>
                         </div>
                         <div class="booking-info-list">
-                            <ul>
-                                <li><i class="far fa-calendar-alt"></i> Date: {{ daytrip.date|date:"F j, Y" }}</li>
-                                <li><i class="far fa-clock"></i> Pickup Time: {{ daytrip.pickup_time|time:"H:i" }}</li>
-                                <li><i class="far fa-map-marker-alt"></i> Pickup Location: {{ daytrip.pickup_location }}</li>
-                                <li><i class="far fa-users"></i> Available Slots: {{ daytrip.get_remaining_slots }}</li>
-                            </ul>
+                            <div class="booking-info">
+                                <p><strong>Schedule:</strong> 
+                                    {% if daytrip.recurrence == 'none' %}
+                                        {{ daytrip.start_date|date:"F j, Y" }}
+                                    {% elif daytrip.recurrence == 'weekend' %}
+                                        Every Weekend
+                                        {% if daytrip.end_date %}
+                                            until {{ daytrip.end_date|date:"F j, Y" }}
+                                        {% endif %}
+                                    {% elif daytrip.recurrence == 'saturday' %}
+                                        Every Saturday
+                                        {% if daytrip.end_date %}
+                                            until {{ daytrip.end_date|date:"F j, Y" }}
+                                        {% endif %}
+                                    {% elif daytrip.recurrence == 'sunday' %}
+                                        Every Sunday
+                                        {% if daytrip.end_date %}
+                                            until {{ daytrip.end_date|date:"F j, Y" }}
+                                        {% endif %}
+                                    {% endif %}
+                                </p>
+                                <p><strong>Price:</strong> Ksh {{ daytrip.price }} per person</p>
+                                <p><strong>Pickup:</strong> {{ daytrip.pickup_location }}</p>
+                                <p><strong>Time:</strong> {{ daytrip.pickup_time|time:"H:i" }}</p>
+                                <p><strong>Available Slots:</strong> {{ daytrip.get_remaining_slots }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,50 +202,50 @@
 
 {% block extra_js %}
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const numberOfPeopleInput = document.getElementById('number_of_people');
-            const totalPriceSpan = document.getElementById('total_price');
-            const optionalActivitiesCost = document.getElementById('optional_activities_cost');
-            const optionalActivities = document.querySelectorAll('.optional-activity');
-            const basePrice = {{ daytrip.price }};
-            const maxGroupSize = {{ daytrip.group_size }};
-            const remainingSlots = {{ daytrip.get_remaining_slots }};
+document.addEventListener('DOMContentLoaded', function() {
+    const numberOfPeopleInput = document.getElementById('number_of_people');
+    const totalPriceSpan = document.getElementById('total_price');
+    const optionalActivitiesCost = document.getElementById('optional_activities_cost');
+    const optionalActivities = document.querySelectorAll('.optional-activity');
+    const basePrice = parseFloat('{{ daytrip.price }}');
+    const maxGroupSize = parseInt('{{ daytrip.group_size }}');
+    const remainingSlots = parseInt('{{ daytrip.get_remaining_slots }}');
 
-            function updateTotalPrice() {
-                const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
-                if (numberOfPeople > remainingSlots) {
-                    numberOfPeopleInput.value = remainingSlots;
-                    alert('Only ' + remainingSlots + ' slots available');
-                    return;
-                }
+    function updateTotalPrice() {
+        const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
+        if (numberOfPeople > remainingSlots) {
+            numberOfPeopleInput.value = remainingSlots;
+            alert('Only ' + remainingSlots + ' slots available');
+            return;
+        }
 
-                let activitiesTotal = 0;
-                optionalActivities.forEach(activity => {
-                    if (activity.checked) {
-                        activitiesTotal += parseFloat(activity.dataset.price) * numberOfPeople;
-                    }
-                });
-
-                const baseTotal = basePrice * numberOfPeople;
-                const totalPrice = (baseTotal + activitiesTotal).toFixed(2);
-
-                if (activitiesTotal > 0) {
-                    optionalActivitiesCost.style.display = 'list-item';
-                    optionalActivitiesCost.querySelector('span').textContent = 'KES ' + activitiesTotal.toFixed(2);
-                } else {
-                    optionalActivitiesCost.style.display = 'none';
-                }
-
-                totalPriceSpan.textContent = 'KES ' + totalPrice;
+        let activitiesTotal = 0;
+        optionalActivities.forEach(activity => {
+            if (activity.checked) {
+                activitiesTotal += parseFloat(activity.dataset.price) * numberOfPeople;
             }
-
-            numberOfPeopleInput.addEventListener('input', updateTotalPrice);
-            optionalActivities.forEach(activity => {
-                activity.addEventListener('change', updateTotalPrice);
-            });
-
-            // Initial calculation
-            updateTotalPrice();
         });
+
+        const baseTotal = basePrice * numberOfPeople;
+        const totalPrice = (baseTotal + activitiesTotal).toFixed(2);
+
+        if (activitiesTotal > 0) {
+            optionalActivitiesCost.style.display = 'list-item';
+            optionalActivitiesCost.querySelector('span').textContent = 'KES ' + activitiesTotal.toFixed(2);
+        } else {
+            optionalActivitiesCost.style.display = 'none';
+        }
+
+        totalPriceSpan.textContent = 'KES ' + totalPrice;
+    }
+
+    numberOfPeopleInput.addEventListener('input', updateTotalPrice);
+    optionalActivities.forEach(activity => {
+        activity.addEventListener('change', updateTotalPrice);
+    });
+
+    // Initial calculation
+    updateTotalPrice();
+});
 </script>
 {% endblock %}

@@ -125,19 +125,37 @@
                                                     <h4 class="tg-listing-card-title">
                                                         <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">{{ daytrip.name }}</a>
                                                     </h4>
+                                                 
                                                     <div class="tg-listing-card-duration-tour">
+                                                        <span class="tg-listing-rating-percent">
+                                                            {% if daytrip.recurrence == 'none' %}
+                                                                {{ daytrip.start_date|date:"F j, Y" }}
+                                                            {% elif daytrip.recurrence == 'weekend' %}
+                                                                Every Weekend
+                                                                {% if daytrip.end_date %}
+                                                                    until {{ daytrip.end_date|date:"F j, Y" }}
+                                                                {% endif %}
+                                                            {% elif daytrip.recurrence == 'saturday' %}
+                                                                Every Saturday
+                                                                {% if daytrip.end_date %}
+                                                                    until {{ daytrip.end_date|date:"F j, Y" }}
+                                                                {% endif %}
+                                                            {% elif daytrip.recurrence == 'sunday' %}
+                                                                Every Sunday
+                                                                {% if daytrip.end_date %}
+                                                                    until {{ daytrip.end_date|date:"F j, Y" }}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </span>
                                                         <span class="tg-listing-card-duration-map mb-5">
-                                                            <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M12.3329 6.7071C12.3329 11.2324 6.55512 15.1111 6.55512 15.1111C6.55512 15.1111 0.777344 11.2324 0.777344 6.7071C0.777344 5.16402 1.38607 3.68414 2.46962 2.59302C3.55316 1.5019 5.02276 0.888916 6.55512 0.888916C8.08748 0.888916 9.55708 1.5019 10.6406 2.59302C11.7242 3.68414 12.3329 5.16402 12.3329 6.7071Z" stroke="currentColor" stroke-width="1.15556" stroke-linecap="round" stroke-linejoin="round" />
-                                                                <path d="M6.55512 8.64649C7.61878 8.64649 8.48105 7.7782 8.48105 6.7071C8.48105 5.636 7.61878 4.7677 6.55512 4.7677C5.49146 4.7677 4.6292 5.636 4.6292 6.7071C4.6292 7.7782 5.49146 8.64649 6.55512 8.64649Z" stroke="currentColor" stroke-width="1.15556" stroke-linecap="round" stroke-linejoin="round" />
-                                                            </svg>
-                                                            {{ daytrip.pickup_location }}
+                                                           <span>Pick-up: </span>
+                                                            {{ daytrip.pickup_location }} @ {{ daytrip.pickup_time|time:"H:i" }} hrs
                                                         </span>
                                                         <span class="tg-listing-card-duration-time">
                                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M8.00175 3.73329V7.99996L10.8462 9.42218M15.1128 8.00003C15.1128 11.9274 11.9291 15.1111 8.00174 15.1111C4.07438 15.1111 0.890625 11.9274 0.890625 8.00003C0.890625 4.07267 4.07438 0.888916 8.00174 0.888916C11.9291 0.888916 15.1128 4.07267 15.1128 8.00003Z" stroke="currentColor" stroke-width="1.06667" stroke-linecap="round" stroke-linejoin="round" />
                                                             </svg>
-                                                            {{ daytrip.pickup_time|time:"H:i" }}
+                                                          
                                                         </span>
                                                     </div>
                                                 </div>
@@ -146,14 +164,9 @@
                                                         <span class="tg-listing-card-currency-amount mr-5">
                                                             <span class="currency-symbol">KES {{ daytrip.price }}</span>
                                                         </span>
-                                                        <span class="tg-listing-card-activity-person">/Person</span>
+                                                        <span class="tg-listing-card-activity-person"> /Person</span>
                                                     </div>
-                                                    <div class="tg-listing-card-review space">
-                                                        <span class="tg-listing-rating-icon">
-                                                            <i class="fa-solid fa-calendar-day"></i>
-                                                        </span>
-                                                        <span class="tg-listing-rating-percent">{{ daytrip.date|date:"F j, Y" }}</span>
-                                                    </div>
+                                                
                                                 </div>
                                             </div>
                                         </div>

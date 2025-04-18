@@ -18,6 +18,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from django.db.models import Q  # Add this import at the top with other imports
 
 
 # Add this view function
@@ -32,6 +33,7 @@ class HomeView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
         context.update({
             'featured_tours': Tour.objects.filter(is_featured=True)[:6],
             'top_tours': Tour.objects.filter(rating__gte=4.5)[:6],
@@ -39,11 +41,12 @@ class HomeView(ListView):
             'event_categories': EventCategory.objects.all(),
             'featured_daytrips': DayTrip.objects.filter(
                 is_featured=True,
-                date__gte=timezone.now().date()
-            )[:4],  # Show only upcoming featured day trips
-            'today': timezone.now().date(),
+                start_date__gte=today  # Changed from date to start_date
+            )[:4],
+            'today': today,
         })
         return context
+
 
 
 
@@ -54,18 +57,25 @@ class DayTripListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        # Show only upcoming daytrips
+        today = timezone.now().date()
+        # Show both one-time and recurring trips
         return DayTrip.objects.filter(
-            date__gte=timezone.now().date()
-        ).order_by('date')
+            Q(recurrence='none', start_date__gte=today) |  # One-time trips in future
+            Q(recurrence__in=['weekend', 'saturday', 'sunday'], start_date__lte=today)  # Active recurring trips
+        ).order_by('start_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
         context['featured_daytrips'] = DayTrip.objects.filter(
-            is_featured=True,
-            date__gte=timezone.now().date()
+            is_featured=True
+        ).filter(
+            Q(recurrence='none', start_date__gte=today) |
+            Q(recurrence__in=['weekend', 'saturday', 'sunday'], start_date__lte=today)
         )[:6]
+        context['today'] = today
         return context
+    
 
 class DayTripDetailView(DetailView):
     model = DayTrip
@@ -75,12 +85,26 @@ class DayTripDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get next 3 upcoming daytrips for recommendations
+        daytrip = self.object
+        
+        # Get available dates for the next 8 weeks
+        available_dates = daytrip.get_available_dates(num_weeks=8)
+        
+        # Format dates for the template
+        formatted_dates = [
+            {
+                'date': date,
+                'remaining_slots': daytrip.get_remaining_slots(date)
+            }
+            for date in available_dates
+        ]
+        
+        context['available_dates'] = formatted_dates
         context['upcoming_daytrips'] = DayTrip.objects.filter(
-            date__gte=timezone.now().date()
+            start_date__gte=timezone.now().date()
         ).exclude(
             id=self.object.id
-        ).order_by('date')[:3]
+        )[:3]
         return context
 
 def send_daytrip_confirmation_email(booking):
@@ -308,23 +332,33 @@ def send_daytrip_confirmation_email(booking):
     except Exception as e:
         print(f"Email sending failed: {str(e)}")
         raise e
-    
+
 def daytrip_booking(request, daytrip_slug):
     daytrip = get_object_or_404(DayTrip, slug=daytrip_slug)
     today = timezone.now().date()
     
     if request.method == 'POST':
         try:
+            # Get and validate selected date
+            travel_date = datetime.datetime.strptime(request.POST.get('travel_date'), '%Y-%m-%d').date()
+            
+            if travel_date < today:
+                raise ValidationError("Travel date cannot be in the past")
+                
+            # Validate date is available
+            if not daytrip.is_available_on_date(travel_date):
+                raise ValidationError("Selected date is not available for this trip")
+
             # Validate number of people
             try:
                 number_of_people = int(request.POST.get('number_of_people', 1))
                 if number_of_people < 1:
                     raise ValidationError("Number of people must be at least 1")
                 
-                # Check available slots
-                remaining_slots = daytrip.get_remaining_slots()
+                # Check remaining slots for the selected date
+                remaining_slots = daytrip.get_remaining_slots(travel_date)
                 if number_of_people > remaining_slots:
-                    raise ValidationError(f"Only {remaining_slots} slots available for this day trip")
+                    raise ValidationError(f"Only {remaining_slots} slots available for this date")
             except ValueError:
                 raise ValidationError("Please enter a valid number of people")
 
@@ -352,7 +386,7 @@ def daytrip_booking(request, daytrip_slug):
                 full_name=request.POST.get('full_name'),
                 email=request.POST.get('email'),
                 phone=request.POST.get('phone'),
-                travel_date=daytrip.date,
+                travel_date=travel_date,
                 number_of_people=number_of_people,
                 special_requirements=request.POST.get('special_requirements'),
                 total_price=total_price,
@@ -370,9 +404,228 @@ def daytrip_booking(request, daytrip_slug):
             if selected_activities:
                 booking.optional_activities.set(selected_activities)
 
-            # Send confirmation email
+            # Send confirmation emails
             try:
-                send_daytrip_confirmation_email(booking)
+                s = smtplib.SMTP('smtp.gmail.com', 587)
+                s.starttls()
+                s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Create two separate messages - one for each recipient
+                # First message (for customer)
+                msg1 = MIMEMultipart('alternative')
+                msg1['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                msg1['To'] = booking.email
+                msg1['Subject'] = f"Day Trip Booking Confirmation - {booking.booking_reference}"
+
+                # Second message (for info@dedeexpeditions.com)
+                msg2 = MIMEMultipart('alternative')
+                msg2['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                msg2['To'] = "info@dedeexpeditions.com"
+                msg2['Subject'] = f"New Day Trip Booking - {booking.booking_reference}"
+
+                # Create activities list for email if any were selected
+                activities_html = ""
+                if booking.optional_activities.exists():
+                    activities_html = """
+                    <div class="booking-details" style="margin-top: 20px;">
+                        <h3>Optional Activities Booked:</h3>
+                        <ul>
+                    """
+                    for activity in booking.optional_activities.all():
+                        activities_html += f"<li>{activity.name} - KES {activity.price} per person</li>"
+                    activities_html += "</ul></div>"
+
+                # Customer email message
+                customer_email = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Day Trip Booking Confirmation</title>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .email-container {{
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }}
+                        .header {{
+                            text-align: center;
+                            padding: 20px 0;
+                            background-color: #f8f9fa;
+                        }}
+                        .logo {{
+                            max-width: 200px;
+                            height: auto;
+                        }}
+                        .content {{
+                            padding: 20px 0;
+                        }}
+                        .booking-details {{
+                            background-color: #f8f9fa;
+                            padding: 20px;
+                            border-radius: 5px;
+                            margin: 20px 0;
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                            font-size: 12px;
+                            color: #666;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="header">
+                            <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE EXPEDITIONS" class="logo">
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Day Trip Booking Confirmation</h2>
+                            <p>Dear {booking.full_name},</p>
+                            
+                            <p>Thank you for booking your day trip with DEDE EXPEDITIONS! We're excited to have you join us for {booking.daytrip.name}.</p>
+                            
+                            <div class="booking-details">
+                                <h3>Booking Details:</h3>
+                                <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
+                                <p><strong>Day Trip:</strong> {booking.daytrip.name}</p>
+                                <p><strong>Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Pickup Time:</strong> {booking.daytrip.pickup_time}</p>
+                                <p><strong>Pickup Location:</strong> {booking.daytrip.pickup_location}</p>
+                                <p><strong>Number of People:</strong> {booking.number_of_people}</p>
+                                <p><strong>Total Price:</strong> KES {booking.total_price}</p>
+                            </div>
+                            
+                            {activities_html}
+                            
+                            <p>Your booking status is currently <strong>pending</strong>. Our team will contact you shortly regarding payment and final confirmation.</p>
+                            
+                            <p>If you have any questions, please contact us with your booking reference: {booking.booking_reference}</p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                            <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
+                            <p>
+                                <a href="tel:+254758355325">+254758355325</a> |
+                                <a href="mailto:info@dedeexpeditions.com">info@dedeexpeditions.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+
+                # Admin email message
+                admin_email = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>New Day Trip Booking</title>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .email-container {{
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }}
+                        .header {{
+                            text-align: center;
+                            padding: 20px 0;
+                            background-color: #f8f9fa;
+                        }}
+                        .logo {{
+                            max-width: 200px;
+                            height: auto;
+                        }}
+                        .content {{
+                            padding: 20px 0;
+                        }}
+                        .booking-details {{
+                            background-color: #f8f9fa;
+                            padding: 20px;
+                            border-radius: 5px;
+                            margin: 20px 0;
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                            font-size: 12px;
+                            color: #666;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="header">
+                            <img src="https://kipekeetravel.onrender.com/static/assets3/img/logo/dedelogo1.png" alt="DEDE EXPEDITIONS" class="logo">
+                        </div>
+                        
+                        <div class="content">
+                            <h2>New Day Trip Booking</h2>
+                            <p>A booking has been made for a day trip. Here are the details:</p>
+                            
+                            <div class="booking-details">
+                                <h3>Customer Information:</h3>
+                                <p><strong>Customer Name:</strong> {booking.full_name}</p>
+                                <p><strong>Email:</strong> {booking.email}</p>
+                                <p><strong>Phone:</strong> {booking.phone}</p>
+                                
+                                <h3>Booking Details:</h3>
+                                <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
+                                <p><strong>Day Trip:</strong> {booking.daytrip.name}</p>
+                                <p><strong>Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Pickup Time:</strong> {booking.daytrip.pickup_time}</p>
+                                <p><strong>Pickup Location:</strong> {booking.daytrip.pickup_location}</p>
+                                <p><strong>Number of People:</strong> {booking.number_of_people}</p>
+                                <p><strong>Total Price:</strong> KES {booking.total_price}</p>
+                                
+                                <h3>Special Requirements:</h3>
+                                <p>{booking.special_requirements if booking.special_requirements else 'None specified'}</p>
+                            </div>
+                            
+                            {activities_html}
+                            
+                            <p>Please review and process this booking as soon as possible.</p>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+
+                # Attach the HTML content to respective messages
+                msg1.attach(MIMEText(customer_email, 'html'))
+                msg2.attach(MIMEText(admin_email, 'html'))
+
+                # Send both messages
+                s.send_message(msg1)
+                s.send_message(msg2)
+                
+                s.quit()
+                print(f"SUCCESSFULLY SENT EMAIL to {booking.email} and info@dedeexpeditions.com for booking {booking.booking_reference}")
             except Exception as e:
                 print(f"Email sending failed: {str(e)}")
                 # Continue with the booking process even if email fails
@@ -397,6 +650,7 @@ def daytrip_booking(request, daytrip_slug):
             'daytrip': daytrip,
             'form_data': request.POST,
             'today': today,
+            'available_dates': daytrip.get_available_dates()
         })
     
     # For GET requests, render empty form
@@ -404,6 +658,7 @@ def daytrip_booking(request, daytrip_slug):
         'daytrip': daytrip,
         'today': today,
         'form_data': None,
+        'available_dates': daytrip.get_available_dates()
     })
 
 def daytrip_booking_confirmation(request, booking_reference):
@@ -695,7 +950,7 @@ def tour_booking(request, tour_slug):
                         </div>
                         
                         <div class="footer">
-                            <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                                    <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
                             <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
                             <p>
                                 <a href="tel:+254758355325">+254758355325</a> |

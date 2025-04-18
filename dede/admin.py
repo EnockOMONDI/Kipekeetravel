@@ -160,22 +160,19 @@ class OptionalActivityInline(admin.TabularInline):
 
 @admin.register(DayTrip)
 class DayTripAdmin(admin.ModelAdmin):
-    list_display = ('name', 'date', 'price', 'pickup_location', 'pickup_time', 'is_featured')
-    list_filter = ('date', 'is_featured')
-    search_fields = ('name', 'pickup_location')
+    list_display = ('name', 'start_date', 'recurrence', 'price', 'is_featured')  # Removed 'status'
+    list_filter = ('recurrence', 'is_featured', 'pickup_location')
+    search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ItineraryItemInline, OptionalActivityInline]
-    
     fieldsets = (
-        (None, {
-            'fields': ('name', 'slug')
+        ('Basic Information', {
+            'fields': ('name', 'slug', 'description', 'price', 'is_featured')
         }),
         ('Images', {
-            'fields': ('Image', 'gallery_image1', 'gallery_image2', 'gallery_image3'),
-            'classes': ('wide',)
+            'fields': ('Image', 'gallery_image1', 'gallery_image2', 'gallery_image3')
         }),
-        ('Trip Details', {
-            'fields': ('date', 'price')
+        ('Schedule', {
+            'fields': ('start_date', 'end_date', 'recurrence', 'group_size')
         }),
         ('Pickup Details', {
             'fields': ('pickup_location', 'pickup_time')
@@ -183,10 +180,6 @@ class DayTripAdmin(admin.ModelAdmin):
         ('Inclusions', {
             'fields': ('included_items',)
         }),
-        ('Settings', {
-            'fields': ('is_featured',),
-            'classes': ('collapse',)
-        })
     )
 
 @admin.register(IncludedItem)
