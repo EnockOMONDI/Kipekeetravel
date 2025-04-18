@@ -29,31 +29,41 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-xl-3 col-lg-4">
-                <aside class="tg-destination-sidebar">
+                <aside class="tg-destination-sidebar bg-white rounded shadow-sm p-4">
                     <!-- Search Widget -->
-                    <div class="widget tg-widget">
+                    <div class="widget tg-widget border-bottom pb-4">
                         <div class="widget-title mb-20">
                             <h4 class="title">Search Events</h4>
                         </div>
                         <form action="{% url 'events:event_list' %}" method="get" class="sidebar-search-form">
-                            <input type="text" name="search" placeholder="Search..." value="{{ request.GET.search }}">
-                            <button type="submit"><i class="fas fa-search"></i></button>
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    name="search" 
+                                    placeholder="Search events..." 
+                                    value="{{ request.GET.search }}" 
+                                    class="form-control border-end-0"
+                                >
+                                <button type="submit" class="btn tg-btn-2 border-start-0">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
                         </form>
                     </div>
 
                     <!-- Categories Widget -->
-                    <div class="widget tg-widget">
+                    <div class="widget tg-widget border-bottom py-4">
                         <div class="widget-title mb-20">
                             <h4 class="title">Categories</h4>
                         </div>
                         <div class="cat-list">
-                            <ul class="list-wrap">
+                            <ul class="list-wrap list-unstyled">
                                 {% for category in categories %}
-                                <li>
+                                <li class="mb-2">
                                     <a href="{% url 'events:event_list' %}?category={{ category.slug }}" 
-                                       class="{% if category.slug == selected_category %}active{% endif %}">
+                                       class="d-flex justify-content-between align-items-center {% if category.slug == selected_category %}active{% endif %}">
                                         {{ category.name }}
-                                        <span>({{ category.event_count }})</span>
+                                        <span class="badge bg-primary rounded-pill">({{ category.event_count }})</span>
                                     </a>
                                 </li>
                                 {% endfor %}
@@ -62,17 +72,17 @@
                     </div>
 
                     <!-- Date Filter Widget -->
-                    <div class="widget tg-widget">
+                    <div class="widget tg-widget pt-4">
                         <div class="widget-title mb-20">
                             <h4 class="title">Date Range</h4>
                         </div>
                         <form action="{% url 'events:event_list' %}" method="get" class="date-filter-form">
                             <div class="form-group mb-3">
-                                <label>From</label>
+                                <label class="form-label">From</label>
                                 <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
                             </div>
                             <div class="form-group mb-3">
-                                <label>To</label>
+                                <label class="form-label">To</label>
                                 <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
                             </div>
                             <button type="submit" class="btn tg-btn-2 w-100">Apply Filter</button>
@@ -170,8 +180,29 @@
 
                 {% else %}
                 <div class="no-events-found text-center">
-                    <h3>No events found</h3>
-                    <p>Try adjusting your search criteria or check back later for new events.</p>
+                    <div class="coming-soon-image mb-4">
+                        <img 
+                            src="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}" 
+                            alt="Events Coming Soon" 
+                            class="img-fluid rounded shadow-sm"
+                            style="width: 100%; max-height: 400px; object-fit: cover;"
+                        >
+                    </div>
+                    <div class="coming-soon-content bg-white rounded shadow-sm p-4">
+                        <h3 class="mb-3">Coming Soon!</h3>
+                        <p class="lead">
+                            <b>Events Feature, launching this July (2025)</b>
+                        </p>
+                        <p class="text-muted">
+                            Discover upcoming events, book directly from our platform, and never miss a moment again.
+                        </p>
+                        <hr>
+                        <div class="mt-3">
+                            <a href="{% url 'events:notify_launch' %}" class="btn tg-btn-2">
+                                <i class="far fa-bell me-2"></i>Get Notified When We Launch
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
             </div>
@@ -180,6 +211,37 @@
 </section>
 <!-- event-list-area-end -->
 {% endblock %}
+<style>
+    .sidebar-search-form .input-group {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.sidebar-search-form .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+.sidebar-search-form .btn {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.coming-soon-image img {
+    transition: transform 0.3s ease;
+}
+
+.coming-soon-image img:hover {
+    transform: scale(1.02);
+}
+
+.coming-soon-content {
+    margin-top: -50px;
+    position: relative;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+</style>
 
 {% block extra_js %}
 <script>

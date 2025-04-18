@@ -19,6 +19,7 @@ urlpatterns = [
     # User Dashboard
     path('my-events/', views.my_events, name='my_events'),
     path('my-tickets/', views.my_tickets, name='my_tickets'),
+    path('notify-launch/', views.notify_launch, name='notify_launch'),
 
   
 ]

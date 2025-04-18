@@ -1,7 +1,9 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .models import Event, TicketType, Ticket, EventImage
+from .models import Event, TicketType, Ticket, EventImage, EventsLaunchNotification
+from django.core.mail import send_mail
+from django.conf import settings
 
 class EventForm(forms.ModelForm):
     class Meta:
@@ -157,3 +159,15 @@ class EventSearchForm(forms.Form):
         super().__init__(*args, **kwargs)
         from .models import EventCategory
         self.fields['category'].queryset = EventCategory.objects.all()
+
+class LaunchNotificationForm(forms.ModelForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email address'
+        })
+    )
+    
+    class Meta:
+        model = EventsLaunchNotification
+        fields = ['email']
