@@ -50,6 +50,9 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from .models import User, Profile
 import json
+from django.views import View
+from django.utils.http import urlsafe_base64_decode
+
 
 
 
@@ -179,27 +182,84 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)  
             user.is_active = False
-
             user.save()
 
             current_site = get_current_site(request)
             uid64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = PasswordResetTokenGenerator().make_token(user)
-            activation_link = f'http://{current_site}/activate/{uid64}/{token}'
+            token = generate_token.make_token(user)
+            # Update the activation link to use the users namespace
+            activation_link = f'http://{current_site.domain}/users/activate/{uid64}/{token}/'
 
-            mail_f.verification_mail(activation_link, user)
+            # Send verification email
+            try:
+                s = smtplib.SMTP('smtp.gmail.com', 587)
+                s.starttls()
+                s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                
+                msg = MIMEMultipart('alternative')
+                msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                msg['To'] = user.email
+                msg['Subject'] = "Activate Your DEDE EXPEDITIONS Account"
+                
+                html = f"""
+                <html>
+                <head>
+                    <style>
+                        body {{ font-family: Arial, sans-serif; line-height: 1.6; }}
+                        .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                        .header {{ background-color: #f8f9fa; padding: 20px; text-align: center; }}
+                        .content {{ padding: 20px; }}
+                        .button {{ 
+                            background-color: #007bff;
+                            color: white;
+                            padding: 10px 20px;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            display: inline-block;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h2>Welcome to DEDE EXPEDITIONS!</h2>
+                        </div>
+                        <div class="content">
+                            <p>Hi {user.username},</p>
+                            <p>Thank you for registering with DEDE EXPEDITIONS. To activate your account, please click the button below:</p>
+                            <p style="text-align: center;">
+                                <a href="{activation_link}" class="button" style="color: white;">Activate Account</a>
+                            </p>
+                            <p>If the button doesn't work, copy and paste this link into your browser:</p>
+                            <p>{activation_link}</p>
+                            <p>This link will expire in 24 hours.</p>
+                            <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+                
+                msg.attach(MIMEText(html, 'html'))
+                s.send_message(msg)
+                s.quit()
+                
+            except Exception as e:
+                print(f"Error sending email: {str(e)}")
+                messages.error(request, "There was an error sending the activation email. Please try again.")
+                user.delete()  # Delete the user if email sending fails
+                return render(request, 'users/register.html', {'form': form})
 
             # Store username and email in session
             request.session['username'] = form.cleaned_data['username']
             request.session['email'] = form.cleaned_data['email']
 
-            # Redirect to the success message page
             return redirect('users:success')
 
     else:
         form = UserRegisterForm()
 
-    return render(request, 'users/register.html', {'form': form})
+    return render(request, 'users/dede/register.html', {'form': form})
 
 
 
@@ -216,7 +276,7 @@ def success(request):
 
     return render(request, 'users/success.html')
 
-    return render(request, 'users/register.html', {'form': form})
+
 
 @login_required
 def profile(request):
@@ -553,18 +613,21 @@ def send_mice_email(request):
 
 
 class ActivateAccountView(View):
-	def get(self,request,uid64,token):
-		try:
-			uid = urlsafe_base64_decode(uid64).decode('utf-8')
-			user=User.objects.get(pk=uid)
-			print(uid)
-		except Exception as identifire :
-			user=None
+    def get(self, request, uid64, token):
+        try:
+            uid = urlsafe_base64_decode(uid64).decode('utf-8')
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist) as e:
+            print(f"Activation error: {str(e)}")  # For debugging
+            user = None
 
-		if user is not None and generate_token.check_token(user,token):
-			user.is_active=True 
-			user.save()
-			messages.success(request, 'account activated successfully')
-
-			return redirect('login')
-		return HttpResponse('THIS VERIFICATION CODE HAS ALREADY BEEN USED USE ANOTHER EMAIL TO CREATE AN ACCOUNT OR LOG IN WITH YOUR DETAILS')
+        if user is not None and generate_token.check_token(user, token):
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+                messages.success(request, 'Your account has been activated successfully! You can now log in.')
+                return redirect('users:users-login')
+            else:
+                messages.info(request, 'Your account is already activated. You can log in.')
+        else:
+            return redirect('users:activation_failed')

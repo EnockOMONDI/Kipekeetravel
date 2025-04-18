@@ -21,8 +21,8 @@ urlpatterns = [
     path('users/', include(('users.urls', 'users'), namespace='home')),
     path('tours/', include(('adminside.urls', 'adminside'), namespace='adminside')),
     path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
-    path('login/',auth_views.LoginView.as_view(template_name='users/login.html'),name='login'),
-    path('logout/',auth_views.LogoutView.as_view(template_name='users/index.html'),name='logout'),
+    path('login/',auth_views.LoginView.as_view(template_name='users/dede/login.html'),name='login'),
+    path('logout/',auth_views.LogoutView.as_view(template_name='users/dede/index.html'),name='logout'),
     path('mail/',tours_travels_views.mail,name='mail'),
   
     
