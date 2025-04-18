@@ -16,12 +16,17 @@ from django.template.loader import render_to_string
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from django.views.generic import TemplateView
 
 import logging
 
 logger = logging.getLogger(__name__)
 
+# In views.py
 
+
+class EventOrganizersView(TemplateView):
+    template_name = 'users/events/event_organizers.html'
 
 class EventListView(ListView):
     model = Event

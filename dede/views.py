@@ -25,7 +25,6 @@ from django.db.models import Q  # Add this import at the top with other imports
 
 
 
-
 class HomeView(ListView):
     model = Tour
     template_name = 'users/dede/index.html'
@@ -34,15 +33,22 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = timezone.now().date()
+        
+        # First get all featured day trips
+        featured_daytrips = DayTrip.objects.filter(is_featured=True)
+        
+        # Then filter based on dates and recurrence
+        featured_daytrips = featured_daytrips.filter(
+            Q(recurrence='none', start_date__gte=today) |  # Future one-time trips
+            Q(recurrence__in=['weekend', 'saturday', 'sunday'])  # All recurring trips
+        )
+        
         context.update({
             'featured_tours': Tour.objects.filter(is_featured=True)[:6],
             'top_tours': Tour.objects.filter(rating__gte=4.5)[:6],
             'popular_destinations': Destination.objects.all()[:6],
             'event_categories': EventCategory.objects.all(),
-            'featured_daytrips': DayTrip.objects.filter(
-                is_featured=True,
-                start_date__gte=today  # Changed from date to start_date
-            )[:4],
+            'featured_daytrips': featured_daytrips[:4],
             'today': today,
         })
         return context
