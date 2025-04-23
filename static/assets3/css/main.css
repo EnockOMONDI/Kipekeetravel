@@ -2532,17 +2532,16 @@ textarea {
   margin-left: 2px;
 }
 .tg-header-contact-number span {
-  font-size: 12px;
+  font-size: 10px;
   text-transform: capitalize;
   color: var(--tg-common-white);
   display: block;
   line-height: 1;
-  font-weight: 500;
+  font-weight: 400;
 }
 .tg-header-contact-number a {
-  text-transform: capitalize;
   color: var(--tg-common-white);
-  font-weight: 600;
+  font-weight: 400;
 }
 .tg-header-contact-number a:hover {
   color: var(--tg-border-2);
@@ -2552,7 +2551,7 @@ textarea {
   top: 0;
   left: 0;
   border: 1.5px solid var(--tg-border-2);
-  height: 20px;
+  height: 15px;
   width: 2px;
   display: inline-block;
 }

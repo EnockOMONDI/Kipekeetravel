@@ -1,0 +1,280 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Breadcrumb Area -->
+<section class="breadcrumb-area pt-140 pb-140 bg-dark-overlay" style="background-image: url('{% static 'assets3/img/bg/event-manager-bg.jpg' %}');">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-content text-center">
+                    <h2 class="title">Event Organizers</h2>
+                    <div class="breadcrumb-menu">
+                        <nav>
+                            <ul>
+                                <li><a href="{% url 'dede:home' %}">Home</a></li>
+                                <li class="active">Event Organizers</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-area pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-title text-center mb-60">
+                    <h2>Why Choose Our Platform?</h2>
+                    <p>Streamline your event management and boost ticket sales with our comprehensive suite of tools</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Feature 1 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center mb-30">
+                    <div class="icon mb-30">
+                        <i class="fas fa-ticket-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4>Easy Ticket Management</h4>
+                    <p>Create and manage multiple ticket types, set pricing tiers, and control inventory in real-time.</p>
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center mb-30">
+                    <div class="icon mb-30">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h4>Real-time Analytics</h4>
+                    <p>Track sales, monitor attendance, and gain valuable insights with detailed reporting tools.</p>
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center mb-30">
+                    <div class="icon mb-30">
+                        <i class="fas fa-mobile-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4>Mobile-Optimized</h4>
+                    <p>Sell tickets anywhere with our mobile-friendly platform and on-site check-in tools.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="process-area bg-light pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-title text-center mb-60">
+                    <h2>How It Works</h2>
+                    <p>Get started in minutes and begin selling tickets today</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Step 1 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="process-box mb-30">
+                    <div class="process-number">1</div>
+                    <h4>Create Your Event</h4>
+                    <p>Set up your event details, add descriptions, images, and customize your ticket types.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="process-box mb-30">
+                    <div class="process-number">2</div>
+                    <h4>Promote & Sell</h4>
+                    <p>Share your event page, use our marketing tools, and watch ticket sales grow.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="process-box mb-30">
+                    <div class="process-number">3</div>
+                    <h4>Manage & Track</h4>
+                    <p>Monitor sales, communicate with attendees, and manage your event successfully.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="pricing-area pt-100 pb-70">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-title text-center mb-60">
+                    <h2>Pricing Plans</h2>
+                    <p>Choose the perfect plan for your event management needs</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <!-- Basic Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="pricing-box mb-30">
+                    <div class="pricing-header">
+                        <h3>Basic</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">0</span>
+                            <span class="duration">/month</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Up to 50 tickets/month</li>
+                            <li><i class="fas fa-check"></i> Basic analytics</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-check"></i> Standard processing fees</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="col-lg-4 col-md-6">
+                <div class="pricing-box featured mb-30">
+                    <div class="pricing-header">
+                        <h3>Pro</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">49</span>
+                            <span class="duration">/month</span>
+                        </div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Unlimited tickets</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Reduced processing fees</li>
+                            <li><i class="fas fa-check"></i> Custom branding</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-area bg-primary pt-60 pb-60">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-9">
+                <div class="cta-content">
+                    <h3 class="text-white mb-0">Ready to start selling tickets?</h3>
+                    <p class="text-white-50 mb-0">Join thousands of successful event organizers today.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 text-lg-end">
+                <a href="{% url 'users:users-register' %}" class="btn btn-light">Create Account</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Add these styles to your CSS file */
+.feature-box {
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+}
+
+.process-box {
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.process-number {
+    width: 40px;
+    height: 40px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.pricing-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.pricing-box.featured {
+    transform: scale(1.05);
+    border: 2px solid #007bff;
+}
+
+.pricing-header {
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.pricing-features {
+    padding: 30px 0;
+}
+
+.pricing-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pricing-features li {
+    padding: 10px 0;
+}
+
+.pricing-features i {
+    color: #28a745;
+    margin-right: 10px;
+}
+
+.pricing-footer {
+    text-align: center;
+}
+</style>
+{% endblock %}

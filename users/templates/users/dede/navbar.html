@@ -9,19 +9,27 @@
                         <nav class="tgmenu__nav tgmenu-1-space">
                             <div class="tgmenu__navbar-wrap tgmenu__main-menu tgmenu__navbar-wrap-2 d-none d-xl-flex">
                                 <ul class="navigation">
-                                    <li class="active menu-item-has-children"><a href="{% url 'dede:home' %}">  Home </a>
+                                    <li class="active"><a href="{% url 'dede:home' %}">  Home </a>
                                     </li>
-                                    <li class=""><a href="{% url 'dede:tour_list' %}">Tours</a>
+                                    <li class=""><a href="{% url 'dede:tour_list' %}">Holidays</a>
                                      
                                     </li>
-                                    <li class="menu-item-has-children"><a href="#">Who we are</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="{% url 'dede:about' %}">About us <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
-                                        </ul>
+                                    <li class=""><a href="{% url 'dede:daytrip_list' %}">Day Trips</a>
+                                     
                                     </li>
-                                    <li><a href="{% url 'events:event_list' %}">events</a></li>
-                                    <li> </li>
-                                    <li><a href="{% url 'dede:contact' %}">Contact</a></li>
+                                    <li><a href="{% url 'events:event_list' %}">Events</a></li>
+                                    <li>
+                                    <li class="menu-item-has-children"><a href="#">What we do</a>
+                                       
+                                        <ul class="sub-menu">
+                                            <li><a href="{% url 'dede:about' %}">  Travel <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
+                                            <li><a href="{% url 'events:event_organizers' %}">   Events Tickets <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
+                                        </ul>
+                                        
+                                    </li>
+                                   
+                                         <!-- </li>
+                                    <li><a href="{% url 'dede:contact' %}">Help desk</a></li> -->
                                 </ul>
                             </div>
                         </nav>
@@ -30,12 +38,12 @@
                 <div class="col-xl-2 col-4">
                     <div class="logo tg-header-logo text-center p-relative z-index-1">
                         <span class="tg-header-logo-bg d-none d-xl-block"></span>
-                        <a href="index-2.html"><img src="{% static 'assets3/img/logo/dedelogo1.png' %}" alt="Logo"></a>
+                        <a href=""><img src="{% static 'assets3/img/logo/dedelogo1.png' %}" alt="Logo"></a>
                     </div>
                 </div>
                 <div class="col-xl-5 col-8">
                     <div class="tg-menu-right-action tg-menu-right-action-2 d-flex align-items-center justify-content-end">
-                        <div class="tg-header-cart p-relative d-none d-xl-block">
+                        <!-- <div class="tg-header-cart p-relative d-none d-xl-block">
                             <button class="cart-button">
                                 <span>
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,8 +97,17 @@
                                     <a class="cart-btn cart-btn-black" href="checkout.html"><span>Checkout</span></a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="tg-header-contact-info ml-20 d-flex align-items-center">
+                            <span class="tg-header-contact-icon mr-5 d-none d-xl-block">
+                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.25 4.375H1.75C1.0625 4.375 0.5 4.9375 0.5 5.625V15.625C0.5 16.3125 1.0625 16.875 1.75 16.875H19.25C19.9375 16.875 20.5 16.3125 20.5 15.625V5.625C20.5 4.9375 19.9375 4.375 19.25 4.375ZM18.7812 6.89062L10.7188 11.9219C10.5 12.0469 10.25 12.0469 10.0312 11.9219L2.21875 6.89062C2.09375 6.82812 2 6.70312 2 6.54688C2 6.21875 2.34375 6.01562 2.625 6.17188L10.375 11.125L18.375 6.17188C18.6562 6.01562 19 6.21875 19 6.54688C19 6.70312 18.9062 6.82812 18.7812 6.89062Z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                            <div class="tg-header-contact-number d-none d-xl-block">
+                                <span>Mail Us:</span>
+                                <a href="mailto:infodedeexpeditions.com">info@dedeexpeditions.com</a>
+                            </div>
                             <span class="tg-header-contact-icon mr-5 d-none d-xl-block">
                                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5747 15.8619L15.8138 17.6228C15.7656 17.6732 15.7236 17.7026 15.6627 17.7362C13.1757 19.0753 8.40326 16.5734 6.21009 14.2626C6.18698 14.2374 6.16809 14.2185 6.14502 14.1954C3.83427 12.0021 1.33257 7.22927 2.67157 4.7421C2.70515 4.68124 2.73453 4.64134 2.78491 4.5931L4.54573 2.83006C4.67586 2.69992 4.82067 2.64116 5.00114 2.64116H5.01583C5.20471 2.64327 5.35163 2.71044 5.47965 2.84895L7.75047 5.30044C7.98973 5.55651 7.98131 5.95109 7.73368 6.19877L6.26666 7.66589C5.85321 8.08148 5.67271 8.62926 5.75877 9.20856C5.94134 10.428 6.55419 11.574 7.63293 12.7095C7.65603 12.7326 7.67489 12.7536 7.69799 12.7746C8.83342 13.8534 9.97723 14.4663 11.1966 14.6488C11.7779 14.7349 12.3257 14.5544 12.7412 14.1388L14.2062 12.6738C14.4538 12.4261 14.8484 12.4177 15.1065 12.6549L17.5578 14.9259C17.6963 15.0539 17.7614 15.2008 17.7656 15.3897C17.7698 15.5785 17.709 15.7276 17.5747 15.8619ZM18.3428 14.0779L15.8914 11.8069C15.1779 11.1457 14.0781 11.1667 13.3897 11.8552L11.9227 13.3223C11.7695 13.4755 11.5827 13.5364 11.3687 13.5049C10.3907 13.358 9.45254 12.8459 8.49341 11.9349C8.485 11.9287 8.47872 11.9202 8.47031 11.9118C7.56155 10.9547 7.04946 10.0144 6.90257 9.03849C6.87109 8.82439 6.93195 8.6376 7.08518 8.48229L8.5522 7.01728C9.2406 6.32883 9.2616 5.22902 8.59837 4.51331L6.32966 2.06182C5.98758 1.69451 5.54055 1.49304 5.03893 1.48462C4.53735 1.47624 4.08401 1.65672 3.72725 2.01354L1.96638 3.77452C1.83836 3.90256 1.73971 4.0348 1.65368 4.19431C1.24444 4.95199 1.08073 5.8776 1.16679 6.93962C1.24023 7.85682 1.49628 8.86008 1.92863 9.91793C2.70726 11.8279 3.9854 13.742 5.34746 15.035C5.35794 15.0434 5.36425 15.0497 5.37263 15.0581C6.66546 16.4202 8.57737 17.7006 10.4872 18.4792C11.5471 18.9095 12.5482 19.1656 13.4653 19.2411C13.6479 19.2558 13.8263 19.2621 14.0005 19.2621C14.8421 19.2621 15.5829 19.0921 16.2105 18.7542C16.37 18.6681 16.5043 18.5695 16.6323 18.4415L18.3931 16.6784C18.7478 16.3237 18.9304 15.8704 18.922 15.3687C18.9115 14.8649 18.7122 14.42 18.3428 14.0779Z" fill="currentColor" />
@@ -98,19 +115,35 @@
                             </span>
                             <div class="tg-header-contact-number d-none d-xl-block">
                                 <span>Call Us:</span>
-                                <a href="tel:+123595966">+123 5959 66</a>
+                                <a href="tel:+254758355325">+254758355325</a>
                             </div>
                         </div>
-                        <div class="tg-header-btn ml-20 d-none d-sm-block">
-                            <a class="tg-btn-header" href="login.html">
-                                <span>
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.7 17.2C1.5 17.2 1.3 17.1 1.2 17C1.1 16.8 1 16.7 1 16.5C1 15.1 1.4 13.7 2.1 12.4C2.8 11.2 3.9 10.1 5.1 9.4C4.6 8.8 4.2 8 4 7.2C3.9 6.4 3.9 5.5 4.1 4.8C4.3 4 4.8 3.2 5.3 2.6C5.9 2 6.6 1.5 7.3 1.3C7.9 1.1 8.5 1 9.1 1C9.3 1 9.6 1 9.8 1C10.6 1.1 11.4 1.4 12.1 1.9C12.8 2.4 13.3 3 13.7 3.7C14.1 4.4 14.3 5.2 14.3 6.1C14.3 7.3 13.9 8.5 13.1 9.4C13.7 9.8 14.3 10.2 14.9 10.7C15.7 11.5 16.2 12.3 16.7 13.3C17.1 14.3 17.3 15.3 17.3 16.4C17.3 16.6 17.2 16.8 17.1 16.9C17 17 16.8 17.1 16.6 17.1C16.5 17.1 16.4 17.1 16.3 17C16.2 17 16.1 16.9 16.1 16.8C16 16.7 16 16.7 15.9 16.6C15.9 16.5 15.8 16.4 15.8 16.3C15.8 15.4 15.6 14.6 15.3 13.8C15 13 14.5 12.3 13.8 11.7C13.2 11.2 12.6 10.7 11.9 10.4C11.1 10.9 10.2 11.2 9.1 11.2C8.1 11.2 7.1 10.9 6.3 10.4C5.2 10.9 4.2 11.7 3.5 12.8C2.8 13.9 2.4 15.1 2.4 16.4C2.4 16.6 2.3 16.8 2.2 16.9C2.1 17.1 1.9 17.2 1.7 17.2ZM9.1 2.5C8.4 2.5 7.7 2.7 7.1 3.1C6.4 3.5 6 4.1 5.7 4.7C5.4 5.4 5.3 6.1 5.5 6.9C5.6 7.6 6 8.3 6.5 8.8C7 9.3 7.7 9.7 8.4 9.8C8.6 9.8 8.9 9.9 9.1 9.9C9.6 9.9 10.1 9.8 10.5 9.6C11.2 9.3 11.7 8.9 12.2 8.2C12.6 7.6 12.8 6.9 12.8 6.2C12.8 5.2 12.4 4.3 11.7 3.6C11 2.8 10.1 2.5 9.1 2.5Z" fill="currentColor" />
-                                      </svg>
-                                </span>
-                                Login
-                            </a>
-                        </div>
+                        <!-- Replace the login button section with this -->
+<div class="tg-header-btn ml-20 d-none d-sm-block">
+    {% if user.is_authenticated %}
+        <div class="dropdown">
+            <a class="tg-btn-header dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.7 17.2C1.5 17.2 1.3 17.1 1.2 17C1.1 16.8 1 16.7 1 16.5C1 15.1 1.4 13.7 2.1 12.4C2.8 11.2 3.9 10.1 5.1 9.4C4.6 8.8 4.2 8 4 7.2C3.9 6.4 3.9 5.5 4.1 4.8C4.3 4 4.8 3.2 5.3 2.6C5.9 2 6.6 1.5 7.3 1.3C7.9 1.1 8.5 1 9.1 1C9.3 1 9.6 1 9.8 1C10.6 1.1 11.4 1.4 12.1 1.9C12.8 2.4 13.3 3 13.7 3.7C14.1 4.4 14.3 5.2 14.3 6.1C14.3 7.3 13.9 8.5 13.1 9.4C13.7 9.8 14.3 10.2 14.9 10.7C15.7 11.5 16.2 12.3 16.7 13.3C17.1 14.3 17.3 15.3 17.3 16.4C17.3 16.6 17.2 16.8 17.1 16.9C17 17 16.8 17.1 16.6 17.1C16.5 17.1 16.4 17.1 16.3 17C16.2 17 16.1 16.9 16.1 16.8C16 16.7 16 16.7 15.9 16.6C15.9 16.5 15.8 16.4 15.8 16.3C15.8 15.4 15.6 14.6 15.3 13.8C15 13 14.5 12.3 13.8 11.7C13.2 11.2 12.6 10.7 11.9 10.4C11.1 10.9 10.2 11.2 9.1 11.2C8.1 11.2 7.1 10.9 6.3 10.4C5.2 10.9 4.2 11.7 3.5 12.8C2.8 13.9 2.4 15.1 2.4 16.4C2.4 16.6 2.3 16.8 2.2 16.9C2.1 17.1 1.9 17.2 1.7 17.2Z" fill="currentColor"/>
+                    </svg>
+                </span>
+                {{ user.username }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{% url 'users:users-profile' %}">My Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'users:users-profile' %}#my-bookings">My Bookings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </div>
+    {% else %}
+        <a class="tg-btn-header" href="{% url 'login' %}">
+        
+            Login
+        </a>
+    {% endif %}
+</div>
                         <div class="tg-header-menu-bar lh-1 p-relative pl-20 d-block d-xl-none">
                             <button class="tgmenu-offcanvas-open-btn mobile-nav-toggler mobile-nav-black">
                                 <span></span>
@@ -123,13 +156,45 @@
             </div>
         </div>
     </div>
-
+    <style>
+        .dropdown-menu {
+            min-width: 200px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .dropdown-item {
+            padding: 8px 15px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #4CAF50;
+        }
+        
+        .dropdown-divider {
+            margin: 8px 0;
+        }
+        
+        .tg-btn-header.dropdown-toggle::after {
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        /* Ensure the dropdown works on hover as well */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        </style>
     <!-- Mobile Menu  -->
     <div class="tgmobile__menu">
         <nav class="tgmobile__menu-box">
             <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
             <div class="nav-logo">
-                <a href="index-2.html"><img src="{% static 'assets3/img/logo/logo-green.png' %}" alt="logo"></a>
+                <a href="index-2.html"><img src="{% static 'assets3/img/logo/dedelogo1.png' %}" alt="logo"></a>
             </div>
             <div class="tgmobile__search">
                 <form action="#">

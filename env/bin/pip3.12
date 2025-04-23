@@ -1,4 +1,6 @@
-#!/Users/djsean/Desktop/APPS2024/Novustellke/env/bin/python3.12
+#!/bin/sh
+'''exec' "/Users/djsean/Desktop/APPS2024/MY APPS/RUNNING APPS/TRAVEL/KipekeeTravelmaster/env/bin/python3.12" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

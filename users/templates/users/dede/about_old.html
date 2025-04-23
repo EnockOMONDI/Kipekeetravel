@@ -1,0 +1,189 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- tg-breadcrumb-area-start -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing-5 fix p-relative z-index-1 include-bg" data-background="{% static 'assets/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-5 fs-40">About DEDE Travel</h2>
+                    <div class="tg-breadcrumb-list-4">
+                        <ul>
+                            <li><a href="{% url 'dede:home' %}">Home</a></li>
+                            <li><i class="fa-sharp fa-solid fa-angle-right"></i></li>
+                            <li>About</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tg-hero-bottom-shape d-none d-md-block">
+        <span>
+            <svg width="432" height="187" viewBox="0 0 432 187" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="line-1" opacity="0.4" d="M39.6042 428.345C4.41235 355.065 -24.3018 203.867 142.377 185.309C350.725 162.111 488.893 393.541 289.169 313.515C129.389 249.494 458.202 85.4772 642.58 11.4713" stroke="white" stroke-width="24" />
+            </svg>
+        </span>
+    </div>
+    <div class="tg-hero-bottom-shape-2 d-none d-md-block">
+        <span>
+            <svg width="154" height="243" viewBox="0 0 154 243" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="line-1" opacity="0.4" d="M144.616 328.905C116.117 300.508 62.5986 230.961 76.5162 179.949C93.9131 116.184 275.231 7.44494 -65.0181 12.8762" stroke="white" stroke-width="24" />
+            </svg>
+        </span>
+    </div>
+</div>
+<!-- tg-breadcrumb-area-end -->
+
+<!-- tg-about-us-area-start -->
+<div class="tg-about-area p-relative z-index-1 pt-140 pb-105">
+    <img class="tg-about-details-shape p-absolute d-none d-lg-block" src="{% static 'assets/img/about/details/shape.png' %}" alt="shape">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="tg-about-details-left p-relative mb-15">
+                    <img class="tg-about-details-map p-absolute" src="{% static 'assets/img/about/details/shape-2.png' %}" alt="map">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="tg-about-details-thumb p-relative z-index-9">
+                                <img class="main-thumb tg-round-15 w-100 mb-20" src="{% static 'assets/img/about/details/thumb-1.jpg' %}" alt="thumb">
+                                <img class="main-thumb tg-round-15 w-100 mb-20" src="{% static 'assets/img/about/details/thumb-3.jpg' %}" alt="thumb">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="tg-about-details-thumb-2 p-relative">
+                                <div class="tg-chose-3-rounded p-relative mb-30">
+                                    <img class="rotate-infinite-2" src="{% static 'assets/img/chose/chose-3/circle-text.png' %}" alt="">
+                                    <img class="tg-chose-3-star" src="{% static 'assets/img/chose/chose-3/star.png' %}" alt="">
+                                </div>
+                                <img class="w-100 tg-round-15" src="{% static 'assets/img/about/details/thumb-2.jpg' %}" alt="chose">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="tg-chose-content mb-35 ml-60">
+                    <div class="tg-chose-section-title mb-30">
+                        <h5 class="tg-section-subtitle mb-15 wow fadeInUp" data-wow-delay=".3s" data-wow-duration=".1s">Discover Kenya with Us</h5>
+                        <h2 class="mb-15 text-capitalize wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".9s">Your Gateway to<br> Authentic African<br> Adventures</h2>
+                        <p class="text-capitalize wow fadeInUp mb-35" data-wow-delay=".5s" data-wow-duration=".9s">At DEDE Travel, we specialize in creating unforgettable 
+                            experiences across Kenya's most breathtaking destinations. 
+                            From safari adventures to coastal retreats, we bring you the 
+                            best of what Kenya has to offer.</p>
+                        <div class="tg-chose-btn wow fadeInUp" data-wow-delay=".8s" data-wow-duration=".9s">
+                            <a href="{% url 'dede:tour_list'  %}" class="tg-btn tg-btn-switch-animation">
+                                <span class="d-flex align-items-center justify-content-center">
+                                    <span class="btn-text">Explore Our Tours</span>
+                                    <span class="btn-icon ml-5">
+                                        <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1.0017 8.00001H19.9514M19.9514 8.00001L12.9766 1.02515M19.9514 8.00001L12.9766 14.9749" stroke="white" stroke-width="1.77778" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                </span> 
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tg-about-us-area-end -->
+
+<!-- why-chose-us-area-start -->
+<div class="tg-chose-area tg-grey-bg pt-140 pb-70 p-relative z-index-1">
+    <img class="tg-chose-6-shape d-none d-md-block" src="{% static 'assets/img/banner/banner-2/shape.png' %}" alt="">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-7 col-md-9">
+                <div class="tg-chose-section-title text-center mb-35">
+                    <h5 class="tg-section-subtitle mb-15 wow fadeInUp" data-wow-delay=".3s" data-wow-duration=".1s">Why Choose Us</h5>
+                    <h2 class="mb-15 text-capitalize wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".9s">Experience Kenya Like<br> Never Before</h2>
+                    <p class="text-capitalize wow fadeInUp mb-35" data-wow-delay=".5s" data-wow-duration=".9s">We combine local expertise with world-class service to create 
+                        memorable adventures that showcase Kenya's beauty.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="tg-chose-6-wrap mb-30">
+                    <span class="icon mb-20">
+                        <svg width="36" height="26" viewBox="0 0 36 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Keep existing SVG path -->
+                        </svg>
+                    </span>
+                    <h4 class="tg-chose-6-title mb-15">Local Expertise</h4>
+                    <p>Our team of experienced local guides brings deep knowledge and authentic insights to every journey.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="tg-chose-6-wrap mb-30">
+                    <span class="icon mb-20">
+                        <svg width="37" height="41" viewBox="0 0 37 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Keep existing SVG path -->
+                        </svg>
+                    </span>
+                    <h4 class="tg-chose-6-title mb-15">Customized Experiences</h4>
+                    <p>We tailor each journey to your preferences, ensuring a perfect blend of adventure and comfort.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="tg-chose-6-wrap mb-30">
+                    <span class="icon mb-20">
+                        <svg width="28" height="30" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Keep existing SVG path -->
+                        </svg>
+                    </span>
+                    <h4 class="tg-chose-6-title mb-15">24/7 Support</h4>
+                    <p>Round-the-clock assistance ensures your journey is smooth and worry-free from start to finish.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- why-chose-us-area-end -->
+
+<!-- tg-banner-area-start -->
+<div class="tg-banner-area tg-grey-bg tg-banner-4-spacing" data-background="{% static 'assets/img/banner/banner-4/banner-4.png' %}">
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="tg-banner-2-content tg-banner-4-content tg-banner-6-content text-center">
+                <div class="tg-about-section-title mb-25">
+                    <h5 class="tg-section-subtitle mb-20 wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".9s">Ready for Your Next Adventure?</h5>
+                    <h2 class="tg-section-title-white mb-30 wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".9s">Discover Kenya's Most<br> Beautiful Destinations</h2>
+                </div>
+                <div class="tp-banner-btn-wrap wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".9s">
+                    <a href="{% url 'dede:tour_list' %}" class="tg-btn tg-btn-transparent tg-btn-switch-animation">
+                        <span class="d-flex align-items-center justify-content-center">
+                            <span class="btn-text">Book Your Trip Now</span>
+                            <span class="btn-icon ml-5">
+                                <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.0017 8.00001H19.9514M19.9514 8.00001L12.9766 1.02515M19.9514 8.00001L12.9766 14.9749" stroke="currentColor" stroke-width="1.77778" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </span> 
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tg-banner-bottom pb-190">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tg-banner-2-big-title text-center wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".9s">
+                        <h2>Explore Kenya</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tg-banner-area-end -->
+
+{% endblock %}

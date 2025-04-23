@@ -1,0 +1,345 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Card Hover Effects */
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+}
+
+/* Card Image */
+.card-img-top {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Price Tag */
+.price-tag {
+    line-height: 1;
+}
+
+/* Pagination Styling */
+.pagination .page-link {
+    border: none;
+    color: #666;
+    margin: 0 3px;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+}
+
+/* Sort Dropdown */
+.form-select {
+    border: 1px solid #e9ecef;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    background-color: #f8f9fa;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Badge Styling */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+}
+
+/* Wishlist Button */
+.btn-light {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: none;
+}
+
+.btn-light:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+</style>
+        <!-- tg-breadcrumb-area-start -->
+        <div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}  ">
+            <div class="tg-hero-top-shadow"></div>
+            <div class="tg-breadcrumb-shadow"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="tg-breadcrumb-content text-center">
+                            <h2 class="tg-breadcrumb-title mb-15">Day Trips</h2>
+                            <div class="tg-breadcrumb-list">
+                                <span><a href="{% url 'dede:home' %}">Home</a></span>
+                                <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                                <span>Day Trips</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tg-hero-bottom-shape d-none d-md-block">
+                <span>
+                    <svg width="432" height="290" viewBox="0 0 432 290" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line-1" opacity="0.4" d="M39.6042 428.345C4.41235 355.065 -24.3018 203.867 142.377 185.309C350.725 162.111 488.893 393.541 289.169 313.515C129.389 249.494 458.202 85.4772 642.58 11.4713" stroke="white" stroke-width="24" />
+                    </svg>
+                </span>
+            </div>
+            <div class="tg-hero-bottom-shape-2 d-none d-md-block">
+                <span>
+                    <svg width="154" height="243" viewBox="0 0 154 243" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="line-1" opacity="0.4" d="M144.616 328.905C116.117 300.508 62.5986 230.961 76.5162 179.949C93.9131 116.184 275.231 7.44494 -65.0181 12.8762" stroke="white" stroke-width="24" />
+                    </svg>
+                </span>
+            </div>
+        </div>
+        <!-- tg-breadcrumb-area-end -->
+
+        <!-- tg-booking-form-area-start -->
+        <div class="tg-booking-form-area tg-booking-form-grid-space pb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tg-booking-form-item tg-booking-form-grid">
+                            <form class="tg-filter-form" method="GET">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-3 col-md-6">
+                                        <input type="date" name="date" class="form-control" value="{{ request.GET.date }}" min="{{ today|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <button type="submit" class="tg-btn">Filter Results</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- tg-booking-form-area-end -->
+
+        <!-- tg-listing-grid-area-start -->
+        <div class="tg-listing-grid-area mb-85">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 order-last order-lg-first">
+                        <div class="tg-filter-sidebar mb-40 top-sticky">
+                            <div class="tg-filter-item bg-white rounded shadow-sm p-4">
+                                <h4 class="tg-filter-title mb-20 d-flex align-items-center">
+                                    <i class="fas fa-star text-warning me-2"></i>
+                                    Featured Day Trips
+                                </h4>
+                                <div class="tg-filter-list">
+                                    {% for daytrip in featured_daytrips %}
+                                    <div class="featured-trip-card mb-3">
+                                        <a href="{% url 'dede:daytrip_detail' daytrip.slug %}" class="text-decoration-none">
+                                            <div class="card border-0 shadow-sm">
+                                                {% if daytrip.Image %}
+                                                <img src="{{ daytrip.Image.cdn_url }}" 
+                                                     class="card-img-top" 
+                                                     alt="{{ daytrip.name }}"
+                                                     style="height: 120px; object-fit: cover;">
+                                                {% endif %}
+                                                <div class="card-body p-3">
+                                                    <h6 class="card-title mb-2">{{ daytrip.name }}</h6>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                       
+                                                        <span class="badge bg-success">
+                                                            KES {{ daytrip.price|floatformat:0 }}
+                                                        </span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% empty %}
+                                    <div class="text-center text-muted py-3">
+                                        <i class="fas fa-info-circle mb-2 fs-4"></i>
+                                        <p class="mb-0">No featured trips available at the moment.</p>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% if featured_daytrips %}
+                                <div class="text-center mt-3">
+                                    <a href="{% url 'dede:daytrip_list' %}?featured=true" 
+                                       class="btn tg-btn-2 btn-sm w-100">
+                                        View All Featured Trips
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                            <div class="col-xl-9 col-lg-8">
+                                <div class="tg-listing-item-box-wrap ml-10">
+                                    <!-- Results Header -->
+                                    <div class="tg-listing-box-filter mb-2">
+                                        <div class="d-flex justify-content-between align-items-center bg-white rounded-3 p-3 shadow-sm">
+                                            <div class="tg-listing-box-number-found">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                                    <span>{{ daytrips.count }} Day Trips Found</span>
+                                                </h5>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+        
+                                    <!-- Day Trips Grid -->
+                                    <div class="row g-4">
+                                        {% for daytrip in daytrips %}
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="card h-100 border-0 shadow-sm hover-card">
+                                                <!-- Card Image -->
+                                                <div class="position-relative">
+                                                    <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">
+                                                        {% if daytrip.Image %}
+                                                            <img class="card-img-top" 
+                                                                 src="{{ daytrip.Image.cdn_url }}" 
+                                                                 alt="{{ daytrip.name }}"
+                                                                 style="height: 200px; object-fit: cover;">
+                                                        {% else %}
+                                                            <img class="card-img-top" 
+                                                                 src="{% static 'assets3/img/default-daytrip.jpg' %}" 
+                                                                 alt="{{ daytrip.name }}"
+                                                                 style="height: 200px; object-fit: cover;">
+                                                        {% endif %}
+                                                    </a>
+                                                    {% if daytrip.is_featured %}
+                                                    <div class="position-absolute top-0 start-0 m-3">
+                                                        <span class="badge bg-warning text-dark">
+                                                            <i class="fas fa-star me-1"></i>Featured
+                                                        </span>
+                                                    </div>
+                                                    {% endif %}
+                                                    <div class="position-absolute top-0 end-0 m-3">
+                                                        <button class="btn btn-light btn-sm rounded-circle shadow-sm">
+                                                            <i class="far fa-heart"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+        
+                                                <!-- Card Content -->
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-3">
+                                                        <a href="{% url 'dede:daytrip_detail' daytrip.slug %}" 
+                                                           class="text-decoration-none text-dark">
+                                                            {{ daytrip.name }}
+                                                        </a>
+                                                    </h5>
+        
+                                                    <!-- Schedule -->
+                                                    <div class="mb-3">
+                                                        <div class="d-flex align-items-center text-muted mb-2">
+                                                            <i class="far fa-calendar me-2"></i>
+                                                            <span>
+                                                                {% if daytrip.recurrence == 'none' %}
+                                                                    {{ daytrip.start_date|date:"F j, Y" }}
+                                                                {% elif daytrip.recurrence == 'weekend' %}
+                                                                    Every Weekend
+                                                                    {% if daytrip.end_date %}
+                                                                        <small class="ms-1">until {{ daytrip.end_date|date:"M j" }}</small>
+                                                                    {% endif %}
+                                                                {% elif daytrip.recurrence == 'saturday' %}
+                                                                    Every Saturday
+                                                                    {% if daytrip.end_date %}
+                                                                        <small class="ms-1">until {{ daytrip.end_date|date:"M j" }}</small>
+                                                                    {% endif %}
+                                                                {% elif daytrip.recurrence == 'sunday' %}
+                                                                    Every Sunday
+                                                                    {% if daytrip.end_date %}
+                                                                        <small class="ms-1">until {{ daytrip.end_date|date:"M j" }}</small>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center text-muted">
+                                                            <i class="fas fa-map-marker-alt me-2"></i>
+                                                            <span>{{ daytrip.pickup_location }} @ {{ daytrip.pickup_time|time:"H:i" }} hrs</span>
+                                                        </div>
+                                                    </div>
+        
+                                                    <!-- Price and Book Button -->
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="price-tag">
+                                                            <span class="h5 text-dark mb-0">KES {{ daytrip.price }} <small class="text-muted">/person</small></span>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                    <br><br>
+                                                    <div class="tg-listing-2-price-wrap ">
+                                                        <div class="tg-listing-2-price">
+                                                            <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">
+                                                                <span class="btn-icon"> View Trip details
+                                                                    <i class="fa-solid fa-arrow-right"></i>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+        
+                                    <!-- Pagination -->
+                                    {% if is_paginated %}
+                                    <div class="d-flex justify-content-center mt-5">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                {% if page_obj.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">
+                                                        <i class="fas fa-chevron-left"></i>
+                                                    </a>
+                                                </li>
+                                                {% endif %}
+                                                
+                                                {% for num in page_obj.paginator.page_range %}
+                                                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                                    <a class="page-link" href="?page={{ num }}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">
+                                                        {{ num }}
+                                                    </a>
+                                                </li>
+                                                {% endfor %}
+                                                
+                                                {% if page_obj.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.date %}&date={{ request.GET.date }}{% endif %}">
+                                                        <i class="fas fa-chevron-right"></i>
+                                                    </a>
+                                                </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+        <!-- tg-listing-grid-area-end -->
+  {% include 'users/dede/footer.html' %}
+{% endblock %}

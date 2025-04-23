@@ -46,15 +46,33 @@ SECRET_KEY = "seen"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+# Google OAuth settings
+GOOGLE_CLIENT_ID = '876054945568-ma5924no5c16cetu6umbkanpsu3djppt.apps.googleusercontent.com'
 
+# Security settings
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'https://127.0.0.1:8000',
+    'https://localhost:8000'
+]
+
+# If you're using HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = False  # Set to True in production
+SESSION_COOKIE_SECURE = True  # Set to True in production
+CSRF_COOKIE_SECURE = True  # Set to True in production
+
+# Update your ALLOWED_HOSTS if needed
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
+# settings.py
+# tours_travels/settings.py
+GOOGLE_CLIENT_ID = '876054945568-ma5924no5c16cetu6umbkanpsu3djppt.apps.googleusercontent.com'
 
 # Application definition
 
 INSTALLED_APPS = [
-    'pyuploadcare.dj',
-    
-    'jet.dashboard',
+
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,13 +80,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'pyuploadcare.dj',
+    'taggit',
+    'crispy_forms',
+
     'adminside',
     'users',
     'blog',
     'dede',
     'events',
-    'taggit',
-    'crispy_forms',
+   
 ]
 
 MIDDLEWARE = [
@@ -96,6 +118,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'users.context_processors.google_client_id',
+                
             ],
         },
     },
@@ -118,10 +142,10 @@ WSGI_APPLICATION = 'tours_travels.wsgi.application'
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'kipekeee',
-    'USER': 'kipekeee_owner',
-    'PASSWORD': 'npg_zrNq4ZhMote6',
-    'HOST': 'ep-tight-forest-a2rv8c0o-pooler.eu-central-1.aws.neon.tech',
+    'NAME': 'dedemain',
+    'USER': 'dedemain_owner',
+    'PASSWORD': 'npg_pIPejigM36Nw',
+    'HOST': 'ep-lucky-tree-a29r8zlc-pooler.eu-central-1.aws.neon.tech',
     'PORT': '5432',
     'CONN_MAX_AGE': 0,  # Disable connection persistence
     'OPTIONS': {
@@ -190,10 +214,28 @@ STATICFILES_DIRS = [
 
 CRISPY_TEMPLATE_PACK='bootstrap4'
 
-LOGIN_REDIRECT_URL='users:users-home'
+LOGIN_REDIRECT_URL='dede:home'
 LOGIN_URL='login'
-LOGOUT_REDIRECT_URL = 'users:users-home'
+LOGOUT_REDIRECT_URL = 'dede:home'
 
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'users': {  # This will catch all loggers in the users app
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 ## For media files
 MEDIA_URL = '/media/'
@@ -204,7 +246,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 UPLOADCARE = {
-  # Don’t forget to set real keys when it gets real :)
+  # Don't forget to set real keys when it gets real :)
 
   'pub_key': '78d346d0c3fddd461d67',
   'secret': 'e9badc357e7202f35ddb',
@@ -216,19 +258,15 @@ TEMPLATE_DIRS = (
 )
 
 
-# Email settings
+
+# Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'novustellke@gmail.com'
-
-# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'novustellke@gmail.com')
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  
-
-# If you're not using environment variables, uncomment and update these lines:
-EMAIL_HOST_USER = 'novustellke@gmail.com'
-EMAIL_HOST_PASSWORD = 'wyravhncrdvyfuqa'  # Replace with your App Password
+EMAIL_USE_TLS = True # Your app-specific password
+DEFAULT_FROM_EMAIL = 'DEDE EXPEDITIONS <dedeexpeditions@gmail.com>'
+EMAIL_HOST_USER = 'dedeexpeditions@gmail.com'
+EMAIL_HOST_PASSWORD = 'jzuy eqkw ovpu wcxv'  # Replace with your App Password
 
 # Django Jet settings
 JET_DEFAULT_THEME = 'light-gray'

@@ -1,0 +1,251 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- tg-breadcrumb-area-start -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Book Your Day Trip</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="{% url 'dede:home' %}">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span><a href="{% url 'dede:daytrip_detail' daytrip_slug=daytrip.slug %}">{{ daytrip.name }}</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Booking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tg-breadcrumb-area-end -->
+
+<!-- booking-form-area-start -->
+<div class="booking-form-area pt-120 pb-120">
+    <div class="container">
+        {% if messages %}
+        <div class="row mb-4">
+            <div class="col-12">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if booking_success %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Booking Successful!</h4>
+                    <p>Your booking has been confirmed. A confirmation email has been sent to {{ booking.email }}.</p>
+                    <hr>
+                    <p class="mb-0">Booking Reference: <strong>{{ booking.booking_reference }}</strong></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="booking-form-wrapper">
+                    <div class="booking-form-title mb-40">
+                        <h3>Personal Information</h3>
+                    </div>
+                    
+                    <form action="" method="POST" class="booking-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="full_name">Full Name *</label>
+                                    <input type="text" id="full_name" name="full_name" required value="{{ form_data.full_name|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required value="{{ form_data.email|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" required value="{{ form_data.phone|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="number_of_people">Number of People *</label>
+                                    <input type="number" id="number_of_people" name="number_of_people" required min="1" max="{{ daytrip.group_size }}" value="{{ form_data.number_of_people|default:'1' }}">
+                                    <small class="text-muted">Available slots: {{ daytrip.get_remaining_slots }}</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="single-input-field mb-25">
+                                    <label for="travel_date">Travel Date *</label>
+                                    <input type="date" id="travel_date" name="travel_date" required min="{{ today|date:'Y-m-d' }}" value="{{ form_data.travel_date|default:'' }}">
+                                </div>
+                            </div>
+                            {% if daytrip.optional_activities.exists %}
+                            <div class="col-12">
+                                <div class="optional-activities mb-25">
+                                    <h4>Optional Activities</h4>
+                                    {% for activity in daytrip.optional_activities.all %}
+                                    <div class="form-check">
+                                        <input class="form-check-input optional-activity" type="checkbox" 
+                                               name="optional_activities" value="{{ activity.id }}" 
+                                               id="activity_{{ activity.id }}"
+                                               data-price="{{ activity.price|default:0 }}"
+                                               {% if activity.id|stringformat:"s" in form_data.optional_activities %}checked{% endif %}>
+                                        <label class="form-check-label" for="activity_{{ activity.id }}">
+                                            {{ activity.name }} - KES {{ activity.price }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="col-12">
+                                <div class="single-input-field mb-25">
+                                    <label for="special_requirements">Special Requirements</label>
+                                    <textarea id="special_requirements" name="special_requirements" rows="4">{{ form_data.special_requirements|default:'' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-payment-info mt-50 mb-30">
+                            <h4>Price Details</h4>
+                            <div class="booking-price-details mt-20">
+                                <ul>
+                                    <li>Base price per person: <span>KES {{ daytrip.price }}</span></li>
+                                    <li id="optional_activities_cost" style="display: none;">Optional Activities: <span>KES 0</span></li>
+                                    <li class="total-price">Total Price: <span id="total_price">KES {{ daytrip.price }}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="booking-form-agreement mb-30">
+                            <div class="agreement-check">
+                                <input type="checkbox" id="terms" required>
+                                <label for="terms">I agree to the terms and conditions</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="tg-btn">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-5">
+                <div class="booking-info-wrapper">
+                    <div class="booking-info-title mb-30">
+                        <h4>Day Trip Information</h4>
+                    </div>
+                    <div class="booking-info-content">
+                        <div class="booking-info-item mb-20">
+                            <h5>{{ daytrip.name }}</h5>
+                            <div class="booking-info-image">
+                                {% if daytrip.Image %}
+                                    <img src="{{ daytrip.Image.cdn_url }}" alt="{{ daytrip.name }}" class="img-fluid">
+                                {% else %}
+                                    <img src="{% static 'assets3/img/default-daytrip.jpg' %}" alt="{{ daytrip.name }}" class="img-fluid">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="booking-info-list">
+                            <div class="booking-info">
+                                <p><strong>Schedule:</strong> 
+                                    {% if daytrip.recurrence == 'none' %}
+                                        {{ daytrip.start_date|date:"F j, Y" }}
+                                    {% elif daytrip.recurrence == 'weekend' %}
+                                        Every Weekend
+                                        {% if daytrip.end_date %}
+                                            until {{ daytrip.end_date|date:"F j, Y" }}
+                                        {% endif %}
+                                    {% elif daytrip.recurrence == 'saturday' %}
+                                        Every Saturday
+                                        {% if daytrip.end_date %}
+                                            until {{ daytrip.end_date|date:"F j, Y" }}
+                                        {% endif %}
+                                    {% elif daytrip.recurrence == 'sunday' %}
+                                        Every Sunday
+                                        {% if daytrip.end_date %}
+                                            until {{ daytrip.end_date|date:"F j, Y" }}
+                                        {% endif %}
+                                    {% endif %}
+                                </p>
+                                <p><strong>Price:</strong> Ksh {{ daytrip.price }} per person</p>
+                                <p><strong>Pickup:</strong> {{ daytrip.pickup_location }}</p>
+                                <p><strong>Time:</strong> {{ daytrip.pickup_time|time:"H:i" }}</p>
+                                <p><strong>Available Slots:</strong> {{ daytrip.get_remaining_slots }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- booking-form-area-end -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const numberOfPeopleInput = document.getElementById('number_of_people');
+    const totalPriceSpan = document.getElementById('total_price');
+    const optionalActivitiesCost = document.getElementById('optional_activities_cost');
+    const optionalActivities = document.querySelectorAll('.optional-activity');
+    const basePrice = parseFloat('{{ daytrip.price }}');
+    const maxGroupSize = parseInt('{{ daytrip.group_size }}');
+    const remainingSlots = parseInt('{{ daytrip.get_remaining_slots }}');
+
+    function updateTotalPrice() {
+        const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
+        if (numberOfPeople > remainingSlots) {
+            numberOfPeopleInput.value = remainingSlots;
+            alert('Only ' + remainingSlots + ' slots available');
+            return;
+        }
+
+        let activitiesTotal = 0;
+        optionalActivities.forEach(activity => {
+            if (activity.checked) {
+                activitiesTotal += parseFloat(activity.dataset.price) * numberOfPeople;
+            }
+        });
+
+        const baseTotal = basePrice * numberOfPeople;
+        const totalPrice = (baseTotal + activitiesTotal).toFixed(2);
+
+        if (activitiesTotal > 0) {
+            optionalActivitiesCost.style.display = 'list-item';
+            optionalActivitiesCost.querySelector('span').textContent = 'KES ' + activitiesTotal.toFixed(2);
+        } else {
+            optionalActivitiesCost.style.display = 'none';
+        }
+
+        totalPriceSpan.textContent = 'KES ' + totalPrice;
+    }
+
+    numberOfPeopleInput.addEventListener('input', updateTotalPrice);
+    optionalActivities.forEach(activity => {
+        activity.addEventListener('change', updateTotalPrice);
+    });
+
+    // Initial calculation
+    updateTotalPrice();
+});
+</script>
+{% endblock %}

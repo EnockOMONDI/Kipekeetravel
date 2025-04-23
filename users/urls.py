@@ -4,6 +4,7 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
+    # path('google-one-tap/', views.google_one_tap_login, name='google-one-tap'),
     path('', views.home, name='users-home'),
     path('about/', views.aboutus, name='aboutus'),
     path('corporate/', views.corporate, name='corporatepage'),
@@ -20,4 +21,9 @@ urlpatterns = [
     path('booking_success/<int:booking_id>/', views.booking_success, name='users-booking-success'),
     path('activate/<uid64>/<token>',views.ActivateAccountView.as_view(),name='activate'),
     path('send-mice-email/', views.send_mice_email, name='send_mice_email'),
+    path('profile/', views.profile, name='users-profile'),
+    path('profile/edit/', views.profile_edit, name='profile-edit'),
+    
+
+
 ] 

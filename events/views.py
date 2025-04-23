@@ -6,10 +6,27 @@ from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.db.models import Q
-from .models import Event, EventCategory, TicketType, Ticket, EventImage
-from .forms import EventForm, TicketTypeForm, TicketPurchaseForm, EventImageForm, EventSearchForm
+from .models import Event, EventCategory, TicketType, Ticket, EventImage, EventsLaunchNotification
+from .forms import EventForm, TicketTypeForm, TicketPurchaseForm, EventImageForm, EventSearchForm, LaunchNotificationForm
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from django.views.generic import TemplateView
 
-# We'll create these forms later
+import logging
+
+logger = logging.getLogger(__name__)
+
+# In views.py
+
+
+class EventOrganizersView(TemplateView):
+    template_name = 'users/events/event_organizers.html'
 
 class EventListView(ListView):
     model = Event
@@ -173,3 +190,135 @@ def my_tickets(request):
 def purchase_confirmation(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id, purchaser=request.user)
     return render(request, 'users/events/purchase_confirmation.html', {'ticket': ticket})
+
+
+
+def notify_launch(request):
+    if request.method == 'POST':
+        form = LaunchNotificationForm(request.POST)
+        if form.is_valid():
+            try:
+                email = form.cleaned_data['email']
+                
+                # Save the email to database
+                notification = form.save()
+                
+                # Setup SMTP connection
+                s = smtplib.SMTP('smtp.gmail.com', 587)
+                s.starttls()
+                s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                
+                # First send the user confirmation email
+                try:
+                    user_msg = MIMEMultipart('alternative')
+                    user_msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                    user_msg['To'] = email
+                    user_msg['Subject'] = "Events Launch Notification Confirmation"
+                    
+                    user_html = f"""
+                    <html>
+                    <head>
+                        <style>
+                            body {{ font-family: Arial, sans-serif; line-height: 1.6; }}
+                            .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                            .header {{ background-color: #f8f9fa; padding: 20px; text-align: center; }}
+                            .content {{ padding: 20px; }}
+                            .button {{ 
+                                background-color: #007bff;
+                                color: white;
+                                padding: 10px 20px;
+                                text-decoration: none;
+                                border-radius: 5px;
+                                display: inline-block;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h2>Thank You for Your Interest!</h2>
+                            </div>
+                            <div class="content">
+                                <p>Dear valued customer,</p>
+                                <p>Thank you for signing up to be notified about the launch of our Events feature at DEDE EXPEDITIONS.</p>
+                                <p>We'll send you an email as soon as our Events feature goes live, so you can be among the first to:</p>
+                                <ul>
+                                    <li>Discover exciting events</li>
+                                    <li>Book tickets directly through our platform</li>
+                                    <li>Get exclusive early access to special events</li>
+                                </ul>
+                                <p>Best regards,<br>The DEDE EXPEDITIONS Team</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    
+                    user_msg.attach(MIMEText(user_html, 'html'))
+                    
+                    # Send user email
+                    print(f"Attempting to send email to user: {email}")  # Debug print
+                    s.send_message(user_msg)
+                    print("User email sent successfully")  # Debug print
+                    
+                except Exception as user_email_error:
+                    print(f"Error sending user email: {str(user_email_error)}")  # Debug print
+                    raise  # Re-raise the exception to be caught by the outer try block
+                
+                # Then send the admin notification
+                try:
+                    admin_msg = MIMEMultipart('alternative')
+                    admin_msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                    admin_msg['To'] = "events@dedeexpeditions.com"
+                    admin_msg['Reply-To'] = email  # Add reply-to header
+                    admin_msg['Subject'] = "New Events Launch Notification Signup"
+                    
+                    admin_html = f"""
+                    <html>
+                    <head>
+                        <style>
+                            body {{ font-family: Arial, sans-serif; line-height: 1.6; }}
+                            .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                            .header {{ background-color: #f8f9fa; padding: 20px; }}
+                            .content {{ padding: 20px; }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <div class="header">
+                                <h2>New Launch Notification Signup</h2>
+                            </div>
+                            <div class="content">
+                                <p>A new user has signed up for Events Launch notification:</p>
+                                <p><strong>Email:</strong> {email}</p>
+                                <p><strong>Time:</strong> {timezone.now()}</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    
+                    admin_msg.attach(MIMEText(admin_html, 'html'))
+                    
+                    # Send admin email
+                    s.send_message(admin_msg)
+                    
+                except Exception as admin_email_error:
+                    print(f"Error sending admin email: {str(admin_email_error)}")  # Debug print
+                    # Continue even if admin email fails
+                
+                finally:
+                    # Close SMTP connection
+                    s.quit()
+                
+                messages.success(request, "Thank you! We'll notify you when we launch.")
+                return redirect('events:event_list')
+                
+            except Exception as e:
+                print(f"Error in notify_launch: {str(e)}")  # Debug print
+                messages.error(request, "There was an error sending the confirmation email. Please try again later.")
+                
+    else:
+        form = LaunchNotificationForm()
+    
+    return render(request, 'users/events/notify_launch.html', {'form': form})

@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.text import slugify
 from pyuploadcare.dj.models import ImageField
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 
 class EventCategory(models.Model):
     name = models.CharField(max_length=100)
@@ -62,6 +64,9 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['start_date', 'start_time']
+
 
 class TicketType(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='ticket_types')
@@ -111,5 +116,12 @@ class EventImage(models.Model):
     caption = models.CharField(max_length=200, blank=True)
     is_primary = models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class EventsLaunchNotification(models.Model):
+    email = models.EmailField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.email
 
 # Create your models here.

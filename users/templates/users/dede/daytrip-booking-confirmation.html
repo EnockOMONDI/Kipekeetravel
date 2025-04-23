@@ -1,0 +1,84 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<!-- tg-breadcrumb-area-start -->
+<div class="tg-breadcrumb-area tg-breadcrumb-spacing fix p-relative z-index-1 include-bg" data-background="{% static 'assets3/img/breadcrumb/breadcrumb.jpg' %}">
+    <div class="tg-hero-top-shadow"></div>
+    <div class="tg-breadcrumb-shadow"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tg-breadcrumb-content text-center">
+                    <h2 class="tg-breadcrumb-title mb-15">Booking Confirmation</h2>
+                    <div class="tg-breadcrumb-list">
+                        <span><a href="{% url 'dede:home' %}">Home</a></span>
+                        <span class="dvdr"><i class="fa-sharp fa-solid fa-angle-right"></i></span>
+                        <span>Booking Confirmation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tg-breadcrumb-area-end -->
+
+<div class="booking-confirmation-area pt-120 pb-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8">
+                <div class="booking-confirmation-wrapper text-center mb-40">
+                    <i class="fas fa-check-circle success-icon mb-30"></i>
+                    <h2>Booking Confirmed!</h2>
+                    <p>Your booking reference number is: <strong>{{ booking.booking_reference }}</strong></p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="single-confirmation-box mb-30">
+                            <h4>Day Trip Details</h4>
+                            <ul>
+                                <li><span>Trip:</span> {{ booking.daytrip.name }}</li>
+                                <li><span>Date:</span> {{ booking.daytrip.date|date:"F j, Y" }}</li>
+                                <li><span>Pickup Time:</span> {{ booking.daytrip.pickup_time|time:"H:i" }}</li>
+                                <li><span>Pickup Location:</span> {{ booking.daytrip.pickup_location }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="single-confirmation-box mb-30">
+                            <h4>Booking Details</h4>
+                            <ul>
+                                <li><span>Name:</span> {{ booking.full_name }}</li>
+                                <li><span>Email:</span> {{ booking.email }}</li>
+                                <li><span>Phone:</span> {{ booking.phone }}</li>
+                                <li><span>Number of People:</span> {{ booking.number_of_people }}</li>
+                                <li><span>Total Price:</span> KES {{ booking.total_price }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {% if booking.optional_activities.exists %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="single-confirmation-box mb-30">
+                            <h4>Optional Activities Booked</h4>
+                            <ul>
+                                {% for activity in booking.optional_activities.all %}
+                                <li>{{ activity.name }} - KES {{ activity.price }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="text-center mt-40">
+                    <a href="{% url 'dede:home' %}" class="tg-btn">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
