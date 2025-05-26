@@ -159,12 +159,40 @@
                                                         </span>
                                                     </div>
                                                 </div>
+                                                <div class="price-tag">
+                                                    <div class="group-pricing">
+                                                        <i class="fas fa-money me-2"></i>
+                                                        <small>From KES <span>{{ daytrip.base_price }} per person</span> </small>
+                                                      
+                                                        <div></div>
+                                                       
+                                                    </div>
+                                                    <br>
+                                                    {% if daytrip.pricing_tiers.exists %}
+                                                    <div class="group-pricing">
+                                                        <i class="fas fa-money me-2"></i>
+                                                        <small>Group Rates:</small>
+                                                        <br><br>
+                                                        {% for tier in daytrip.pricing_tiers.all %}
+                                                        <div><span><i class="fas fa-money me-2"></i></span> {{ tier.min_pax }}-{{ tier.max_pax }} Pax: KES {{ tier.price }}/person</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
                                                 <div class="tg-listing-card-price d-flex align-items-end justify-content-between">
-                                                    <div class="tg-listing-card-price-wrap price-bg d-flex align-items-center">
-                                                        <span class="tg-listing-card-currency-amount mr-5">
-                                                            <span class="currency-symbol">KES {{ tour.price }}</span>
-                                                        </span>
-                                                        <span class="tg-listing-card-activity-person">/Person</span>
+                                                 <!-- Replace the existing price display with this -->
+                                                    <div class="tg-listing-card-price-area">
+                                                        <span class="tg-listing-card-price">From KES {{ tour.base_price }}</span>
+                                                        {% if tour.pricing_tiers.exists %}
+                                                        <div class="pricing-tiers">
+                                                            <small>Group Pricing Available</small>
+                                                            <ul class="pricing-tier-list">
+                                                                {% for tier in tour.pricing_tiers.all %}
+                                                                <li>{{ tier.min_pax }}-{{ tier.max_pax }} Pax: KES {{ tier.price }}</li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                        {% endif %}
                                                     </div>
                                                     <div class="tg-listing-card-review space">
                                                         <span class="tg-listing-rating-icon"><i class="fa-sharp fa-solid fa-star"></i></span>

@@ -14,6 +14,7 @@
                     
                     <div class="daytrip-details-content">
                         <h1>{{ daytrip.name }} </h1>
+                        <br>
                         <div class="daytrip-meta">
                             <span><i class="far fa-calendar"></i> 
                                 {% if daytrip.recurrence == 'none' %}
@@ -37,10 +38,48 @@
                             </span>
                         </div>
                         <br>
-                        <span class="price"> <b>Ksh {{ daytrip.price }} per person</b></span>
+                        <div class="pickup-section mt-40">
+                            <h5>  <small>#{{ daytrip.tour_type }}</small> </h5>
+                            <h3>About this trip</h3>
+                          
+                            <p>{{ daytrip.description}}</p>
+                        </div>
+                     
+                        <!-- Pricing Details -->
+                        <div class="pricing-details mt-40">
+                            <h3>Pricing</h3>
+                            <div class="base-price">
+                                <strong>Standard Rate:</strong> KES {{ daytrip.base_price }} per person
+                            </div>
+                            
+                            {% if daytrip.pricing_tiers.exists %}
+                            <div class="group-rates mt-3">
+                                <h5>Group Rates</h5>
+                                <br>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Group Size</th>
+                                            <th>Price per Person</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tier in daytrip.pricing_tiers.all %}
+                                        <tr>
+                                            <td>{{ tier.min_pax }}{% if tier.min_pax != tier.max_pax %}-{{ tier.max_pax }}{% endif %} People</td>
+                                            <td>KES {{ tier.price }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% endif %}
+                        </div>
+
                         <!-- Itinerary Breakdown -->
                         <div class="itinerary-section mt-40">
-                            <h3>⏰ Itinerary Breakdown:</h3>
+                            <h3>Itinerary Breakdown:</h3>
+                            <br>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -128,7 +167,7 @@
                                     until {{ daytrip.end_date|date:"F j, Y" }}
                                 {% endif %}
                             {% endif %}</p>
-                            <p><strong>Price:</strong> Ksh {{ daytrip.price }} per person</p>
+                            <p><strong>Price:</strong> Ksh {{ daytrip.base_price }} per person</p>
                             <p><strong>Pickup:</strong> {{ daytrip.pickup_location }}</p>
                             <p><strong>Time:</strong> {{ daytrip.pickup_time|time:"H:i" }}</p>
                         </div>
@@ -143,8 +182,9 @@
                             {% for trip in upcoming_daytrips %}
                             <li>
                                 <a href="{% url 'dede:daytrip_detail' trip.slug %}">
-                                    <img src="{{ trip.Image.cdn_url }}" alt="{{ trip.name }}">
+                                    <img style="border-radius: 20px;" src="{{ trip.Image.cdn_url }}" alt="{{ trip.name }}">
                                     <div class="trip-info">
+                                        <br>
                                         <h4>{{ trip.name }}</h4>
                                         <span>{{ trip.date|date:"F j, Y" }}</span>
                                         <span class="price">Ksh {{ trip.price }}</span>

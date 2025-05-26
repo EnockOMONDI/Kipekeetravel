@@ -189,12 +189,10 @@
                             </div>
         
                             <div class="tab-content" id="nav-tabContent">
-                                <!-- Tours Tab Content -->
                                 <div class="tab-pane fade show active" id="nav-platform" role="tabpanel" aria-labelledby="nav-platform-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="{% url 'dede:tour_list' %}" method="get">
                                             <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <!-- Destination -->
                                                 <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Destination:</span>
                                                     <select name="destination" class="form-select">
@@ -205,7 +203,6 @@
                                                     </select>
                                                 </div>
         
-                                                <!-- Start Date -->
                                                 <div class="tg-booking-form-parent-inner mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Start Date:</span>
                                                     <div class="tg-booking-add-input-date p-relative">
@@ -213,7 +210,6 @@
                                                     </div>
                                                 </div>
         
-                                                <!-- Duration -->
                                                 <div class="tg-booking-form-parent-inner mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Duration (Days):</span>
                                                     <select name="duration" class="form-select">
@@ -229,7 +225,6 @@
                                                     </select>
                                                 </div>
         
-                                                <!-- Search Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
                                                     <button class="bk-search-button" type="submit">Find Tours
                                                         <span class="ml-5">
@@ -247,7 +242,6 @@
                                     <div class="tg-booking-form-item">
                                         <form action="{% url 'dede:daytrip_list' %}" method="get">
                                             <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <!-- Pickup Location -->
                                                 <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Pickup Location:</span>
                                                     <select name="pickup_location" class="form-select">
@@ -258,7 +252,6 @@
                                                     </select>
                                                 </div>
                                 
-                                                <!-- Date -->
                                                 <div class="tg-booking-form-parent-inner mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Trip Date:</span>
                                                     <div class="tg-booking-add-input-date p-relative">
@@ -266,7 +259,6 @@
                                                     </div>
                                                 </div>
                                 
-                                                <!-- Price Range -->
                                                 <div class="tg-booking-form-parent-inner mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Price Range:</span>
                                                     <select name="price_range" class="form-select">
@@ -278,7 +270,6 @@
                                                     </select>
                                                 </div>
                                 
-                                                <!-- Search Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
                                                     <button class="bk-search-button" type="submit">Find Day Trips
                                                         <span class="ml-5">
@@ -293,18 +284,15 @@
                                     </div>
                                 </div>
         
-                                <!-- Accommodation Tab Content -->
                                 <div class="tab-pane fade" id="nav-tracking" role="tabpanel" aria-labelledby="nav-tracking-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="#" method="get">
                                             <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <!-- Location -->
                                                 <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Location:</span>
                                                     <input type="text" name="location" class="form-control" placeholder="Where do you want to stay?">
                                                 </div>
         
-                                                <!-- Check-in -->
                                                 <div class="tg-booking-form-parent-inner mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Check In:</span>
                                                     <div class="tg-booking-add-input-date p-relative">
@@ -312,7 +300,6 @@
                                                     </div>
                                                 </div>
         
-                                                <!-- Check-out -->
                                                 <div class="tg-booking-form-parent-inner mr-15 mb-15">
                                                     <span class="tg-booking-form-title mb-5">Check Out:</span>
                                                     <div class="tg-booking-add-input-date p-relative">
@@ -320,7 +307,6 @@
                                                     </div>
                                                 </div>
         
-                                                <!-- Search Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
                                                     <button class="bk-search-button" type="submit">Find Hotels
                                                         <span class="ml-5">
@@ -468,7 +454,7 @@
                                <!-- Price Tag -->
                                <div class="tg-listing-2-price-wrap text-center">
                                 <div class="tg-listing-2-price">
-                                    <span class="new">KES {{ daytrip.price|floatformat:0 }}</span>
+                                    <span class="new">KES {{ daytrip.base_price|floatformat:0 }}</span>
                                     <span class="shift">/person</span>
                                 </div>
                             </div>

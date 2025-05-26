@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Tour, TourHighlight, TourInclusion, TourDay, Review, Destination, Booking, DayTripBooking
-from .models import DayTrip, ItineraryItem, IncludedItem, OptionalActivity
+from .models import DayTrip, ItineraryItem, IncludedItem, OptionalActivity, PricingTier
 
 class TourHighlightInline(admin.TabularInline):
     model = TourHighlight
@@ -19,20 +19,24 @@ class ReviewInline(admin.TabularInline):
     extra = 0
     readonly_fields = ('created_at',)
 
+class PricingTierInline(admin.TabularInline):
+    model = PricingTier
+    extra = 1
+
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    list_display = ('name', 'destination', 'price', 'duration', 'reviews_count', 'is_featured')
-    list_filter = ('destination', 'duration', 'is_featured')
+    list_display = ('name', 'destination', 'tour_type', 'base_price', 'duration', 'reviews_count', 'is_featured')
+    list_filter = ('destination', 'duration', 'is_featured', 'tour_type')
     search_fields = ('name', 'description', 'destination__name')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [TourHighlightInline, TourInclusionInline, TourDayInline, ReviewInline]
     
     fieldsets = (
         (None, {
-            'fields': ('destination', 'name', 'slug', 'description')
+            'fields': ('destination', 'name', 'slug', 'description', 'tour_type')
         }),
         ('Tour Details', {
-            'fields': ('price', 'duration', 'group_size', 'languages', 'is_featured')  # Added group_size here
+            'fields': ('base_price', 'pricing_tiers', 'duration', 'group_size', 'languages', 'is_featured')
         }),
         ('Images', {
             'fields': (
@@ -158,15 +162,21 @@ class OptionalActivityInline(admin.TabularInline):
     model = OptionalActivity
     extra = 1
 
+@admin.register(PricingTier)
+class PricingTierAdmin(admin.ModelAdmin):
+    list_display = ('name', 'min_pax', 'max_pax', 'price')
+    list_filter = ('min_pax', 'max_pax')
+    search_fields = ('name',)
+
 @admin.register(DayTrip)
 class DayTripAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_date', 'recurrence', 'price', 'is_featured')  # Removed 'status'
-    list_filter = ('recurrence', 'is_featured', 'pickup_location')
+    list_display = ('name', 'tour_type', 'base_price', 'start_date', 'recurrence', 'is_featured')
+    list_filter = ('recurrence', 'is_featured', 'pickup_location', 'tour_type')
     search_fields = ('name', 'description')
     prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
         ('Basic Information', {
-            'fields': ('name', 'slug', 'description', 'price', 'is_featured')
+            'fields': ('name', 'slug', 'description', 'tour_type', 'base_price', 'pricing_tiers', 'is_featured')
         }),
         ('Images', {
             'fields': ('Image', 'gallery_image1', 'gallery_image2', 'gallery_image3')

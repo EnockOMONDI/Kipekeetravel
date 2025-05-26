@@ -64,11 +64,10 @@ class DayTripListView(ListView):
 
     def get_queryset(self):
         today = timezone.now().date()
-        # Show both one-time and recurring trips
         return DayTrip.objects.filter(
-            Q(recurrence='none', start_date__gte=today) |  # One-time trips in future
-            Q(recurrence__in=['weekend', 'saturday', 'sunday'], start_date__lte=today)  # Active recurring trips
-        ).order_by('start_date')
+            Q(recurrence='none', start_date__gte=today) |
+            Q(recurrence__in=['weekend', 'saturday', 'sunday'], start_date__lte=today)
+        ).order_by('start_date').prefetch_related('pricing_tiers')  # Added pricing_tiers
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -78,9 +77,10 @@ class DayTripListView(ListView):
         ).filter(
             Q(recurrence='none', start_date__gte=today) |
             Q(recurrence__in=['weekend', 'saturday', 'sunday'], start_date__lte=today)
-        )[:6]
+        ).prefetch_related('pricing_tiers')[:6]  # Added pricing_tiers
         context['today'] = today
         return context
+
     
 
 class DayTripDetailView(DetailView):
@@ -368,11 +368,11 @@ def daytrip_booking(request, daytrip_slug):
             except ValueError:
                 raise ValidationError("Please enter a valid number of people")
 
-            # Calculate base price
-            base_price = daytrip.price * number_of_people
+            # Calculate base price using the new pricing structure
+            price_per_person = daytrip.get_price_for_group_size(number_of_people)
+            total_price = price_per_person * number_of_people
             
             # Handle optional activities
-            total_price = base_price
             selected_activities = []
             optional_activities = request.POST.getlist('optional_activities')
             
@@ -505,7 +505,7 @@ def daytrip_booking(request, daytrip_slug):
                                 <h3>Booking Details:</h3>
                                 <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
                                 <p><strong>Day Trip:</strong> {booking.daytrip.name}</p>
-                                <p><strong>Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Date:</strong> {booking.daytrip.date}</p>
                                 <p><strong>Pickup Time:</strong> {booking.daytrip.pickup_time}</p>
                                 <p><strong>Pickup Location:</strong> {booking.daytrip.pickup_location}</p>
                                 <p><strong>Number of People:</strong> {booking.number_of_people}</p>
@@ -599,7 +599,7 @@ def daytrip_booking(request, daytrip_slug):
                                 <h3>Booking Details:</h3>
                                 <p><strong>Booking Reference:</strong> {booking.booking_reference}</p>
                                 <p><strong>Day Trip:</strong> {booking.daytrip.name}</p>
-                                <p><strong>Date:</strong> {booking.travel_date}</p>
+                                <p><strong>Date:</strong> {booking.daytrip.date}</p>
                                 <p><strong>Pickup Time:</strong> {booking.daytrip.pickup_time}</p>
                                 <p><strong>Pickup Location:</strong> {booking.daytrip.pickup_location}</p>
                                 <p><strong>Number of People:</strong> {booking.number_of_people}</p>
@@ -723,6 +723,8 @@ class ContactView(TemplateView):
             'success_message': 'Thank you for your message. We will get back to you soon!'
         })
 
+
+
 class TourListView(ListView):
     model = Tour
     template_name = 'users/dede/tour-grid-1.html'
@@ -741,20 +743,20 @@ class TourListView(ListView):
         price_min = self.request.GET.get('price_min')
         price_max = self.request.GET.get('price_max')
         duration = self.request.GET.get('duration')
-        featured = self.request.GET.get('featured')  # Add this line
+        featured = self.request.GET.get('featured')
 
         if destination:
             queryset = queryset.filter(destination__slug=destination)
         if price_min:
-            queryset = queryset.filter(price__gte=price_min)
+            queryset = queryset.filter(base_price__gte=price_min)  # Changed from price to base_price
         if price_max:
-            queryset = queryset.filter(price__lte=price_max)
+            queryset = queryset.filter(base_price__lte=price_max)  # Changed from price to base_price
         if duration:
             queryset = queryset.filter(duration=duration)
-        if featured:  # Add this block
+        if featured:
             queryset = queryset.filter(is_featured=True)
 
-        return queryset.select_related('destination')  # Optimize database queries
+        return queryset.select_related('destination').prefetch_related('pricing_tiers')  # Added pricing_tiers
 
 class TourDetailView(DetailView):
     model = Tour
@@ -837,8 +839,9 @@ def tour_booking(request, tour_slug):
             except ValueError:
                 raise ValidationError("Please enter a valid number of people")
 
-            # Calculate total price
-            total_price = tour.price * number_of_people
+            # Calculate total price using the new pricing structure
+            price_per_person = tour.get_price_for_group_size(number_of_people)
+            total_price = price_per_person * number_of_people
 
             # Create new booking
             booking = Booking(

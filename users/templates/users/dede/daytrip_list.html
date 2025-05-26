@@ -163,7 +163,7 @@
                                                     <div class="d-flex justify-content-between align-items-center">
                                                        
                                                         <span class="badge bg-success">
-                                                            KES {{ daytrip.price|floatformat:0 }}
+                                                            KES {{ daytrip.base_price|floatformat:0 }}
                                                         </span>
                                                     </div>
                                                     
@@ -204,7 +204,7 @@
                                            
                                         </div>
                                     </div>
-        
+                                    <br>
                                     <!-- Day Trips Grid -->
                                     <div class="row g-4">
                                         {% for daytrip in daytrips %}
@@ -278,13 +278,36 @@
                                                             <span>{{ daytrip.pickup_location }} @ {{ daytrip.pickup_time|time:"H:i" }} hrs</span>
                                                         </div>
                                                     </div>
-        
+                                                    <h5 class="card-title mb-3">
+                                                        <a href="{% url 'dede:daytrip_detail' daytrip.slug %}" 
+                                                           class="text-decoration-none text-dark">
+                                                           Price
+                                                        </a>
+                                                    </h5>
                                                     <!-- Price and Book Button -->
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="price-tag">
-                                                            <span class="h5 text-dark mb-0">KES {{ daytrip.price }} <small class="text-muted">/person</small></span>
-                                                        
-                                                        </div>
+                                                     
+                                                       <!-- Replace the existing price display with this -->
+                                                <div class="price-tag">
+                                                    <div class="group-pricing">
+                                                        <i class="fas fa-money me-2"></i>
+                                                        <small>From KES <span>{{ daytrip.base_price }} per person</span> </small>
+                                                      
+                                                        <div></div>
+                                                       
+                                                    </div>
+                                                    <br>
+                                                    {% if daytrip.pricing_tiers.exists %}
+                                                    <div class="group-pricing">
+                                                        <i class="fas fa-money me-2"></i>
+                                                        <small>Group Rates:</small>
+                                                        <br><br>
+                                                        {% for tier in daytrip.pricing_tiers.all %}
+                                                        <div><span><i class="fas fa-money me-2"></i></span> {{ tier.min_pax }}-{{ tier.max_pax }} Pax: KES {{ tier.price }}/person</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
                                                     </div>
                                                     <br><br>
                                                     <div class="tg-listing-2-price-wrap ">

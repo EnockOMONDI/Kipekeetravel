@@ -25,9 +25,46 @@ class Destination(models.Model):
     def __str__(self):
         return self.name
 
+class PricingTier(models.Model):
+    name = models.CharField(max_length=100)
+    min_pax = models.PositiveIntegerField(default=3)
+    max_pax = models.PositiveIntegerField(default=500)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    class Meta:
+        ordering = ['min_pax']
+        unique_together = ['min_pax', 'max_pax']
+        
+    def __str__(self):
+        if self.min_pax == self.max_pax:
+            return f"{self.name} - {self.min_pax} Pax: ${self.price}"
+        return f"{self.name} - {self.min_pax}-{self.max_pax} Pax: ${self.price}"
+
 class Tour(models.Model):
+    TOUR_TYPE_CHOICES = (
+        ('city', 'City Tour'),
+        ('safari', 'Safari Experience'),
+        ('beach', 'Beach Holiday'),
+        ('mountain', 'Mountain Trek'),
+        ('cultural', 'Cultural Experience'),
+        ('adventure', 'Adventure Tour'),
+        ('wildlife', 'Wildlife Tour'),
+        ('historical', 'Historical Tour'),
+        ('food', 'Food & Culinary Tour'),
+        ('religious', 'Religious Tour'),
+    )
+
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='tours')
     name = models.CharField(max_length=200)
+    tour_type = models.CharField(
+        blank=True, null=True,
+        max_length=20,
+        choices=TOUR_TYPE_CHOICES,
+        default='city tour',
+        help_text="Type of tour"
+    )
+    base_price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Base price per person", default=0.00)
+    pricing_tiers = models.ManyToManyField(PricingTier, related_name='tours', blank=True)
     Image = ImageField(blank=True, null=True, manual_crop="4:4")  # Main tour image
     gallery_image1 = ImageField(blank=True, null=True, manual_crop="4:4")
     gallery_image2 = ImageField(blank=True, null=True, manual_crop="4:4")
@@ -48,6 +85,22 @@ class Tour(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+        
+    def get_price_for_group_size(self, group_size):
+        """
+        Get the appropriate price per person based on group size
+        """
+        if not group_size or group_size < 1:
+            return self.base_price
+            
+        applicable_tiers = self.pricing_tiers.filter(
+            min_pax__lte=group_size,
+            max_pax__gte=group_size
+        ).order_by('-min_pax')
+        
+        if applicable_tiers.exists():
+            return applicable_tiers.first().price
+        return self.base_price
         
     def __str__(self):
         return f"{self.destination.name} - {self.name}"
@@ -99,6 +152,19 @@ class Review(models.Model):
 
 
 class DayTrip(models.Model):
+    TOUR_TYPE_CHOICES = (
+        ('city', 'City Tour'),
+        ('safari', 'Safari'),
+        ('beach', 'Beach Holiday'),
+        ('mountain', 'Mountain Trek'),
+        ('cultural', 'Cultural Experience'),
+        ('adventure', 'Adventure Tour'),
+        ('wildlife', 'Wildlife Tour'),
+        ('historical', 'Historical Tour'),
+        ('food', 'Food & Culinary Tour'),
+        ('religious', 'Religious Tour'),
+    )
+
     RECURRENCE_CHOICES = (
         ('none', 'One-time Trip'),
         ('weekend', 'Every Weekend'),
@@ -108,6 +174,14 @@ class DayTrip(models.Model):
 
     # Basic Information
     name = models.CharField(max_length=200)
+    tour_type = models.CharField(
+        max_length=20,
+        choices=TOUR_TYPE_CHOICES,
+        default='city tour',
+        help_text="Type of tour"
+    )
+    base_price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Base price per person", default=0.00)
+    pricing_tiers = models.ManyToManyField(PricingTier, related_name='day_trips', blank=True)
     slug = models.SlugField(unique=True, blank=True)
     Image = ImageField(blank=True, null=True, manual_crop="16:9")
     gallery_image1 = ImageField(blank=True, null=True, manual_crop="4:4")
@@ -119,6 +193,7 @@ class DayTrip(models.Model):
     end_date = models.DateField(null=True, blank=True, help_text="End date for recurring trips (optional)")
     description = models.TextField(blank=True)
     recurrence = models.CharField(
+        blank=True, null=True,
         max_length=20,
         choices=RECURRENCE_CHOICES,
         default='none',
@@ -204,7 +279,23 @@ class DayTrip(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
+        
+    def get_price_for_group_size(self, group_size):
+        """
+        Get the appropriate price per person based on group size
+        """
+        if not group_size or group_size < 1:
+            return self.base_price
+            
+        applicable_tiers = self.pricing_tiers.filter(
+            min_pax__lte=group_size,
+            max_pax__gte=group_size
+        ).order_by('-min_pax')
+        
+        if applicable_tiers.exists():
+            return applicable_tiers.first().price
+        return self.base_price
+        
     def __str__(self):
         if self.recurrence == 'none':
             return f"{self.name} - {self.start_date}"

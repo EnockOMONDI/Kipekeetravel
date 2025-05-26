@@ -124,14 +124,45 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="tg-tour-details-video-feature-price mb-15">
-                        <p>From <span>KES {{ tour.price }}</span> / Person</p>
+                        <p>From <span>KES {{ tour.base_price }}</span> / Person</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="tg-tour-details-video-feature-price mb-15">
-                        <a href="{% url 'dede:tour_booking' tour_slug=tour.slug %}" class="tg-btn">Book Now</a>                    </div>
+                        <a href="{% url 'dede:tour_booking' tour_slug=tour.slug %}" class="tg-btn">Book Now</a>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Pricing Details -->
+        <div class="pricing-details mb-40">
+            <h4>Pricing</h4>
+            <div class="base-price">
+                <strong>Standard Rate:</strong> KES {{ tour.base_price }} per person
+            </div>
+            
+            {% if tour.pricing_tiers.exists %}
+            <div class="group-rates mt-3">
+                <h5>Group Rates</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Group Size</th>
+                            <th>Price per Person</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tier in tour.pricing_tiers.all %}
+                        <tr>
+                            <td>{{ tier.min_pax }}{% if tier.min_pax != tier.max_pax %}-{{ tier.max_pax }}{% endif %} People</td>
+                            <td>KES {{ tier.price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
         </div>
 
         <!-- About Section -->
