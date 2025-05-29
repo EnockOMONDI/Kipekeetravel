@@ -109,6 +109,15 @@
     padding: 5px 10px;
     border-radius: 12px;
 }
+
+/* Holiday Icon Styling */
+.holiday-icon {
+    transition: transform 0.3s ease;
+}
+
+.holiday-icon:hover {
+    transform: scale(1.05);
+}
 </style>
         <!-- tg-hero-area-start -->
         <div class="tg-hero-area tg-grey-bg">
@@ -121,7 +130,7 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
         <!-- tg-hero-area-end -->
 
         <div class="tg-booking-form-area tg-dede-bg pb-65">
@@ -152,7 +161,7 @@
                                         </span>
                                         <span>Dayt rips</span>
                                     </button>
-        
+
                                     <!-- Accommodation Tab Button -->
                                     <button class="nav-links" id="nav-tracking-tab" data-bs-toggle="tab" data-bs-target="#nav-tracking" type="button" role="tab" aria-controls="nav-tracking" aria-selected="false">
                                         <span class="borders"></span>
@@ -163,7 +172,7 @@
                                         </span>
                                         <span>Accommodation</span>
                                     </button>
-        
+
                                     <!-- Events Tab Button -->
                                     <button class="nav-links" id="nav-support-tab" data-bs-toggle="tab" data-bs-target="#nav-support" type="button" role="tab" aria-controls="nav-support" aria-selected="false">
                                         <span class="borders"></span>
@@ -174,7 +183,7 @@
                                         </span>
                                         <span>Events</span>
                                     </button>
-        
+
                                     <!-- Car Rental Tab Button -->
                                     <button class="nav-links" id="nav-car-tab" data-bs-toggle="tab" data-bs-target="#nav-car" type="button" role="tab" aria-controls="nav-car" aria-selected="false">
                                         <span class="borders"></span>
@@ -187,49 +196,34 @@
                                     </button>
                                 </div>
                             </div>
-        
+
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-platform" role="tabpanel" aria-labelledby="nav-platform-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="{% url 'dede:tour_list' %}" method="get">
-                                            <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Destination:</span>
-                                                    <select name="destination" class="form-select">
-                                                        <option value="">Select Destination</option>
-                                                        {% for destination in popular_destinations %}
-                                                        <option value="{{ destination.slug }}">{{ destination.name }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-        
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Start Date:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="start_date" type="date" min="{{ today|date:'Y-m-d' }}">
+                                            <div class="tg-booking-form-input-group d-flex align-items-center justify-content-center">
+                                                <!-- Holiday Package Count Summary -->
+                                                <div class="tg-booking-form-parent-inner text-center mr-15 mb-15">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <img src="{% static 'assets2/images/icons/002-safari.png' %}" alt="Holiday Packages"
+                                                             class="holiday-icon me-3"
+                                                             style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                                        <h3 class="mb-0" style="font-size: 1.5rem; font-weight: 700; color: #443014;">
+                                                            {% if total_tours_count > 0 %}
+                                                                {{ total_tours_count }} Holiday Package{% if total_tours_count != 1 %}s{% endif %} Available
+                                                            {% else %}
+                                                                0 Holiday Packages Available
+                                                            {% endif %}
+                                                        </h3>
                                                     </div>
                                                 </div>
-        
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Duration (Days):</span>
-                                                    <select name="duration" class="form-select">
-                                                        
-                                                        <option value="2">2 Day</option>
-                                                        <option value="3">3 Days</option>
-                                                        <option value="4">4 Days</option>
-                                                        <option value="5">5 Days</option>
-                                                        <option value="6">6 Days</option>
-                                                        <option value="7">7 Days</option>
-                                                        <option value="">All Tours</option>
-                                                        
-                                                    </select>
-                                                </div>
-        
+
+                                                <!-- View All Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
-                                                    <button class="bk-search-button" type="submit">Find Tours
+                                                    <button class="bk-search-button" type="submit">View All
                                                         <span class="ml-5">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M1.0017 7.00001H12.9514M12.9514 7.00001L6.9766 1.02515M12.9514 7.00001L6.9766 12.9749" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                         </span>
                                                     </button>
@@ -241,40 +235,29 @@
                                 <div class="tab-pane fade show " id="nav-daytrip" role="tabpanel" aria-labelledby="nav-daytrip-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="{% url 'dede:daytrip_list' %}" method="get">
-                                            <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Pickup Location:</span>
-                                                    <select name="pickup_location" class="form-select">
-                                                        <option value="">Select Pickup Point</option>
-                                                        {% for location in pickup_locations %}
-                                                        <option value="{{ location }}">{{ location }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Trip Date:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="date" type="date" min="{{ today|date:'Y-m-d' }}">
+                                            <div class="tg-booking-form-input-group d-flex align-items-center justify-content-center">
+                                                <!-- Day Trips Count Summary -->
+                                                <div class="tg-booking-form-parent-inner text-center mr-15 mb-15">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <img src="{% static 'assets2/images/icons/003-hiking.png' %}" alt="Day Trips"
+                                                             class="daytrip-icon me-3"
+                                                             style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                                        <h3 class="mb-0" style="font-size: 1.5rem; font-weight: 700; color: #443014;">
+                                                            {% if total_daytrips_count > 0 %}
+                                                                {{ total_daytrips_count }} Day Trip{% if total_daytrips_count != 1 %}s{% endif %} Available
+                                                            {% else %}
+                                                                0 Day Trips Available
+                                                            {% endif %}
+                                                        </h3>
                                                     </div>
                                                 </div>
-                                
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Price Range:</span>
-                                                    <select name="price_range" class="form-select">
-                                                        <option value="">Any Price</option>
-                                                        <option value="0-5000">Under KES 5,000</option>
-                                                        <option value="5000-10000">KES 5,000 - 10,000</option>
-                                                        <option value="10000-15000">KES 10,000 - 15,000</option>
-                                                        <option value="15000+">Above KES 15,000</option>
-                                                    </select>
-                                                </div>
-                                
+
+                                                <!-- View All Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
-                                                    <button class="bk-search-button" type="submit">Find Day Trips
+                                                    <button class="bk-search-button" type="submit">View All
                                                         <span class="ml-5">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M1.0017 7.00001H12.9514M12.9514 7.00001L6.9766 1.02515M12.9514 7.00001L6.9766 12.9749" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                         </span>
                                                     </button>
@@ -283,35 +266,33 @@
                                         </form>
                                     </div>
                                 </div>
-        
+
                                 <div class="tab-pane fade" id="nav-tracking" role="tabpanel" aria-labelledby="nav-tracking-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="#" method="get">
-                                            <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Location:</span>
-                                                    <input type="text" name="location" class="form-control" placeholder="Where do you want to stay?">
-                                                </div>
-        
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Check In:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="check_in" type="date" min="{{ today|date:'Y-m-d' }}">
+                                            <div class="tg-booking-form-input-group d-flex align-items-center justify-content-center">
+                                                <!-- Accommodation Count Summary -->
+                                                <div class="tg-booking-form-parent-inner text-center mr-15 mb-15">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <img src="{% static 'assets2/images/icons/005-sunbed.png' %}" alt="Accommodations"
+                                                             class="accommodation-icon me-3"
+                                                             style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                                        <h3 class="mb-0" style="font-size: 1.5rem; font-weight: 700; color: #443014;">
+                                                            {% if total_accommodations_count > 0 %}
+                                                                {{ total_accommodations_count }} Accommodation{% if total_accommodations_count != 1 %}s{% endif %} Available
+                                                            {% else %}
+                                                                0 Accommodations Available
+                                                            {% endif %}
+                                                        </h3>
                                                     </div>
                                                 </div>
-        
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Check Out:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="check_out" type="date" min="{{ today|date:'Y-m-d' }}">
-                                                    </div>
-                                                </div>
-        
+
+                                                <!-- View All Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
-                                                    <button class="bk-search-button" type="submit">Find Hotels
+                                                    <button class="bk-search-button" type="submit">View All
                                                         <span class="ml-5">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M1.0017 7.00001H12.9514M12.9514 7.00001L6.9766 1.02515M12.9514 7.00001L6.9766 12.9749" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                         </span>
                                                     </button>
@@ -320,43 +301,34 @@
                                         </form>
                                     </div>
                                 </div>
-        
+
                                 <!-- Events Tab Content -->
                                 <div class="tab-pane fade" id="nav-support" role="tabpanel" aria-labelledby="nav-support-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="{% url 'events:event_list' %}" method="get">
-                                            <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <!-- City -->
-                                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">City:</span>
-                                                    <input type="text" name="city" class="form-control" placeholder="Enter city...">
-                                                </div>
-        
-                                                <!-- Event Category -->
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Category:</span>
-                                                    <select name="category" class="form-select">
-                                                        <option value="">All Categories</option>
-                                                        {% for category in event_categories %}
-                                                        <option value="{{ category.slug }}">{{ category.name }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-        
-                                                <!-- Date Range -->
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Date:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="date_from" type="date" min="{{ today|date:'Y-m-d' }}">
+                                            <div class="tg-booking-form-input-group d-flex align-items-center justify-content-center">
+                                                <!-- Events Count Summary -->
+                                                <div class="tg-booking-form-parent-inner text-center mr-15 mb-15">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <img src="{% static 'assets2/images/icons/004-camping-tent.png' %}" alt="Events"
+                                                             class="events-icon me-3"
+                                                             style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                                        <h3 class="mb-0" style="font-size: 1.5rem; font-weight: 700; color: #443014;">
+                                                            {% if total_events_count > 0 %}
+                                                                {{ total_events_count }} Event{% if total_events_count != 1 %}s{% endif %} Available
+                                                            {% else %}
+                                                                0 Events Available
+                                                            {% endif %}
+                                                        </h3>
                                                     </div>
                                                 </div>
-        
-                                                <!-- Search Button -->
+
+                                                <!-- View All Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
-                                                    <button class="bk-search-button" type="submit">Find Events
+                                                    <button class="bk-search-button" type="submit">View All
                                                         <span class="ml-5">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M1.0017 7.00001H12.9514M12.9514 7.00001L6.9766 1.02515M12.9514 7.00001L6.9766 12.9749" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                         </span>
                                                     </button>
@@ -365,40 +337,34 @@
                                         </form>
                                     </div>
                                 </div>
-        
+
                                 <!-- Car Rental Tab Content -->
                                 <div class="tab-pane fade" id="nav-car" role="tabpanel" aria-labelledby="nav-car-tab" tabindex="0">
                                     <div class="tg-booking-form-item">
                                         <form action="#" method="get">
-                                            <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
-                                                <!-- Pickup Location -->
-                                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Pickup Location:</span>
-                                                    <input type="text" name="pickup_location" class="form-control" placeholder="Enter pickup location">
-                                                </div>
-        
-                                                <!-- Pickup Date -->
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Pickup Date:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="pickup_date" type="date" min="{{ today|date:'Y-m-d' }}">
+                                            <div class="tg-booking-form-input-group d-flex align-items-center justify-content-center">
+                                                <!-- Car Rental Count Summary -->
+                                                <div class="tg-booking-form-parent-inner text-center mr-15 mb-15">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <img src="{% static 'assets2/images/icons/008-cycling.png' %}" alt="Car Rentals"
+                                                             class="car-rental-icon me-3"
+                                                             style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                                        <h3 class="mb-0" style="font-size: 1.5rem; font-weight: 700; color: #443014;">
+                                                            {% if total_car_rentals_count > 0 %}
+                                                                {{ total_car_rentals_count }} Transport Option{% if total_car_rentals_count != 1 %}s{% endif %} Available
+                                                            {% else %}
+                                                                0 Transport Options Available
+                                                            {% endif %}
+                                                        </h3>
                                                     </div>
                                                 </div>
-        
-                                                <!-- Return Date -->
-                                                <div class="tg-booking-form-parent-inner mr-15 mb-15">
-                                                    <span class="tg-booking-form-title mb-5">Return Date:</span>
-                                                    <div class="tg-booking-add-input-date p-relative">
-                                                        <input class="input" name="return_date" type="date" min="{{ today|date:'Y-m-d' }}">
-                                                    </div>
-                                                </div>
-        
-                                                <!-- Search Button -->
+
+                                                <!-- View All Button -->
                                                 <div class="tg-booking-form-search-btn mb-15">
-                                                    <button class="bk-search-button" type="submit">Find Cars
+                                                    <button class="bk-search-button" type="submit">View All
                                                         <span class="ml-5">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M13.2218 13.2222L10.5188 10.5192M12.1959 6.48705C12.1959 9.6402 9.63977 12.1963 6.48662 12.1963C3.33348 12.1963 0.777344 9.6402 0.777344 6.48705C0.777344 3.3339 3.33348 0.777771 6.48662 0.777771C9.63977 0.777771 12.1959 3.3339 12.1959 6.48705Z" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M1.0017 7.00001H12.9514M12.9514 7.00001L6.9766 1.02515M12.9514 7.00001L6.9766 12.9749" stroke="currentColor" stroke-width="1.575" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                         </span>
                                                     </button>
@@ -426,7 +392,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     {% for daytrip in featured_daytrips %}
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 wow fadeInUp" data-wow-delay=".{{ forloop.counter }}s" data-wow-duration=".6s">
@@ -446,9 +412,9 @@
                                 <div class="tg-listing-2-mask">
                                     <img class="w-100" src="{% static 'assets3/img/listing/listing-2/shape.png' %}" alt="">
                                 </div>
-                             
+
                             </div>
-                
+
                             <!-- Card Content -->
                             <div class="tg-listing-card-content p-relative">
                                <!-- Price Tag -->
@@ -458,15 +424,15 @@
                                     <span class="shift">/person</span>
                                 </div>
                             </div>
-                
+
                                 <!-- Title -->
                                 <h4 class="tg-listing-card-title">
                                     <a href="{% url 'dede:daytrip_detail' daytrip.slug %}">{{ daytrip.name }}</a>
                                 </h4>
-                            
-                                
+
+
                                 <hr class="my-3">
-                
+
                                 <!-- Schedule -->
                                 <div class="tg-listing-card-info mb-2">
                                     <div class="d-flex align-items-center mb-2">
@@ -492,7 +458,7 @@
                                             {% endif %}
                                         </span>
                                     </div>
-                
+
                                     <!-- Pickup Details -->
                                     <div class="d-flex align-items-center mb-2">
                                         <i class="fas fa-map-marker-alt me-2 text-danger"></i>
@@ -502,19 +468,19 @@
                                         <i class="far fa-clock me-2 text-success"></i>
                                         <span>{{ daytrip.pickup_time|time:"g:i A" }}</span>
                                     </div>
-                
+
                                     <!-- Available Slots -->
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-users me-2 text-warning"></i>
                                         <span>{{ daytrip.get_remaining_slots }} slots remaining</span>
                                     </div>
                                 </div>
-                
+
                                 <!-- View Details Button -->
                                 <div class="text-center mt-4">
-                                    <a href="{% url 'dede:daytrip_detail' daytrip.slug %}" 
+                                    <a href="{% url 'dede:daytrip_detail' daytrip.slug %}"
                                        class="btn tg-btn-2 w-100 d-flex align-items-center justify-content-center gap-2">
-                                        View Details 
+                                        View Details
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                 </div>
@@ -542,7 +508,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="tg-listing-section-title text-center mb-35">
-                
+
                             <h2 class="mb-15 wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".7s">Featured  Tours and holidays</h2>
                             <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".8s">Are you tired of the typical tourist destinations and looking
                                 to step out of your comfort zone? </p>
@@ -614,7 +580,7 @@
         </div>
 
 
-        
+
         <!-- tg-destination-area-end -->
 
         <!-- tg-banner-area-start -->
@@ -641,7 +607,7 @@
                                                 <path d="M1.0017 8.00001H19.9514M19.9514 8.00001L12.9766 1.02515M19.9514 8.00001L12.9766 14.9749" stroke="white" stroke-width="1.77778" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
                                        </span>
-                                   </span> 
+                                   </span>
                                 </a>
                             </div>
                         </div>
@@ -653,7 +619,7 @@
                                 <svg width="322" height="23" viewBox="0 0 322 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2.5 15C25.5 12.6667 84.9106 17 108 17C186 17 266 32 320 2" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
                                 </svg>
-                            </span>    
+                            </span>
                             <h2>The Whole World !</h2>
                         </div>
                     </div>
@@ -671,7 +637,7 @@
                         <div class="tg-destination-section-title text-center mb-40">
                             <h5 class="tg-section-subtitle wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".6s">Most Popular Tour Packages</h5>
                             <h2 class="mb-15 wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".7s">Our Best Destinations</h2>
-                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".8s">Are you tired of the typical tourist destinations and looking<br> 
+                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".8s">Are you tired of the typical tourist destinations and looking<br>
                                 to step out of your comfort zone?</p>
                         </div>
                     </div>
@@ -701,7 +667,7 @@
                 </div>
             </div>
         </div>
-     
+
         <!-- tg-listing-area-end -->
 
         <!-- tg-chose-area-start -->
@@ -713,7 +679,7 @@
                         <div class="tg-chose-section-title text-center mb-30">
                             <h5 class="tg-section-subtitle wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".6s">Next Adventure Destination</h5>
                             <h2 class="mb-15 wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".7s">Why You Should Work With Us</h2>
-                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".8s">Are you tired of the typical tourist destinations and looking<br> 
+                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".8s">Are you tired of the typical tourist destinations and looking<br>
                                 to step out of your comfort zonetravel</p>
                         </div>
                     </div>
@@ -898,7 +864,7 @@
                         <div class="tg-location-section-title text-center mb-30">
                             <h5 class="tg-section-subtitle mb-15 wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".9s">Clients Feedback About Us</h5>
                             <h2 class="mb-15 text-capitalize wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".9s">See Those Lovely Words From Clients</h2>
-                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".9s">Are you tired of the typical tourist destinations and looking<br> 
+                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".9s">Are you tired of the typical tourist destinations and looking<br>
                                 to step out of your comfort zonetravel</p>
                         </div>
                     </div>
@@ -924,7 +890,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing 
+                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing
                                         ipsum dolor consectetur.”</p>
                                     <div class="tg-testimonial-ratings">
                                         <span><i class="fa-sharp fa-solid fa-star"></i></span>
@@ -955,7 +921,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing 
+                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing
                                         ipsum dolor consectetur.”</p>
                                     <div class="tg-testimonial-ratings">
                                         <span><i class="fa-sharp fa-solid fa-star"></i></span>
@@ -986,7 +952,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing 
+                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing
                                         ipsum dolor consectetur.”</p>
                                     <div class="tg-testimonial-ratings">
                                         <span><i class="fa-sharp fa-solid fa-star"></i></span>
@@ -1017,7 +983,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing 
+                                    <p class="tg-testimonial-avatar-para mb-10">“ Morem ipsum dolor siter amet areaeey consec taetur adipisc Service ollwing
                                         ipsum dolor consectetur.”</p>
                                     <div class="tg-testimonial-ratings">
                                         <span><i class="fa-sharp fa-solid fa-star"></i></span>
@@ -1046,7 +1012,7 @@
                         <div class="tg-location-section-title text-center mb-30">
                             <h5 class="tg-section-subtitle mb-15 wow fadeInUp" data-wow-delay=".3s" data-wow-duration=".9s">Blog And Article</h5>
                             <h2 class="mb-15 text-capitalize wow fadeInUp" data-wow-delay=".4s" data-wow-duration=".9s">Latest News & Articles</h2>
-                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".9s">Are you tired of the typical tourist destinations and<br> looking 
+                            <p class="text-capitalize wow fadeInUp" data-wow-delay=".5s" data-wow-duration=".9s">Are you tired of the typical tourist destinations and<br> looking
                                 to step out of your comfort zonetravel</p>
                         </div>
                     </div>
@@ -1057,7 +1023,7 @@
                                 <span class="tg-blog-tag p-absolute">Travel River</span>
                             </div>
                             <div class="tg-blog-content  p-relative">
-                                <h3 class="tg-blog-title"><a href="blog-details.html">Spiritual Sojourn mageey 
+                                <h3 class="tg-blog-title"><a href="blog-details.html">Spiritual Sojourn mageey
                                     for Soul Seekers</a></h3>
                                 <div class="tg-blog-date mb-10">
                                     <span class="mr-20"><i class="fa-light fa-calendar"></i> 26th Sep, 2024</span>
@@ -1076,7 +1042,7 @@
                                 <span class="tg-blog-tag p-absolute">Travel River</span>
                             </div>
                             <div class="tg-blog-content  p-relative">
-                                <h3 class="tg-blog-title"><a href="blog-details.html">Wine Country Escapeeyard 
+                                <h3 class="tg-blog-title"><a href="blog-details.html">Wine Country Escapeeyard
                                     Tours for Connoisseurs</a></h3>
                                 <div class="tg-blog-date mb-10">
                                     <span class="mr-20"><i class="fa-light fa-calendar"></i> 26th Sep, 2024</span>
@@ -1095,7 +1061,7 @@
                                 <span class="tg-blog-tag p-absolute">Travel River</span>
                             </div>
                             <div class="tg-blog-content  p-relative">
-                                <h3 class="tg-blog-title"><a href="blog-details.html">Thrills & Chills treme Sports 
+                                <h3 class="tg-blog-title"><a href="blog-details.html">Thrills & Chills treme Sports
                                     Tours for Adrenaline</a></h3>
                                 <div class="tg-blog-date mb-10">
                                     <span class="mr-20"><i class="fa-light fa-calendar"></i> 26th Sep, 2024</span>
@@ -1160,4 +1126,4 @@
         </script>
         {% endblock %}
         {% endblock %}
- 
+

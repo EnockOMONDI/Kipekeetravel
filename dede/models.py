@@ -12,16 +12,16 @@ class Destination(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     location = models.CharField(max_length=200)
     description = models.TextField()
-    
+
     # Main image and gallery
     main_image = ImageField(blank=False, null=True, manual_crop="4:4",)
-    
-    
+
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-        
+
     def __str__(self):
         return self.name
 
@@ -30,11 +30,11 @@ class PricingTier(models.Model):
     min_pax = models.PositiveIntegerField(default=3)
     max_pax = models.PositiveIntegerField(default=500)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    
+
     class Meta:
         ordering = ['min_pax']
         unique_together = ['min_pax', 'max_pax']
-        
+
     def __str__(self):
         if self.min_pax == self.max_pax:
             return f"{self.name} - {self.min_pax} Pax: ${self.price}"
@@ -75,40 +75,40 @@ class Tour(models.Model):
     duration = models.IntegerField(help_text="Duration in days")
     group_size = models.IntegerField(blank=True, null=True, default=30)
     languages = models.CharField(max_length=100)
-    rating = models.DecimalField(max_digits=3, decimal_places=2, 
+    rating = models.DecimalField(max_digits=3, decimal_places=2,
                                validators=[MinValueValidator(0), MaxValueValidator(5)])
     reviews_count = models.IntegerField(default=0)
     is_featured = models.BooleanField(default=False)
-   
-    
+
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-        
+
     def get_price_for_group_size(self, group_size):
         """
         Get the appropriate price per person based on group size
         """
         if not group_size or group_size < 1:
             return self.base_price
-            
+
         applicable_tiers = self.pricing_tiers.filter(
             min_pax__lte=group_size,
             max_pax__gte=group_size
         ).order_by('-min_pax')
-        
+
         if applicable_tiers.exists():
             return applicable_tiers.first().price
         return self.base_price
-        
+
     def __str__(self):
         return f"{self.destination.name} - {self.name}"
 
 class TourHighlight(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='highlights')
     highlight = models.CharField(max_length=200)
-    
+
     def __str__(self):
         return f"{self.tour.name} - {self.highlight}"
 
@@ -116,7 +116,7 @@ class TourInclusion(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='inclusions')
     item = models.CharField(max_length=200)
     is_included = models.BooleanField(default=True)
-    
+
     def __str__(self):
         return f"{self.tour.name} - {self.item}"
 
@@ -125,10 +125,10 @@ class TourDay(models.Model):
     day_number = models.IntegerField()
     title = models.CharField(max_length=200)
     description = models.TextField()
-    
+
     class Meta:
         ordering = ['day_number']
-        
+
     def __str__(self):
         return f"{self.tour.name} - Day {self.day_number}"
 
@@ -139,14 +139,14 @@ class Review(models.Model):
                                validators=[MinValueValidator(0), MaxValueValidator(5)])
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     # Category ratings
     location_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     price_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     amenities_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     services_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     rooms_rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    
+
     def __str__(self):
         return f"{self.tour.name} - {self.user_name}"
 
@@ -187,7 +187,7 @@ class DayTrip(models.Model):
     gallery_image1 = ImageField(blank=True, null=True, manual_crop="4:4")
     gallery_image2 = ImageField(blank=True, null=True, manual_crop="4:4")
     gallery_image3 = ImageField(blank=True, null=True, manual_crop="4:4")
-    
+
     # Date and Recurrence
     start_date = models.DateField(help_text="Start date for recurring trips or the date for one-time trips")
     end_date = models.DateField(null=True, blank=True, help_text="End date for recurring trips (optional)")
@@ -199,17 +199,17 @@ class DayTrip(models.Model):
         default='none',
         help_text="Select if this is a recurring trip"
     )
-    
+
     price = models.DecimalField(max_digits=10, decimal_places=2)
     group_size = models.IntegerField(default=30, help_text="Maximum number of participants")
-    
+
     # Pickup Information
     pickup_location = models.CharField(max_length=200)
     pickup_time = models.TimeField()
-    
+
     # What's Included
     included_items = models.ManyToManyField('IncludedItem')
-    
+
     is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -235,7 +235,7 @@ class DayTrip(models.Model):
                 available_dates.append(current_date)
             elif self.recurrence == 'sunday' and current_date.weekday() == 6:
                 available_dates.append(current_date)
-            
+
             current_date += timedelta(days=1)
 
         return available_dates
@@ -245,57 +245,57 @@ class DayTrip(models.Model):
         # Default group size if not specified
         if date is None:
             date = timezone.now().date()
-            
+
         total_booked = self.bookings.filter(
             travel_date=date,
             booking_status__in=['pending', 'confirmed']
         ).aggregate(
             total=models.Sum('number_of_people')
         )['total'] or 0
-        
+
         return self.group_size - total_booked
 
     def is_available_on_date(self, check_date):
         """Check if the trip is available on a specific date"""
         if self.recurrence == 'none':
             return check_date == self.start_date
-        
+
         if self.end_date and check_date > self.end_date:
             return False
-            
+
         if check_date < self.start_date:
             return False
-            
+
         if self.recurrence == 'weekend':
             return check_date.weekday() in [5, 6]
         elif self.recurrence == 'saturday':
             return check_date.weekday() == 5
         elif self.recurrence == 'sunday':
             return check_date.weekday() == 6
-            
+
         return False
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-        
+
     def get_price_for_group_size(self, group_size):
         """
         Get the appropriate price per person based on group size
         """
         if not group_size or group_size < 1:
             return self.base_price
-            
+
         applicable_tiers = self.pricing_tiers.filter(
             min_pax__lte=group_size,
             max_pax__gte=group_size
         ).order_by('-min_pax')
-        
+
         if applicable_tiers.exists():
             return applicable_tiers.first().price
         return self.base_price
-        
+
     def __str__(self):
         if self.recurrence == 'none':
             return f"{self.name} - {self.start_date}"
@@ -303,7 +303,7 @@ class DayTrip(models.Model):
 
     class Meta:
         ordering = ['start_date']
-        
+
 class ItineraryItem(models.Model):
     daytrip = models.ForeignKey(DayTrip, on_delete=models.CASCADE, related_name='itinerary_items')
     time = models.TimeField()
@@ -363,7 +363,7 @@ class Booking(models.Model):
             MaxValueValidator(1000, message="Number of people cannot exceed 1000")  # or any reasonable maximum
         ]
     )
-    
+
     # Customer information
     full_name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -376,7 +376,7 @@ class Booking(models.Model):
         choices=STATUS_CHOICES,
         default='pending'
     )
-    
+
     # Payment information
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status = models.CharField(
@@ -385,11 +385,11 @@ class Booking(models.Model):
         default='pending'
     )
     deposit_paid = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+        max_digits=10,
+        decimal_places=2,
         default=0
     )
-    
+
     # Additional information
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -451,7 +451,7 @@ class DayTripBooking(models.Model):
         ]
     )
 
-    
+
     # Customer information
     full_name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -465,7 +465,7 @@ class DayTripBooking(models.Model):
         choices=STATUS_CHOICES,
         default='pending'
     )
-    
+
     # Payment information
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status = models.CharField(
@@ -474,11 +474,11 @@ class DayTripBooking(models.Model):
         default='pending'
     )
     deposit_paid = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+        max_digits=10,
+        decimal_places=2,
         default=0
     )
-    
+
     # Additional information
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -500,10 +500,10 @@ class DayTripBooking(models.Model):
         # Generate unique booking reference if not exists
         if not self.booking_reference:
             self.booking_reference = self.generate_booking_reference()
-        
+
         # Set travel date from daytrip
         if not self.travel_date:
-            self.travel_date = self.daytrip.date
+            self.travel_date = self.daytrip.start_date
 
         # Calculate total price if not set
         if not self.total_price:
@@ -518,7 +518,7 @@ class DayTripBooking(models.Model):
         return f'DT{timestamp}{random_nums}'
 
     def calculate_total_price(self):
-        return self.daytrip.price * self.number_of_people
+        return self.daytrip.base_price * self.number_of_people
 
     def __str__(self):
         return f"Day Trip Booking {self.booking_reference} - {self.daytrip.name} for {self.full_name}"
