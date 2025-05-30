@@ -200,7 +200,6 @@ class DayTrip(models.Model):
         help_text="Select if this is a recurring trip"
     )
 
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     group_size = models.IntegerField(default=30, help_text="Maximum number of participants")
 
     # Pickup Information
