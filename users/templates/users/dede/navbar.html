@@ -9,23 +9,20 @@
                         <nav class="tgmenu__nav tgmenu-1-space">
                             <div class="tgmenu__navbar-wrap tgmenu__main-menu tgmenu__navbar-wrap-2 d-none d-xl-flex">
                                 <ul class="navigation">
-                                    <li class="active"><a href="{% url 'dede:home' %}">  Home </a>
+                                    <li class="active"><a href="{% url 'dede:home' %}">Home</a>
                                     </li>
-                                    <li class=""><a href="{% url 'dede:tour_list' %}">Holidays</a>
-                                     
+                                    <li class=""><a href="{% url 'dede:corporate_travel' %}">Corporate Travel</a>
+                                    </li>
+                                    <li class=""><a href="{% url 'dede:tour_list' %}">Holiday Packages</a>
                                     </li>
                                     <li class=""><a href="{% url 'dede:daytrip_list' %}">Day Trips</a>
-                                     
                                     </li>
-                                    <li><a href="{% url 'events:event_list' %}">Events</a></li>
-                                    <li>
-                                    <li class="menu-item-has-children"><a href="#">What we do</a>
-                                       
+                                    <!-- <li><a href="{% url 'events:event_list' %}">Events</a></li> -->
+                                    <li class="menu-item-has-children"><a href="#">Who We Are</a>
                                         <ul class="sub-menu">
-                                            <li><a href="{% url 'dede:about' %}">  Travel <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
-                                            <li><a href="{% url 'events:event_organizers' %}">   Events Tickets <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
+                                            <li><a href="{% url 'dede:about' %}">About Us <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
+                                            <li><a href="{% url 'dede:contact' %}">Contact Us <span><i class="fa-sharp fa-solid fa-angle-right"></i></span></a></li>
                                         </ul>
-                                        
                                     </li>
                                    
                                          <!-- </li>

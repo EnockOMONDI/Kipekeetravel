@@ -9,6 +9,7 @@ from .models import Tour, Booking, DayTrip, DayTripBooking
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.conf import settings
 import datetime
 import smtplib
 from email.mime.text import MIMEText
@@ -717,23 +718,155 @@ class ContactView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add any additional context data for the contact page
+        # Add Dede Expeditions contact information
+        context.update({
+            'company_name': 'Dede Expeditions',
+            'company_email': 'info@dedeexpeditions.com',
+            'company_phone': '+254758355325',
+            'company_phone_alt': '+254723050800',
+            'company_address': 'Yaya Centre - Argwings Kodhek Rd, Nairobi, Kenya',
+            'company_website': 'www.dedeexpeditions.com',
+        })
         return context
 
     def post(self, request, *args, **kwargs):
         # Handle contact form submission
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
+        try:
+            name = request.POST.get('name', '').strip()
+            email = request.POST.get('email', '').strip()
+            subject = request.POST.get('subject', '').strip()
+            message = request.POST.get('message', '').strip()
+            phone = request.POST.get('phone', '').strip()
 
-        # Add your contact form processing logic here
-        # For example, sending an email or saving to database
+            # Basic validation
+            if not all([name, email, subject, message]):
+                messages.error(request, 'Please fill in all required fields.')
+                return self.get(request, *args, **kwargs)
 
-        # Redirect or render response
-        return render(request, self.template_name, {
-            'success_message': 'Thank you for your message. We will get back to you soon!'
+            # Send email to info@dedeexpeditions.com
+            try:
+                s = smtplib.SMTP('smtp.gmail.com', 587)
+                s.starttls()
+                s.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Create email message
+                msg = MIMEMultipart('alternative')
+                msg['From'] = "DEDE EXPEDITIONS <dedeexpeditions@gmail.com>"
+                msg['To'] = "info@dedeexpeditions.com"
+                msg['Subject'] = f"Contact Form Submission: {subject}"
+
+                # Email content
+                email_content = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Contact Form Submission</title>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                            margin: 0;
+                            padding: 0;
+                        }}
+                        .email-container {{
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }}
+                        .header {{
+                            text-align: center;
+                            padding: 20px 0;
+                            background-color: #f8f9fa;
+                        }}
+                        .content {{
+                            padding: 20px 0;
+                        }}
+                        .contact-details {{
+                            background-color: #f8f9fa;
+                            padding: 20px;
+                            border-radius: 5px;
+                            margin: 20px 0;
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                            font-size: 12px;
+                            color: #666;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="header">
+                            <h2>Contact Form Submission</h2>
+                        </div>
+
+                        <div class="content">
+                            <p>A new contact form submission has been received from the website:</p>
+
+                            <div class="contact-details">
+                                <h3>Contact Information:</h3>
+                                <p><strong>Name:</strong> {name}</p>
+                                <p><strong>Email:</strong> {email}</p>
+                                <p><strong>Phone:</strong> {phone if phone else 'Not provided'}</p>
+                                <p><strong>Subject:</strong> {subject}</p>
+
+                                <h3>Message:</h3>
+                                <p>{message}</p>
+                            </div>
+
+                            <p>Please respond to this inquiry as soon as possible.</p>
+                        </div>
+
+                        <div class="footer">
+                            <p>© 2024 DEDE EXPEDITIONS. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                """
+
+                # Attach the HTML content
+                msg.attach(MIMEText(email_content, 'html'))
+
+                # Send the message
+                s.send_message(msg)
+                s.quit()
+
+                messages.success(request, 'Thank you for your message! We will get back to you soon.')
+                print(f"Contact form email sent successfully from {email}")
+
+            except Exception as e:
+                messages.error(request, 'There was an error sending your message. Please try again or contact us directly.')
+                print(f"Contact form email sending failed: {str(e)}")
+
+        except Exception as e:
+            messages.error(request, 'There was an error processing your request. Please try again.')
+            print(f"Contact form error: {str(e)}")
+
+        return self.get(request, *args, **kwargs)
+
+class CorporateTravelView(TemplateView):
+    template_name = 'users/dede/corporate-travel.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add any additional context data for the corporate travel page
+        context.update({
+            'company_name': 'Dede Expeditions',
+            'company_email': 'info@dedeexpeditions.com',
+            'company_phone': '+254758355325',
+            'company_phone_alt': '+254723050800',
+            'company_address': 'Yaya Centre - Argwings Kodhek Rd, Nairobi, Kenya',
+            'company_website': 'www.dedeexpeditions.com',
         })
+        return context
+
+
 
 
 

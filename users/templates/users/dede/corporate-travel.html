@@ -1,0 +1,477 @@
+{% extends 'users/dede/basemain.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+/* Corporate Travel Page Styles */
+.corporate-hero {
+    background: linear-gradient(135deg, rgba(98, 0, 121, 0.9), rgba(98, 0, 121, 0.7)), url('{% static "assets3/img/bg/corporate-bg.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    padding: 120px 0 80px;
+    color: white;
+    text-align: center;
+}
+
+.corporate-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.corporate-hero .subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.service-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: none;
+    height: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.service-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #620079, #8a2be2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    color: white;
+    font-size: 2rem;
+}
+
+.service-card h3 {
+    color: #620079;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.service-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 8px 0;
+    color: #555;
+    position: relative;
+    padding-left: 25px;
+}
+
+.feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #620079;
+    font-weight: bold;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, #620079, #8a2be2);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.btn-corporate {
+    background: linear-gradient(135deg, #ff9901, #ffb930);
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.btn-corporate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 153, 1, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.contact-info-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-top: 30px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #620079, #8a2be2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 20px;
+    font-size: 1.2rem;
+}
+
+.stats-section {
+    background: #faf7f2;
+    padding: 80px 0;
+}
+
+.stat-item {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #620079;
+    display: block;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+</style>
+
+<br><br>
+
+<!-- Introduction Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 style="color: #620079; font-weight: 700; margin-bottom: 25px;">Your Strategic Business Travel Partner</h2>
+                <p style="font-size: 1.1rem; line-height: 1.7; color: #555;">At Dede Expeditions, we understand that corporate travel is more than just movement; it's a strategic element of your business.</p>
+                <p style="font-size: 1.1rem; line-height: 1.7; color: #555;">We recognize the evolving requirements of modern businesses when it comes to seamless travel arrangements. As your business expands, so do the complexities of managing corporate travel expenses. Our unwavering commitment is to empower your organization with time and cost savings. Making your business travel more efficient and hassle-free.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'assets3/img/gallery/corporate-travel.jpg' %}" alt="Corporate Travel" class="img-fluid rounded" style="box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-5" style="background: #faf7f2;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 style="color: #620079; font-weight: 700; font-size: 2.5rem;">Our Corporate Travel Services</h2>
+                <p style="font-size: 1.2rem; color: #666;">Comprehensive solutions tailored to your business needs</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Corporate Travel Management -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Corporate Travel Management</h3>
+                    <p>Comprehensive end-to-end travel management solutions for businesses of all sizes.</p>
+                    <ul class="feature-list">
+                        <li>Dedicated Travel Manager</li>
+                        <li>24/7 Support</li>
+                        <li>Cost Optimization</li>
+                        <li>Policy Compliance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MICE Solutions -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>MICE Solutions</h3>
+                    <p>Meetings, Incentives, Conferences, and Exhibitions managed with precision and creativity.</p>
+                    <ul class="feature-list">
+                        <li>Event Planning & Management</li>
+                        <li>Venue Selection</li>
+                        <li>Delegate Coordination</li>
+                        <li>Audio-Visual Support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Group Travel -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3>Group Travel</h3>
+                    <p>Seamless coordination for large group movements with competitive group rates.</p>
+                    <ul class="feature-list">
+                        <li>Group Bookings</li>
+                        <li>Competitive Rates</li>
+                        <li>Coordinated Logistics</li>
+                        <li>Group Transfers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Executive Travel -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Executive Travel</h3>
+                    <p>Premium travel experiences for executives and VIP clients with personalized service.</p>
+                    <ul class="feature-list">
+                        <li>Business Class Bookings</li>
+                        <li>Luxury Accommodations</li>
+                        <li>VIP Airport Services</li>
+                        <li>Executive Transfers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Travel Technology -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h3>Travel Technology</h3>
+                    <p>Advanced booking platforms and reporting tools for efficient travel management.</p>
+                    <ul class="feature-list">
+                        <li>Online Booking Platform</li>
+                        <li>Expense Reporting</li>
+                        <li>Travel Analytics</li>
+                        <li>Mobile App Access</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Risk Management -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Risk Management</h3>
+                    <p>Comprehensive travel risk assessment and management for duty of care compliance.</p>
+                    <ul class="feature-list">
+                        <li>Travel Risk Assessment</li>
+                        <li>Emergency Support</li>
+                        <li>Travel Insurance</li>
+                        <li>Crisis Management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 style="color: #620079; font-weight: 700; font-size: 2.5rem;">Why Choose Dede Expeditions?</h2>
+                <p style="font-size: 1.2rem; color: #666;">Experience the difference with our corporate travel expertise</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <div class="stat-label">Corporate Clients</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <div class="stat-label">Support Available</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <div class="stat-label">Global Destinations</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 style="color:#ffffff">Ready to Transform Your Corporate Travel?</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9;">Let us handle your travel needs while you focus on growing your business</p>
+                <a href="{% url 'dede:contact' %}" class="btn-corporate me-3">Get Started Today</a>
+                <a href="tel:{{ company_phone }}" class="btn-corporate" style="background: transparent; border: 2px solid white;">Call Us Now</a>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-8">
+                <div class="contact-info-card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h5 style="margin-bottom: 5px; color: #620079;">Address</h5>
+                                    <p style="margin: 0; color: #666;">{{ company_address }}</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h5 style="margin-bottom: 5px; color: #620079;">Email</h5>
+                                    <p style="margin: 0; color: #666;">{{ company_email }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h5 style="margin-bottom: 5px; color: #620079;">Phone</h5>
+                                    <p style="margin: 0; color: #666;">{{ company_phone }}</p>
+                                    <p style="margin: 0; color: #666;">{{ company_phone_alt }}</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </div>
+                                <div>
+                                    <h5 style="margin-bottom: 5px; color: #620079;">Follow Us</h5>
+                                    <div style="display: flex; gap: 15px; align-items: center;">
+                                        <a href="https://www.instagram.com/dedeexpeditions/" target="_blank" style="text-decoration: none;">
+                                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #E4405F, #C13584); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; transition: all 0.3s ease;">
+                                                <i class="fab fa-instagram"></i>
+                                            </div>
+                                        </a>
+                                        <a href="#" style="text-decoration: none;">
+                                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1877F2, #42A5F5); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; transition: all 0.3s ease;">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Services Section -->
+<section class="py-5" style="background: #faf7f2;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 style="color: #620079; font-weight: 700; font-size: 2.5rem;">Additional Corporate Services</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="service-card">
+                    <h4 style="color: #620079; margin-bottom: 20px;">
+                        <i class="fas fa-car me-3" style="color: #620079;"></i>
+                        Ground Transportation
+                    </h4>
+                    <p>Professional chauffeur services, airport transfers, and executive transportation solutions for seamless ground travel.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="service-card">
+                    <h4 style="color: #620079; margin-bottom: 20px;">
+                        <i class="fas fa-passport me-3" style="color: #620079;"></i>
+                        Visa & Documentation
+                    </h4>
+                    <p>Complete visa assistance and travel documentation services to ensure smooth international business travel.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="service-card">
+                    <h4 style="color: #620079; margin-bottom: 20px;">
+                        <i class="fas fa-bed me-3" style="color: #620079;"></i>
+                        Accommodation Management
+                    </h4>
+                    <p>Preferred hotel partnerships and negotiated corporate rates for consistent, quality accommodations worldwide.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="service-card">
+                    <h4 style="color: #620079; margin-bottom: 20px;">
+                        <i class="fas fa-chart-line me-3" style="color: #620079;"></i>
+                        Travel Analytics
+                    </h4>
+                    <p>Comprehensive reporting and analytics to help optimize your travel spend and improve policy compliance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
